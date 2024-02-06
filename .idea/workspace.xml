@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d44275b7-d5d4-4544-babb-6f5fb2d811d1" name="Default Changelist" comment="workspace 界面">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/fsy_demo.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/Qt.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/dayu_path/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/dayu_path/base.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/dayu_path/config.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/dayu_path/constants.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/dayu_path/data_structure.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/dayu_path/errors.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/dayu_path/plugin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/dayu_path/test/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/dayu_path/test/test_dayu_path.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/dayu_path/test/test_dayu_path_plugin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/dayu_widgets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/singledispatch/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/singledispatch/helpers.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_package/win32/six.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/icon-down.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/icon-refresh.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/icon-right.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/icon-search-engine.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/status-apv.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/status-clapv.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/status-clrv.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/status-fin.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/status-hld.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/status-ho.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/status-ip.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/status-omt.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/status-pub.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/status-rdy.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/status-rev.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/status-rtk.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/_icon/status-wtg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/comment.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/drag_file.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/other/browser.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/other/combox.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/other/filter_widget.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/other/mock_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/other/test_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/other/tool_button.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/other/ttss.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/other/ttsstt.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/page_exzmple.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/publish_dailies.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/MItemModel.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/MItemView.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/DQockWidget.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/QGroupbox.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/QScrolArea.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/_mock_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/aaa.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/bbb.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/ccc.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/check_signal.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/checkbox.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/class_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/ddd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/dock_widget.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/dockwidget.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/eee.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/fff.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/groupbox.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/qsettings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/tab.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/example/tool_buttons.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/filter_tool_box.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/line_edit.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/widgets/ui_utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/workspace_widget/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/workspace_widget/_mock_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/workspace_widget/cloud_file_widget.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/workspace_widget/cloud_shot_widget.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/workspace_widget/example/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/workspace_widget/example/_mock_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/workspace_widget/example/example_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/workspace_widget/example_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/workspace_widget/filter_tabel_view.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/workspace_widget/launch_workspace.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/workspace_widget/metadata_widget.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/workspace_widget/task_widget.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_center/workspace_widget/workarea_widget.py" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JupyterTrust" id="fb2cdd79-5432-4cd4-b9ff-55fda7c3bbaf" />
+  <component name="ProjectId" id="2byUKvkq39Ug0d64SrKopbztQE8" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d44275b7-d5d4-4544-babb-6f5fb2d811d1" name="Default Changelist" comment="" />
+      <changelist id="" name="workspace 界面" comment="" />
+      <changelist id="" name="推 workspace 界面" comment="" />
+      <created>1707186775516</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1707186775516</updated>
+      <workItem from="1707186776776" duration="6482000" />
+      <workItem from="1707232245303" duration="1100000" />
+    </task>
+    <task id="LOCAL-00001" summary="推 workspace 界面">
+      <created>1707205598139</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1707205598139</updated>
+    </task>
+    <task id="LOCAL-00002" summary="workspace 界面">
+      <created>1707231221395</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1707231221395</updated>
+    </task>
+    <task id="LOCAL-00003" summary="workspace 界面">
+      <created>1707232405211</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1707232405211</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="推 workspace 界面" />
+    <MESSAGE value="workspace 界面" />
+    <option name="LAST_COMMIT_MESSAGE" value="workspace 界面" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="369" y="325" key="SettingsEditor" timestamp="1707233169064">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="369" y="325" key="SettingsEditor/3840.0.2560.1400/0.0.2560.1400@0.0.2560.1400" timestamp="1707233169064" />
+    <state x="1128" y="613" key="VCS.ChangelistChooser" timestamp="1707232300526">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1128" y="613" key="VCS.ChangelistChooser/3840.0.2560.1400/0.0.2560.1400@0.0.2560.1400" timestamp="1707232300526" />
+    <state x="559" y="577" width="1267" height="574" key="Vcs.Push.Dialog.v2" timestamp="1707233128653">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="559" y="577" width="1267" height="574" key="Vcs.Push.Dialog.v2/3840.0.2560.1400/0.0.2560.1400@0.0.2560.1400" timestamp="1707233128653" />
+    <state x="1088" y="614" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1707233162703">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1088" y="614" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/3840.0.2560.1400/0.0.2560.1400@0.0.2560.1400" timestamp="1707233162703" />
+  </component>
+</project>
