@@ -29,7 +29,7 @@ class WorkspaceManager(QtWidgets.QWidget):
         super(WorkspaceManager, self).__init__(parent)
         self.settings = QSettings("WorkSpace", "CheckBox")
         self.setWindowTitle(self.tr('Workspace'))
-        self.resize(2200,1200)
+        self.resize(2200, 1200)
 
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self._init_ui()
@@ -112,21 +112,16 @@ class WorkspaceManager(QtWidgets.QWidget):
         # 而不是再把数据更新一遍
         # checkbox勾上就触发了
         # 还要把默认过滤界面以外的,也加进来
-
+        filter_cache = self.settings.value("filter_cache")
         count = self.task_widget.filter_widget._filter_widget.count()
         for index in range(count):
             widget_item = self.task_widget.filter_widget._filter_widget.itemAt(index).widget()
             widget_name = widget_item.objectName()
             row_count = widget_item.table_view.model().rowCount()
-            for row in range(row_count):
-                item_name = widget_item.table_view.model().index(row, 0).data(role=QtCore.Qt.DisplayRole)
-                # print(item_name)
-                status = self.settings.value(item_name)
-                # print(status)
-                # print(row)
-                if status == 2:
-                    pass
-                    # 这里应该是把 checkbox 勾选上,row有了
+            for row, status in enumerate(filter_cache.get(widget_name)):
+                widget_item.change_item_status(row, status)
+
+                # TODO: check to update model data
 
         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         # self.project_table_view = self.task_widget.filter_widget.project_filter_widget.table_view
@@ -162,16 +157,24 @@ class WorkspaceManager(QtWidgets.QWidget):
         :return:
         """
         # 以下是动态获取filter当前界面的存在checkbox的状态
+        filter_cache = {}
         count = self.task_widget.filter_widget._filter_widget.count()
         for index in range(count):
             widget_item = self.task_widget.filter_widget._filter_widget.itemAt(index).widget()
             widget_name = widget_item.objectName()
+            filter_cache.update({widget_name: []})
             row_count = widget_item.table_view.model().rowCount()
             for row in range(row_count):
                 _value = widget_item.table_view.model().index(row, 0).data(role=QtCore.Qt.DisplayRole)
                 _state = widget_item.table_view.model().index(row, 0).data(role=QtCore.Qt.CheckStateRole)
-                self.settings.setValue(_value, _state)
-                print(_value, _state)
+                # self.settings.setValue(_value, _state)
+                # print(_value, _state)
+                # if _value not in cache["filter_cache"][widget_name]:
+                #     cache["filter_cache"][widget_name] = {_value: _state}
+                # else:
+                filter_cache[widget_name].append(_state)
+        self.settings.setValue('filter_cache', filter_cache)
+        print(filter_cache)
 
 
         # # 以下是写死的只保存了三个窗口,不够灵活

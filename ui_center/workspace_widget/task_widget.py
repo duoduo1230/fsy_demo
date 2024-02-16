@@ -208,8 +208,8 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
 class TaskWidget(QtWidgets.QMainWindow):
     item_clicked = QtCore.Signal()
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super(TaskWidget, self).__init__(parent)
         self.resize(2200, 800)
         self.filter_data_list = []
         self._mock = []
@@ -219,7 +219,7 @@ class TaskWidget(QtWidgets.QMainWindow):
         self.task_table_view = TaskTableView()
         self.setCentralWidget(self.task_table_view)
         self.filter_widget = FilterWidget()
-        self.filter_dock_widget = QtWidgets.QDockWidget()
+        self.filter_dock_widget = QtWidgets.QDockWidget(self)
         self.filter_dock_widget.setFeatures(
             QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
         self.filter_dock_widget.setAllowedAreas(Qt.RightDockWidgetArea | Qt.LeftDockWidgetArea)
