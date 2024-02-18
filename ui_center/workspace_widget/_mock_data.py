@@ -301,6 +301,17 @@ metadata_header_list = [
 metadata_data_list = [
 ]
 
+name_header_list = [
+    {
+        "label": "Name",
+        "key": "name",
+        "searchable": True,
+        "width": 80,
+    },
+]
+name_data_list = [
+]
+
 
 # filter 数据获取
 filter_list = []

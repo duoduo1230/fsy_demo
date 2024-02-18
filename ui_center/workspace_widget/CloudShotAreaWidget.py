@@ -12,17 +12,6 @@ from dayu_widgets.item_model import MSortFilterModel
 from dayu_widgets.item_model import MTableModel
 from dayu_widgets.item_view import MTableView
 
-name_header_list = [
-    {
-        "label": "Name",
-        "key": "name",
-        "searchable": True,
-        "width": 80,
-    },
-]
-name_data_list = [
-]
-
 
 class ShotView(QtWidgets.QWidget):
 
@@ -41,9 +30,6 @@ class ShotView(QtWidgets.QWidget):
         name_lay.addWidget(self.name_view)
 
         self.setLayout(name_lay)
-
-        self.set_header_data(name_header_list)
-        self.update_data(name_data_list)
 
     def get_selected_item(self):
         """
