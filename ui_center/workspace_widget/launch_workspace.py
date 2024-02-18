@@ -14,8 +14,8 @@ from PySide2.QtCore import QSettings
 from dayu_widgets import dayu_theme
 from dayu_widgets.tab_widget import MTabWidget
 from ui_center.workspace_widget.task_widget import TaskWidget
-from ui_center.workspace_widget.cloud_file_widget import CloudFile
-from ui_center.workspace_widget.CloudShotAreaWidget import CloudShotFile
+from ui_center.workspace_widget.CloudFileWidget import CloudFileWidget
+from ui_center.workspace_widget.CloudShotAreaWidget import CloudShotWidget
 # from ui_center.workspace_widget.workarea_widget import WorkResources
 from ui_center.workspace_widget.WorkAreaWidget import WorkResources
 from ui_center.workspace_widget.MetadataAreaWidget import MetadataFileView
@@ -52,13 +52,13 @@ class WorkspaceManager(QtWidgets.QWidget):
         self.task_widget.set_task_data(mock)
         # 下半部分
         self.work_area_widget = WorkResources()
-        could_dailies_file = CloudFile()
-        could_element_file = CloudFile()
-        could_reference_file = CloudFile()
-        could_work_file = CloudFile()
-        could_cache_file = CloudFile()
+        could_dailies_file = CloudFileWidget()
+        could_element_file = CloudFileWidget()
+        could_reference_file = CloudFileWidget()
+        could_work_file = CloudFileWidget()
+        could_cache_file = CloudFileWidget()
         metadata_view = MetadataFileView()
-        cloud_shot_view = CloudShotFile()
+        cloud_shot_view = CloudShotWidget()
         table_default = MTabWidget()
         table_default.addTab(self.work_area_widget, "Work Area")
         table_default.addTab(could_cache_file, "Cloud-Cache")

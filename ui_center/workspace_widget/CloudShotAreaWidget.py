@@ -6,81 +6,64 @@ from __future__ import division
 from __future__ import print_function
 
 from Qt import QtWidgets
-
+from PySide2.QtCore import Qt
+from PySide2.QtWidgets import QSplitter
 from dayu_widgets import dayu_theme
 from dayu_widgets.item_model import MSortFilterModel
 from dayu_widgets.item_model import MTableModel
 from dayu_widgets.item_view import MTableView
+from ui_center.workspace_widget import _mock_data as mock
 
 
-class ShotView(QtWidgets.QWidget):
+class CloudShotView(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
-        super(ShotView, self).__init__(parent)
+        super(CloudShotView, self).__init__(parent)
         self.name_ui()
 
     def name_ui(self):
-        self.name_model = MTableModel()
-        self.name_sort_model = MSortFilterModel()
-        self.name_sort_model.setSourceModel(self.name_model)
-        self.name_view = MTableView(size=dayu_theme.small)
-        self.name_view.setModel(self.name_sort_model)
+        self.metadata_model = MTableModel()
+        self.metadata_sort_model = MSortFilterModel()
+        self.metadata_sort_model.setSourceModel(self.metadata_model)
+        self.metadata_model.set_header_list(mock.name_header_list)
+        self.metadata_view = MTableView(size=dayu_theme.small)
+        self.metadata_view.setModel(self.metadata_sort_model)
 
-        name_lay = QtWidgets.QVBoxLayout()
-        name_lay.addWidget(self.name_view)
-
-        self.setLayout(name_lay)
-
-    def get_selected_item(self):
-        """
-        Get current select item
-        :return: <>
-        """
-        pass
-
-    def set_header_data(self, data):
-        """
-        Update header data.
-        :param data: <list>
-        :return:
-        """
-        self.name_model.set_header_list(data)
-        self.name_view.set_header_list(data)
-        self.name_sort_model.set_header_list(data)
-
-    def update_data(self, data):
-        """
-        Update table view data.
-        :param data: <list>
-        :return:
-        """
-        self.name_model.set_data_list(data)
+        main_lay = QtWidgets.QVBoxLayout()
+        main_lay.addWidget(self.metadata_view)
+        self.setLayout(main_lay)
 
 
-class CloudShotFile(QtWidgets.QWidget):
+class CloudShotWidget(QtWidgets.QWidget):
     def __init__(self, parent=None):
-        super(CloudShotFile, self).__init__(parent)
+        super(CloudShotWidget, self).__init__(parent)
         self.cloud_ui()
 
     def cloud_ui(self):
-        name_widget0 = ShotView()
-        name_widget1 = ShotView()
-        name_widget2 = ShotView()
-        name_widget3 = ShotView()
+        name_widget0 = CloudShotView()
+        name_widget1 = CloudShotView()
+        name_widget2 = CloudShotView()
+        name_widget3 = CloudShotView()
 
-        main_lay = QtWidgets.QHBoxLayout()
-        main_lay.addWidget(name_widget0)
-        main_lay.addWidget(name_widget1)
-        main_lay.addWidget(name_widget2)
-        main_lay.addWidget(name_widget3)
+        self.splitter = QSplitter(self)
+        self.splitter.setOrientation(Qt.Horizontal)
+        self.splitter.addWidget(name_widget0)
+        self.splitter.addWidget(name_widget1)
+        self.splitter.addWidget(name_widget2)
+        self.splitter.addWidget(name_widget3)
+        self.splitter.setStretchFactor(0, 37)
+        self.splitter.setStretchFactor(1, 37)
+        self.splitter.setStretchFactor(2, 37)
+        self.splitter.setStretchFactor(3, 37)
 
+        main_lay = QtWidgets.QVBoxLayout()
+        main_lay.addWidget( self.splitter)
         self.setLayout(main_lay)
-
 
 if __name__ == "__main__":
     from dayu_widgets.qt import application
 
     with application() as app:
-        test = CloudShotFile()
+        test = CloudShotWidget()
         dayu_theme.apply(test)
         test.show()

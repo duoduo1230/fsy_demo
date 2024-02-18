@@ -12,7 +12,6 @@ from collections import Counter
 from dayu_widgets import dayu_theme
 import datetime
 
-
 # 获取当前日期
 today = datetime.date.today()
 
@@ -250,7 +249,7 @@ data_list = [
     },
 ]
 
-# tab 窗口
+# tab  work  窗口
 work_resources_header_list = [
     {
         "label": "Resources Name",
@@ -263,8 +262,8 @@ work_resources_data_list = [
 
 work_version_header_list = [
     {
-        "label": "File Name",
-        "key": "file name",
+        "label": "Version Name",
+        "key": "version name",
         "width": 200,
     },
     {
@@ -281,6 +280,78 @@ work_version_header_list = [
 work_version_data_list = [
 ]
 
+work_snapshots_header_list = [
+    {
+        "label": "File Name",
+        "key": "file name",
+        "width": 200,
+    },
+    {
+        "label": "Comment",
+        "key": "comment",
+        "width": 100,
+    },
+    {
+        "label": "Created Data",
+        "key": "created data",
+        "width": 100,
+    },
+]
+work_snapshots_data_list = [
+]
+
+# tab  cloud file  窗口
+resources_file_header_list = [
+    {
+        "label": "Name",
+        "key": "name",
+        "width": 200,
+    },
+    {
+        "label": "Comment",
+        "key": "comment",
+        "width": 100,
+    },
+    {
+        "label": "Created By",
+        "key": "created by",
+        "width": 100,
+    },
+    {
+        "label": "Created At",
+        "key": "created at",
+        "width": 200,
+    },
+]
+resources_file_data_list = [
+]
+
+version_header_list = [
+    {
+        "label": "Name",
+        "key": "name",
+        "width": 200,
+    },
+    {
+        "label": "Comment",
+        "key": "comment",
+        "width": 100,
+    },
+    {
+        "label": "Created By",
+        "key": "created by",
+        "width": 100,
+    },
+    {
+        "label": "Created At",
+        "key": "created at",
+        "width": 200,
+    },
+]
+version_data_list = [
+]
+
+# tab  metadata  窗口
 metadata_header_list = [
     {
         "label": "Metadata Name",
@@ -301,6 +372,7 @@ metadata_header_list = [
 metadata_data_list = [
 ]
 
+# tab  shot/asset  窗口
 name_header_list = [
     {
         "label": "Name",
@@ -311,6 +383,8 @@ name_header_list = [
 ]
 name_data_list = [
 ]
+
+
 
 
 # filter 数据获取

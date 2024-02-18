@@ -9,7 +9,7 @@ from __future__ import print_function
 from Qt import QtWidgets
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QSplitter
-from ui_center.workspace_widget.example import _mock_data as mock
+from ui_center.workspace_widget import _mock_data as mock
 from dayu_widgets import dayu_theme
 from dayu_widgets.item_model import MSortFilterModel
 from dayu_widgets.item_model import MTableModel
@@ -34,6 +34,7 @@ class MetadataFileView(QtWidgets.QWidget):
 
         line_edit = MLineEdit().search().tiny()
         line_edit.textChanged.connect(self.metadata_sort_model.set_search_pattern)
+        line_edit.setMaximumWidth(200)
 
         metadata_grp = QtWidgets.QGroupBox(self.tr('Metadata'))
         metadata_grp.setAlignment(Qt.AlignCenter)
@@ -49,16 +50,8 @@ class MetadataFileView(QtWidgets.QWidget):
         main_lay.addWidget(metadata_grp)
         self.setLayout(main_lay)
 
-        # self.view = FilterTableView()
-        # self.view.set_header_hidden(False)
-        # self.view.set_header_data(mock.metadata_header_list)
-        #
-        # main_lay = QtWidgets.QVBoxLayout()
-        # main_lay.addWidget(self.view)
-        # self.setLayout(main_lay)
+    # TODO: 这里还得增加一个搜索窗口的长度需要修改
 
-
-    # TODO: 这里还得增加一个搜索窗口
 
     def set_header_data(self, data):
         """
