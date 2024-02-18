@@ -20,7 +20,6 @@ from dayu_widgets.line_edit import MLineEdit
 from dayu_widgets.push_button import MPushButton
 from dayu_widgets.menu import MMenu
 from dayu_widgets.combo_box import MComboBox
-from PySide2.QtWidgets import QSplitter
 from functools import partial
 
 from filter_tabel_view import FilterTableView
