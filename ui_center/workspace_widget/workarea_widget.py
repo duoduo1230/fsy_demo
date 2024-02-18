@@ -9,7 +9,6 @@ from __future__ import division
 from __future__ import print_function
 
 from Qt import QtWidgets
-from dayu_widgets.push_button import MPushButton
 from PySide2.QtCore import Qt
 from dayu_widgets import dayu_theme
 from dayu_widgets.item_model import MSortFilterModel
@@ -34,7 +33,10 @@ class WorkResourcesView(QtWidgets.QWidget):
         metadata_lay.addWidget(self.work_resources_view)
 
         filter_groupbox = QtWidgets.QGroupBox()
+        # 设置边缘线颜色
         filter_groupbox.setStyleSheet("QGroupBox { border: 1px solid #A0A0A0;}")
+        # 设置字体颜色
+        filter_groupbox.setStyleSheet("QGroupBox { color: #F7A72D;}")
         filter_groupbox.setTitle("Resources")
         # Title居中
         filter_groupbox.setAlignment(Qt.AlignCenter)
@@ -73,7 +75,7 @@ class WorkVersionView(QtWidgets.QWidget):
 
         layout = QtWidgets.QGridLayout()
         filter_groupbox = QtWidgets.QGroupBox()
-        filter_groupbox.setStyleSheet("QGroupBox { border: 1px solid #A0A0A0;}")
+        # filter_groupbox.setStyleSheet("QGroupBox { border: 1px solid #A0A0A0;}")
         layout.addWidget(filter_groupbox)
         filter_groupbox.setLayout(metadata_lay)
 

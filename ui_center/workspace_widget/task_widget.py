@@ -105,7 +105,6 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
         filter_button_lay.addWidget(self.more_filter_combobox)
         filter_button_lay.addWidget(self.clear_filter_button)
 
-        #创建默认存在得窗口
         self._filter_widget = QtWidgets.QVBoxLayout()
         self.project_filter_widget = self.create_filter_widget("project")
         self.sequence_filter_widget = self.create_filter_widget("sequence type")
@@ -121,7 +120,6 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
         self.setLayout(self.main_lay)
 
     def bind_function(self):
-        # 默认存在窗口的信号
         self.project_filter_widget.check.connect(partial(self.current, self.project_filter_widget.objectName()))
         setattr(self, self.project_filter_widget.objectName(), self.project_filter_widget)
         self.sequence_filter_widget.check.connect(partial(self.current, self.sequence_filter_widget.objectName()))
@@ -129,9 +127,21 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
         self.shot_filter_widget.check.connect(partial(self.current, self.shot_filter_widget.objectName()))
         setattr(self, self.shot_filter_widget.objectName(), self.shot_filter_widget)
         self.clear_filter_button.clicked.connect(self.clear_all_check_item)
-
-        # 动态添加窗口的信号
         self.more_filter_button._action_group.triggered.connect(self.add_filter_widget)
+
+    def current(self, *args):
+        object_name, current_item_data = args
+        current_item_data.update({"filter": object_name})
+        self.current_check.emit(current_item_data)
+
+    def set_checkbox_check(self, filter_name):
+        for i in self.more_filter_button._action_group.actions():
+            if i.text() == filter_name:
+                i.setChecked(True)
+                add_filter = self.create_filter_widget(i.text())
+                add_filter.check.connect(partial(self.current, add_filter.objectName()))
+                setattr(self, add_filter.objectName(), add_filter)
+                self._filter_widget.addWidget(add_filter)
 
     def add_filter_widget(self, action):
         """
@@ -144,11 +154,6 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
             self._filter_widget.addWidget(add_filter)
         else:
             self.clear_filter_widget(action.text())
-
-    def current(self, *args):
-        object_name, current_item_data = args
-        current_item_data.update({"filter": object_name})
-        self.current_check.emit(current_item_data)
 
     def create_filter_widget(self, target_name):
         """
@@ -177,8 +182,8 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
             widget_item = self._filter_widget.itemAt(index).widget()
             widget_name = widget_item.objectName()
             if widget_name == target_name:
-                # 这个删除有错误,没有完全删除.
-                self._filter_widget.removeWidget(widget_item)
+                widget_item.setParent(None)
+                widget_item.deleteLater()
 
     def clear_all_check_item(self, *args, **kwargs):
         """
@@ -210,7 +215,7 @@ class TaskWidget(QtWidgets.QMainWindow):
 
     def __init__(self, parent=None):
         super(TaskWidget, self).__init__(parent)
-        self.resize(2200, 800)
+        # self.resize(2200, 800)
         self.filter_data_list = []
         self._mock = []
         # 组成过滤信息得字典
@@ -259,9 +264,10 @@ class TaskWidget(QtWidgets.QMainWindow):
             else:
                 self.filter_item_dict[_filter] = [value]
         else:
-            self.filter_item_dict[_filter].remove(value)
-            if not self.filter_item_dict.get(_filter):
-                self.filter_item_dict.pop(_filter)
+            if self.filter_item_dict.get(_filter) and value in self.filter_item_dict[_filter]:
+                self.filter_item_dict[_filter].remove(value)
+                if not self.filter_item_dict.get(_filter):
+                    self.filter_item_dict.pop(_filter)
 
         # NOTE: self.filter_item_dict = {'project': ['yhg', 'wyd'], 'sequence type': ['test']}
         new_data = []
@@ -288,6 +294,7 @@ if __name__ == "__main__":
     with application() as app:
         test = TaskWidget()
         test.set_task_data(mock)
+        test.filter_widget.set_checkbox_check('pipeline step')
         # test.task_table_view.set_header_data(mock.header_list)
         # test.task_table_view.update_data(mock.data_list)
         dayu_theme.apply(test)
