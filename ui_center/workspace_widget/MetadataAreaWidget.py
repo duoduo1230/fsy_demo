@@ -50,9 +50,6 @@ class MetadataFileView(QtWidgets.QWidget):
         main_lay.addWidget(metadata_grp)
         self.setLayout(main_lay)
 
-    # TODO: 这里还得增加一个搜索窗口的长度需要修改
-
-
     def set_header_data(self, data):
         """
         Update header data.

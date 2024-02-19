@@ -129,8 +129,9 @@ class WorkspaceManager(QtWidgets.QWidget):
         filtered_keys = [key for key in filter_cache]
         key_count = len(filtered_keys)
         for key in filter_cache:
-            if key not in ["shot asset", "project", "sequence type"]:
-                self.task_widget.filter_widget.set_checkbox_check(key)
+            if key not in ["project", "sequence type"]:
+                add_filter = self.task_widget.filter_widget.set_checkbox_check(key)
+                self.task_widget.filter_widget._filter_widget.addWidget(add_filter)
         for index in range(key_count):
             widget_item = self.task_widget.filter_widget._filter_widget.itemAt(index).widget()
             widget_name = widget_item.objectName()

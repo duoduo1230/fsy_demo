@@ -25,12 +25,9 @@ from functools import partial
 from filter_tabel_view import FilterTableView
 import _mock_data as mock
 
-filter_list = []
+filter_items = []
 for label in mock.header_list:
-    filter_list.append(label.get("key"))
-    # 以下三个个窗口为默认显示窗口
-    remove_item = ["shot asset", "project", "sequence type"]
-    filter_items = [item for item in filter_list if item not in remove_item]
+    filter_items.append(label.get("key"))
 
 
 class TaskTableView(QtWidgets.QWidget):
@@ -99,22 +96,28 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
         self.more_filter_combobox = MComboBox().small()
         self.more_filter_combobox.lineEdit().setText("More Filter")
         self.more_filter_combobox._root_menu = self.more_filter_button
+        # 设置默认勾选
+        self.set_checkbox_check("project")
+        self.set_checkbox_check("sequence type")
 
         filter_button_lay = QtWidgets.QHBoxLayout()
         filter_button_lay.addWidget(self.more_filter_combobox)
         filter_button_lay.addWidget(self.clear_filter_button)
 
-        self._filter_widget = QtWidgets.QVBoxLayout()
         self.project_filter_widget = self.create_filter_widget("project")
         self.sequence_filter_widget = self.create_filter_widget("sequence type")
-        self.shot_filter_widget = self.create_filter_widget("shot asset")
+
+        scroll = QtWidgets.QScrollArea(self)
+        self._filter_widget = QtWidgets.QVBoxLayout()
         self._filter_widget.addWidget(self.project_filter_widget)
         self._filter_widget.addWidget(self.sequence_filter_widget)
-        self._filter_widget.addWidget(self.shot_filter_widget)
+        widget = QtWidgets.QWidget()
+        widget.setLayout(self._filter_widget)
+        scroll.setWidget(widget)
 
         self.main_lay = QtWidgets.QVBoxLayout(self)
         self.main_lay.addLayout(filter_button_lay)
-        self.main_lay.addLayout(self._filter_widget)
+        self.main_lay.addWidget(scroll)
 
         self.setLayout(self.main_lay)
 
@@ -123,8 +126,6 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
         setattr(self, self.project_filter_widget.objectName(), self.project_filter_widget)
         self.sequence_filter_widget.check.connect(partial(self.current, self.sequence_filter_widget.objectName()))
         setattr(self, self.sequence_filter_widget.objectName(), self.sequence_filter_widget)
-        self.shot_filter_widget.check.connect(partial(self.current, self.shot_filter_widget.objectName()))
-        setattr(self, self.shot_filter_widget.objectName(), self.shot_filter_widget)
         self.clear_filter_button.clicked.connect(self.clear_all_check_item)
         self.more_filter_button._action_group.triggered.connect(self.add_filter_widget)
 
@@ -140,7 +141,7 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
                 add_filter = self.create_filter_widget(i.text())
                 add_filter.check.connect(partial(self.current, add_filter.objectName()))
                 setattr(self, add_filter.objectName(), add_filter)
-                self._filter_widget.addWidget(add_filter)
+        return add_filter
 
     def add_filter_widget(self, action):
         """
@@ -271,11 +272,11 @@ class TaskWidget(QtWidgets.QMainWindow):
         # NOTE: self.filter_item_dict = {'project': ['yhg', 'wyd'], 'sequence type': ['test']}
         new_data = []
         for item_dict in self._mock.data_list:
-            is_match = []  # 用来存储相同值的字段
+            is_match = []
             for f, v in self.filter_item_dict.items():
                 if item_dict.get(f) in v:
                     is_match.append(f)
-            if len(is_match) == len(self.filter_item_dict):  # 判断字段的数量是否相等
+            if len(is_match) == len(self.filter_item_dict):
                 new_data.append(item_dict)
         self.task_table_view.task_model.set_data_list(new_data)
 
