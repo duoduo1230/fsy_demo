@@ -36,10 +36,13 @@ class MetadataFileView(QtWidgets.QWidget):
         line_edit.textChanged.connect(self.metadata_sort_model.set_search_pattern)
         line_edit.setMaximumWidth(200)
 
+        grp_style_sheet = """
+            QGroupBox {color: #F7922D;}
+        """
+
         metadata_grp = QtWidgets.QGroupBox(self.tr('Metadata'))
         metadata_grp.setAlignment(Qt.AlignCenter)
-        metadata_grp.setStyleSheet("QGroupBox { border: 1px solid #A0A0A0;}")
-        metadata_grp.setStyleSheet("QGroupBox { color: #F7922D;}")
+        metadata_grp.setStyleSheet(grp_style_sheet)
 
         metadata_lay = QtWidgets.QVBoxLayout()
         metadata_lay.addWidget(line_edit)

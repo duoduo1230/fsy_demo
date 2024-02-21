@@ -34,17 +34,16 @@ class CloudFileWidget(QtWidgets.QWidget):
         self.version_view = MTableView(size=dayu_theme.small)
         self.version_view.setModel(self.version_sort_model)
 
-
-        resource_grp = QtWidgets.QGroupBox(self.tr('resources'))
+        grp_style_sheet = """
+            QGroupBox {color: #F7922D;}
+        """
+        resource_grp = QtWidgets.QGroupBox(self.tr('Resources'))
         resource_grp.setAlignment(Qt.AlignCenter)
-        resource_grp.setStyleSheet("QGroupBox { border: 1px solid #A0A0A0;}")
-        resource_grp.setStyleSheet("QGroupBox { color: #F7922D;}")
+        resource_grp.setStyleSheet(grp_style_sheet)
 
-        version_grp = QtWidgets.QGroupBox(self.tr('versions'))
+        version_grp = QtWidgets.QGroupBox(self.tr('Versions'))
         version_grp.setAlignment(Qt.AlignCenter)
-        version_grp.setStyleSheet("QGroupBox { border: 1px solid #A0A0A0;}")
-        version_grp.setStyleSheet("QGroupBox { color: #F7922D;}")
-
+        version_grp.setStyleSheet(grp_style_sheet)
 
         resource_lay = QtWidgets.QVBoxLayout()
         resource_lay.addWidget(self.resources_view)
