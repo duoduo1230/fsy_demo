@@ -44,15 +44,15 @@ class WorkResources(QtWidgets.QWidget):
         grp_style_sheet = """
             QGroupBox {color: #F7922D;}
         """
-        resource_grp = QtWidgets.QGroupBox(self.tr('resources'))
+        resource_grp = QtWidgets.QGroupBox(self.tr('Resources'))
         resource_grp.setAlignment(Qt.AlignCenter)
         resource_grp.setStyleSheet(grp_style_sheet)
 
-        version_grp = QtWidgets.QGroupBox(self.tr('versions'))
+        version_grp = QtWidgets.QGroupBox(self.tr('Versions'))
         version_grp.setAlignment(Qt.AlignCenter)
         version_grp.setStyleSheet(grp_style_sheet)
 
-        snapshot_grp = QtWidgets.QGroupBox(self.tr('snapshots'))
+        snapshot_grp = QtWidgets.QGroupBox(self.tr('Snapshots'))
         snapshot_grp.setAlignment(Qt.AlignCenter)
         snapshot_grp.setStyleSheet(grp_style_sheet)
 

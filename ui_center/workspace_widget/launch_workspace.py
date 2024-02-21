@@ -16,7 +16,6 @@ from dayu_widgets.tab_widget import MTabWidget
 from ui_center.workspace_widget.task_widget import TaskWidget
 from ui_center.workspace_widget.CloudFileWidget import CloudFileWidget
 from ui_center.workspace_widget.CloudShotAreaWidget import CloudShotWidget
-# from ui_center.workspace_widget.workarea_widget import WorkResources
 from ui_center.workspace_widget.WorkAreaWidget import WorkResources
 from ui_center.workspace_widget.MetadataAreaWidget import MetadataFileView
 from ui_center.workspace_widget import _mock_data as mock

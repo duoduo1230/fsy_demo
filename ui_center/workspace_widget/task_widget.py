@@ -23,7 +23,7 @@ from dayu_widgets.combo_box import MComboBox
 from functools import partial
 
 from filter_tabel_view import FilterTableView
-import _mock_data as mock
+from ui_center.workspace_widget import _mock_data as mock
 
 filter_items = []
 for label in mock.header_list:
@@ -85,7 +85,7 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
 
     def __init__(self, parent=None):
         super(FilterWidget, self).__init__(parent)
-        self.resize(500, 1200)
+        self.setMinimumWidth(500)
         self._init_ui()
         self.bind_function()
 
@@ -96,7 +96,6 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
         self.more_filter_combobox = MComboBox().small()
         self.more_filter_combobox.lineEdit().setText("More Filter")
         self.more_filter_combobox._root_menu = self.more_filter_button
-        # 设置默认勾选
         self.set_checkbox_check("project")
         self.set_checkbox_check("sequence type")
 
@@ -107,17 +106,17 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
         self.project_filter_widget = self.create_filter_widget("project")
         self.sequence_filter_widget = self.create_filter_widget("sequence type")
 
-        scroll = QtWidgets.QScrollArea(self)
+        self.scroll = QtWidgets.QScrollArea(self)
         self._filter_widget = QtWidgets.QVBoxLayout()
         self._filter_widget.addWidget(self.project_filter_widget)
         self._filter_widget.addWidget(self.sequence_filter_widget)
-        widget = QtWidgets.QWidget()
-        widget.setLayout(self._filter_widget)
-        scroll.setWidget(widget)
+        self.widget = QtWidgets.QWidget()
+        self.widget.setLayout(self._filter_widget)
+        self.scroll.setWidget(self.widget)
 
         self.main_lay = QtWidgets.QVBoxLayout(self)
         self.main_lay.addLayout(filter_button_lay)
-        self.main_lay.addWidget(scroll)
+        self.main_lay.addWidget(self.scroll)
 
         self.setLayout(self.main_lay)
 
@@ -180,6 +179,7 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
         count = self._filter_widget.count()
         for index in range(count):
             widget_item = self._filter_widget.itemAt(index).widget()
+            print(widget_item)
             widget_name = widget_item.objectName()
             if widget_name == target_name:
                 widget_item.setParent(None)
@@ -292,10 +292,11 @@ if __name__ == "__main__":
     from dayu_widgets.qt import application
 
     with application() as app:
-        test = TaskWidget()
-        test.set_task_data(mock)
-        test.filter_widget.set_checkbox_check('pipeline step')
+        # test = TaskWidget()
+        # test.set_task_data(mock)
+        # test.filter_widget.set_checkbox_check('pipeline step')
         # test.task_table_view.set_header_data(mock.header_list)
         # test.task_table_view.update_data(mock.data_list)
+        test = FilterWidget()
         dayu_theme.apply(test)
         test.show()
