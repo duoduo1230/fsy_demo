@@ -23,6 +23,7 @@ class FilterTableView(QtWidgets.QWidget, MFieldMixin):
         super(FilterTableView, self).__init__(parent)
         self._init_ui()
         self.bind_function()
+        self.setMinimumHeight(100)
 
     def _init_ui(self):
         self.table_model = MTableModel()
