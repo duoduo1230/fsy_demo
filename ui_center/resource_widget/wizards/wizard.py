@@ -5,7 +5,7 @@ import os
 from collections import defaultdict
 
 from dayu_widgets import static
-from wizards.MSeparator import MHSeparator
+from ui_center.resource_widget.wizards.MSeparator import MHSeparator
 from Qt.QtWidgets import *
 from Qt.QtCore import *
 

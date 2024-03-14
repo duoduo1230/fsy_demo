@@ -12,12 +12,14 @@ from dayu_widgets.tool_button import MToolButton
 from PySide2.QtWidgets import QSplitter
 from PySide2.QtCore import QSettings
 from dayu_widgets import dayu_theme
+from dayu_widgets.menu import MMenu
 from dayu_widgets.tab_widget import MTabWidget
 from ui_center.workspace_widget.task_widget import TaskWidget
 from ui_center.workspace_widget.CloudFileWidget import CloudFileWidget
 from ui_center.workspace_widget.CloudShotAreaWidget import CloudShotWidget
 from ui_center.workspace_widget.WorkAreaWidget import WorkResources
 from ui_center.workspace_widget.MetadataAreaWidget import MetadataFileView
+from ui_center.resource_widget.launch_create_resource import WorkFileResourceWizard
 from ui_center.workspace_widget import _mock_data as mock
 import importlib
 
@@ -34,6 +36,7 @@ class WorkspaceManager(QtWidgets.QWidget):
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self._init_ui()
         self.bind_function()
+        self.add_actions()
 
     def _init_ui(self):
         # 标题
@@ -80,12 +83,7 @@ class WorkspaceManager(QtWidgets.QWidget):
         self.setLayout(main_lay)
 
     def bind_function(self):
-        """
-        Bind function
-        :return:
-        """
         self.task_widget.item_clicked.connect(self.work_area_widget.update)
-        # 设置刷新功能
         self.refresh_button.clicked.connect(self.refresh_data)
 
     def refresh_data(self):
@@ -114,7 +112,6 @@ class WorkspaceManager(QtWidgets.QWidget):
         for item_dict in mock.data_list:
             is_match = []
             for f, v in self.filter_item_dict.items():
-                if item_dict.get(f) in v:
                     is_match.append(f)
             if len(is_match) == len(self.filter_item_dict):
                 new_data.append(item_dict)
@@ -123,7 +120,7 @@ class WorkspaceManager(QtWidgets.QWidget):
     def setup_data(self, mock):
         self.task_widget.task_table_view.update_data(mock.data_list)
 
-    def restoreState(self):
+    def restore_state(self):
         filter_cache = self.settings.value("filter_cache")
         filtered_keys = [key for key in filter_cache]
         key_count = len(filtered_keys)
@@ -137,7 +134,7 @@ class WorkspaceManager(QtWidgets.QWidget):
             for item in filter_cache.get(widget_name):
                 widget_item.change_item_status(item[0], 2)
 
-    def closeEvent(self, event):
+    def close_event(self, event):
         """
         When the window is closed, save the current filtering window check box as checked
         :param event:
@@ -160,7 +157,18 @@ class WorkspaceManager(QtWidgets.QWidget):
                         filter_cache[widget_name] = [(row, _value)]
 
         self.settings.setValue('filter_cache', filter_cache)
-        super().closeEvent(event)
+        super().close_event(event)
+
+    def add_actions(self):
+        action = QtWidgets.QAction('creat workfile ', self.task_widget)
+        action.triggered.connect(self.current)
+        self.task_widget.menu.addAction(action)
+
+    def current(self):
+        print(self.task_widget.task_table_view.current_item())
+        # show  创建工程窗口
+        test = WorkFileResourceWizard()
+        test.show()
 
 
 def main():
@@ -168,7 +176,7 @@ def main():
 
     with application() as app:
         test = WorkspaceManager()
-        test.restoreState()
+        test.restore_state()
         dayu_theme.apply(test)
         test.show()
 

@@ -13,7 +13,7 @@ from Qt import QtWidgets
 from dayu_widgets.label import MLabel
 from dayu_widgets.push_button import MPushButton
 
-from wizards.wizard import MWizardPage
+from ui_center.resource_widget.wizards.wizard import MWizardPage
 
 
 class WorkFileVersionPage(MWizardPage):

@@ -12,7 +12,7 @@ from PySide2.QtWidgets import QGraphicsScene
 from PySide2.QtGui import QBrush, QColor
 from PySide2.QtGui import QPixmap, QClipboard
 from dayu_widgets.push_button import MPushButton
-from wizards.wizard import MWizardPage
+from ui_center.resource_widget.wizards.wizard import MWizardPage
 
 
 # 这里是启动界面之前做的
@@ -62,9 +62,7 @@ class ThumbnailPage(MWizardPage):
         self.clipboard_button.clicked.connect(self.input_screen_shot)
 
     def creat_screen_shot(self):
-        # 这里我没有安装 keyboard 所以会报错  环境太乱不会安装
         import keyboard
-
         keyboard.press("F1")
         keyboard.release("F1")
 

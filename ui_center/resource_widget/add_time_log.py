@@ -29,14 +29,10 @@ class GetResourcePage(QtWidgets.QWidget):
 
     def _init_ui(self):
 
-        # 第一层 标题 标题的名字是  从右键处获取来的 pipeline step  Task:
         self.title_label = MLabel(str("Add Time Log")).h2()
 
-        # 第二层QDateEdit 选择日期  Date:
         self.date_widget = QDateEdit(QDate.currentDate())
         self.date_widget.setCalendarPopup(True)
-        # date_str = "1-Jan-2024"
-        # self.date_widget.setDate(qdate)
 
         today_hours = "Today already {num1} hours, {num2} hours left".format(num1=0.0, num2=8.0)
         self.file_filter_label = MLabel(str(today_hours))
@@ -46,11 +42,8 @@ class GetResourcePage(QtWidgets.QWidget):
 
         bid = "{num4} hrs".format(num4=8.0)
         self.bid_label = MLabel(str(bid))
-
         self.duration_spinbox = MDoubleSpinBox().small()
-
         self.is_overtime_checkbox = MCheckBox()
-
         self.description = MTextEdit(self)
 
         self.button_lay = QtWidgets.QHBoxLayout()
@@ -78,7 +71,7 @@ class GetResourcePage(QtWidgets.QWidget):
 
         self.setLayout(main_lay)
 
-        # self.cancel_button.clicked.connect()
+
 if __name__ == "__main__":
     from dayu_widgets import dayu_theme
     from dayu_widgets.qt import application

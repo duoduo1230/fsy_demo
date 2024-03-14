@@ -9,18 +9,18 @@ from __future__ import print_function
 
 from Qt import QtWidgets
 from dayu_widgets.label import MLabel
-from wizards.wizard import MWizard
+from ui_center.resource_widget.wizards.wizard import MWizard
 
-from page_creat_resource import GetResourcePage
-from page_project_template import WorkFileVersionPage
-from page_thumbnail import ThumbnailPage
-from page_comment import CommentPage
+from ui_center.resource_widget.page_creat_resource import GetResourcePage
+from ui_center.resource_widget.page_project_template import WorkFileVersionPage
+from ui_center.resource_widget.page_thumbnail import ThumbnailPage
+from ui_center.resource_widget.page_comment import CommentPage
 
 
 class WorkFileResourceWizard(MWizard):
     def __init__(self, parent=None):
         super(WorkFileResourceWizard, self).__init__(parent)
-        self.resize(800, 600)
+        self.resize(800, 1000)
         self._init_ui()
 
     def _init_ui(self):
