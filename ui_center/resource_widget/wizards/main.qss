@@ -33,6 +33,8 @@ QLabel#wizard-subtitle{
     font-weight: bold;
     color:#c8c8c8;
 }
+
+/* =======================< Page >=========================*/
 QLabel#wizard-step{
     padding: 10px;
     color: #aaa;
@@ -41,14 +43,14 @@ QLabel#wizard-step{
 QLabel#wizard-step[status=current] {
     border-width: 0 0 3px 0;
     border-style:solid;
-    border-color:#5bc0de;
-    color: #5bc0de;
+    border-color:#F09013;
+    color: #F09013;
 }
 QLabel#wizard-step[status=passed] {
     border-width: 0 0 3px 0;
     border-style:solid;
-    border-color:#5cb85c;
-    color: #5cb85c;
+    border-color:#5CB410;
+    color: #5CB410;
 }
 QLabel#wizard-step[status=waiting]{
     color: gray;
@@ -61,7 +63,6 @@ QLabel#search-type[status=unchecked] {
     border-color: transparent;
     color: #aaa;
 }
-
 QLabel#search-type[status=checked] {
     padding: 10px;
     border-width: 0 0 3px 0;
@@ -69,6 +70,7 @@ QLabel#search-type[status=checked] {
     border-color: #5bc0de;
     color: #5bc0de;
 }
+
 QLineEdit{
     height: 20px;
 }
@@ -78,7 +80,7 @@ QLineEdit#search{
     border: 1px solid gray;
 }
 QLineEdit#search:focus{
-    border: 1px solid #5bc0de;
+    border: 1px solid #F09013;
 }
 QLineEdit#error{
     color:red;
@@ -251,7 +253,7 @@ QLineEdit,QTextEdit, QDateEdit{
     selection-color: #1e1e1e;
 }
 QLineEdit:focus,QTextEdit:focus, QDateEdit:focus{
-    border: 1px solid #5bc0de;
+    border: 1px solid #F09013;
 }
 
 /* =======================< QLabel >=========================*/
@@ -278,10 +280,7 @@ QLabel#avatar:hover{
     border-radius: 60px;
     border: 3px solid #5bc0de;
 }
-QRadioButtonGroup{
-    color: #E1E1E1;
-    background-color: transparent;
-}
+
 /* =======================< QFrame#MTaskCard >=========================*/
 QFrame#MTaskCard{
     border-left: 10px solid darkred;
@@ -351,7 +350,7 @@ QPushButton:disabled{
     color: gray;
 }
 QPushButton:hover{
-    border: 1px solid #5bc0de ;
+    border: 1px solid #F09013 ;
 }
 QPushButton:pressed {
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
@@ -484,7 +483,7 @@ QAbstractSpinBox:enabled {
     color: rgb(220, 220, 220);
 }
 QAbstractSpinBox:focus {
-    border: 1px solid #5bc0de;
+    border: 1px solid #F09013;
 }
 QAbstractSpinBox:enabled:hover, QLineEdit:enabled:focus {
     color: rgb(230, 230, 230);
@@ -541,7 +540,7 @@ QSpinBox, QDoubleSpinBox {
     border: 1px solid #1e1e1e;
     border-radius: 3px;
     background: #3a3a3a;
-    selection-background-color: #5bc0de;
+    selection-background-color: #F09013;
     selection-color: #1e1e1e;
 }
 
@@ -794,6 +793,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 }
 
 
-/* =======================< MRadioButtonGroup >=========================*/
+/* =======================< QButtonGroup >=========================*/
 
 

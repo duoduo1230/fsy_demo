@@ -20,6 +20,7 @@ from dayu_widgets.line_edit import MLineEdit
 from dayu_widgets.push_button import MPushButton
 from dayu_widgets.menu import MMenu
 from dayu_widgets.combo_box import MComboBox
+import functools
 from functools import partial
 
 from filter_tabel_view import FilterTableView
@@ -61,23 +62,46 @@ class TaskTableView(QtWidgets.QWidget):
         self.set_header_data(mock.header_list)
         self.update_data(mock.data_list)
 
-    def set_header_data(self, data):
+        self.table_view.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.table_view.customContextMenuRequested.connect(self.on_context_menu)
+
+        self.menu = QtWidgets.QMenu(self)
+        #self.menu.addAction(QtWidgets.QAction('creat workfile ', self))
+
+    def set_header_data(self, data: list):
         """
         Update header data.
-        :param data: <list>
+        :param data: 包含字典的数据列表
         :return:
         """
         self.task_model.set_header_list(data)
         self.table_view.set_header_list(data)
         self.task_sort_model.set_header_list(data)
 
-    def update_data(self, data):
+    def update_data(self, data: list):
         """
         Update table view data.
-        :param data: <list>
+        :param data: 包含字典的数据列表
         :return:
         """
         self.task_model.set_data_list(data)
+
+    def on_context_menu(self, point):
+        """ 创建菜单栏 """
+
+        row = self.table_view.rowAt(point.y())
+        column = self.table_view.columnAt(point.x())
+        if row < 0:
+            return
+
+        global_point = self.table_view.mapToGlobal(point)
+
+        # TODO: 右键菜单位置根据分辨率适配
+        self.menu.exec_(QtCore.QPoint(global_point.x(), global_point.y()+40))
+
+    def current_item(self) -> dict:
+        index = self.table_view.currentIndex()
+        return self.task_model.root_item.get("children")[index.row()]
 
 
 class FilterWidget(QtWidgets.QWidget, MFieldMixin):
@@ -106,17 +130,15 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
         self.project_filter_widget = self.create_filter_widget("project")
         self.sequence_filter_widget = self.create_filter_widget("sequence type")
 
-        self.scroll = QtWidgets.QScrollArea(self)
         self._filter_widget = QtWidgets.QVBoxLayout()
         self._filter_widget.addWidget(self.project_filter_widget)
         self._filter_widget.addWidget(self.sequence_filter_widget)
         self.widget = QtWidgets.QWidget()
         self.widget.setLayout(self._filter_widget)
-        self.scroll.setWidget(self.widget)
 
         self.main_lay = QtWidgets.QVBoxLayout(self)
         self.main_lay.addLayout(filter_button_lay)
-        self.main_lay.addWidget(self.scroll)
+        self.main_lay.addWidget(self.widget)
 
         self.setLayout(self.main_lay)
 
@@ -179,7 +201,6 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
         count = self._filter_widget.count()
         for index in range(count):
             widget_item = self._filter_widget.itemAt(index).widget()
-            print(widget_item)
             widget_name = widget_item.objectName()
             if widget_name == target_name:
                 widget_item.setParent(None)
@@ -235,6 +256,7 @@ class TaskWidget(QtWidgets.QMainWindow):
         self.task_table_view.filter_button.clicked.connect(self.filter_dock_show)
         self.filter_widget.current_check.connect(self.update_task)
         self.item_clicked = self.task_table_view.table_view.clicked
+        self.menu = self.task_table_view.menu
 
     def filter_dock_show(self):
         """
@@ -297,6 +319,6 @@ if __name__ == "__main__":
         # test.filter_widget.set_checkbox_check('pipeline step')
         # test.task_table_view.set_header_data(mock.header_list)
         # test.task_table_view.update_data(mock.data_list)
-        test = FilterWidget()
+        test = TaskTableView()
         dayu_theme.apply(test)
         test.show()

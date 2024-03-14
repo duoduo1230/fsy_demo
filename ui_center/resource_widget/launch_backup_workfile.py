@@ -16,7 +16,7 @@ from page_comment import CommentPage
 class WorkFileResourceWizard(MWizard):
     def __init__(self, parent=None):
         super(WorkFileResourceWizard, self).__init__(parent)
-        self.resize(800, 600)
+        self.resize(800, 1000)
         self._init_ui()
 
     def _init_ui(self):

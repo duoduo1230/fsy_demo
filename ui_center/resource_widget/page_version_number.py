@@ -29,7 +29,6 @@ class VersionPage(MWizardPage):
         # self.bind_function()
 
     def _init_ui(self):
-        # "v0001" 应该是动态获取的
         version_label = MLabel("   Incoming Version Number:\n   v0001\n")
         self.version_checkbox_lay = QtWidgets.QVBoxLayout()
 
@@ -43,13 +42,17 @@ class VersionPage(MWizardPage):
         self.spinbox_lay.addWidget(self.version_spinbox)
         self.spinbox_lay.addStretch()
 
+        widget_lay = QtWidgets.QVBoxLayout()
+        widget_lay.addWidget(MLabel())
+        widget_lay.addLayout(self.spinbox_lay)
+
         self.button_group = MRadioButtonGroup(orientation=QtCore.Qt.Vertical)
         self.button_group.set_button_list(
             ["正常升级版本号 Normal Version Number", {"text": "使用连续版本号 Continue Version Number"},
              {"text": "workfile/dailies/element 三版本号保持一致"}, {"text": "升级到指定版本号 To Specified Version Number"}])
         self.button_lay = QtWidgets.QHBoxLayout()
         self.button_lay.addWidget(self.button_group)
-        self.button_lay.addLayout(self.spinbox_lay)
+        self.button_lay.addLayout(widget_lay)
 
         main_lay = QtWidgets.QVBoxLayout()
         main_lay.addStretch()
