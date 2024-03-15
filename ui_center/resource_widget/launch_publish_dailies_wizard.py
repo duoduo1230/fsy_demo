@@ -7,8 +7,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Qt import QtWidgets
-from dayu_widgets.label import MLabel
 from ui_center.resource_widget.wizards.wizard import MWizard
 
 from ui_center.resource_widget.page_upload_sequence_file import MGetSequenceFilePage
@@ -34,22 +32,9 @@ class NewDailiesResourceWizard(MWizard):
         self.add_page(self.comment_page)
         self.go_to(0)
 
-
-class CreateResource(QtWidgets.QWidget):
-    def __init__(self, parent=None):
-        super(CreateResource, self).__init__(parent)
-
-        self.resize(800, 1000)
-        self._init_ui()
-
-    def _init_ui(self):
-        title_label = MLabel("Create Workfile Resource").h1()
-        page_add = NewDailiesResourceWizard()
-        main_lay = QtWidgets.QVBoxLayout()
-        main_lay.addWidget(title_label)
-        main_lay.addWidget(page_add)
-
-        self.setLayout(main_lay)
+        # 第一页需要写 未传入文件 Next 禁用
+        # 第二页默认选中了button  不用写
+        # 第三页描述 需要写  没有描述信息 next 禁用
 
 
 if __name__ == "__main__":

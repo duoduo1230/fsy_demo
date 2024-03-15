@@ -80,7 +80,8 @@ class ThumbnailPage(MWizardPage):
             MessageBox = QtWidgets.QMessageBox()
             MessageBox.warning(self, "warning", "剪贴板中没有图片")
             MainWindow.show()
-            # 这个不会用
+            # dayu widget也有弹窗不会用
+            # 这页在  总页运行会报错  72行  app
             # self.slot_show_message, MMessage.warning, {"text": "剪贴板中没有图片"}
 
     def slot_show_message(self, func, config):

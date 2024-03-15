@@ -39,7 +39,7 @@ class GetResourcePage(MWizardPage):
 
         self.name_line_edit = MLineEdit().small()
         self.name_line_edit.setPlaceholderText(self.tr("点击下面按钮设置对应的名字"))
-        self.name_label = MLabel('')
+        self.name_label = MLabel('Name not filled in')
         self.name_label.setObjectName("error")
         self.name_lay = QtWidgets.QHBoxLayout()
         self.name_lay.addWidget(self.name_line_edit)
@@ -67,9 +67,10 @@ class GetResourcePage(MWizardPage):
         self.version_lay = QtWidgets.QVBoxLayout()
         self.version_label = QtWidgets.QLabel()
         self.continue_version_button = MCheckBox(self.tr("使用连续版本号"))
-        # self.current_version_button = MCheckBox(self.tr("work/dailies/element三个版本号一致"))
         self.version_lay.addWidget(self.version_label)
         self.version_lay.addWidget(self.continue_version_button)
+
+        # self.current_version_button = MCheckBox(self.tr("work/dailies/element三个版本号一致"))
         # self.version_lay.addWidget(self.current_version_button)
 
         self.form_layout = QtWidgets.QFormLayout()

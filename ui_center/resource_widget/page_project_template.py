@@ -24,15 +24,19 @@ class WorkFileVersionPage(MWizardPage):
     def _init_ui(self):
 
         mode_lay = QtWidgets.QHBoxLayout()
-        current_button = MPushButton("Current File").small()
+        self.current_button = MPushButton("Current File").small()
         startup_button = MPushButton("Startup File").small()
         empty_button = MPushButton("Empty File").small()
 
-        current_button.setMaximumWidth(140)
+        self.current_button.setMaximumWidth(140)
         startup_button.setMaximumWidth(140)
         empty_button.setMaximumWidth(140)
 
-        mode_lay.addWidget(current_button)
+        # 设置默认选中self.current_button按钮
+        self.current_button.setCheckable(True)
+        self.current_button.setChecked(True)
+
+        mode_lay.addWidget(self.current_button)
         mode_lay.addWidget(startup_button)
         mode_lay.addWidget(empty_button)
         mode_lay.addStretch()

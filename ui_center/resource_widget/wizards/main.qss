@@ -227,6 +227,9 @@ QPushButton#drag-drop-button{
     border:2px dashed #aaa ;
     border-radius:5px;
 }
+QPushButton:focus,QTextEdit:focus, QDateEdit:focus{
+    border: 1px solid #F09013;
+}
 /* =======================< QGroupBox >=========================*/
 QGroupBox {
     color: #E1E1E1;
