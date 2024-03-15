@@ -7,10 +7,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Qt import QtWidgets
-from dayu_widgets.label import MLabel
 from ui_center.resource_widget.wizards.wizard import MWizard
-
 from ui_center.resource_widget.page_creat_resource import GetResourcePage
 from ui_center.resource_widget.page_project_template import WorkFileVersionPage
 from ui_center.resource_widget.page_thumbnail import ThumbnailPage
@@ -37,22 +34,11 @@ class WorkFileResourceWizard(MWizard):
         self.add_page(self.comment_page)
         self.go_to(0)
 
-
-class CreateResource(QtWidgets.QWidget):
-    def __init__(self, parent=None):
-        super(CreateResource, self).__init__(parent)
-
-        self.resize(800, 1000)
-        self._init_ui()
-
-    def _init_ui(self):
-        title_label = MLabel("Create Workfile Resource").h1()
-        page_add = WorkFileResourceWizard()
-        main_lay = QtWidgets.QVBoxLayout()
-        main_lay.addWidget(title_label)
-        main_lay.addWidget(page_add)
-
-        self.setLayout(main_lay)
+        # self.next_button.setEnabled(False)
+        # 第一页需要写  self.resource_page.name_label.text() 没有内容 Next 启用
+        # 第二页默认选中了button  不用写
+        # 第三页缩略图不用写  缩略图页在这运行会报错
+        # 第四页描述 需要写  没有描述信息 next 禁用
 
 
 if __name__ == "__main__":

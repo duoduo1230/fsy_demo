@@ -8,7 +8,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from PySide2.QtCore import Qt
 from Qt import QtWidgets
 
 from dayu_widgets import dayu_theme

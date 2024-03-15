@@ -11,10 +11,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-# Import built-in modules
 import functools
-
-# Import third-party modules
 from Qt import QtWidgets
 
 # Import local modules

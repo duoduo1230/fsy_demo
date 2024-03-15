@@ -8,7 +8,6 @@ from __future__ import print_function
 
 from Qt import QtWidgets
 from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QSplitter
 from ui_center.resource_widget import _mock_data as mock
 from dayu_widgets import dayu_theme
 from dayu_widgets.item_model import MSortFilterModel
@@ -19,10 +18,10 @@ from dayu_widgets.text_edit import MTextEdit
 from ui_center.resource_widget.wizards.wizard import MWizardPage
 
 
-class QualityCheckView(MWizardPage):
+class QualityCheckPage(MWizardPage):
 
     def __init__(self, parent=None):
-        super(QualityCheckView, self).__init__(parent)
+        super(QualityCheckPage, self).__init__(parent)
         self._init_ui()
         self.bind_function()
 
@@ -115,6 +114,6 @@ if __name__ == "__main__":
     from dayu_widgets.qt import application
 
     with application() as app:
-        test = QualityCheckView()
+        test = QualityCheckPage()
         dayu_theme.apply(test)
         test.show()
