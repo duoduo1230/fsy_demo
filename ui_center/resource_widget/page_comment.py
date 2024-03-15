@@ -9,8 +9,8 @@ from __future__ import print_function
 
 from Qt import QtWidgets
 from dayu_widgets.text_edit import MTextEdit
-from ui_center.resource_widget.wizards.wizard import MWizardPage
 from dayu_widgets.push_button import MPushButton
+from ui_center.resource_widget.wizards.wizard import MWizardPage
 from ui_center.resource_widget import _mock_data as mock
 
 

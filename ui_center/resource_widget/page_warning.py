@@ -12,9 +12,7 @@ from Qt import QtWidgets
 from PySide2.QtCore import Qt
 
 from dayu_widgets import dayu_theme
-from dayu_widgets.divider import MDivider
 from dayu_widgets.label import MLabel
-from dayu_widgets.text_edit import MTextEdit
 
 
 class WarningPage(QtWidgets.QWizardPage):

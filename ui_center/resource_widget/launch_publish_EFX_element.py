@@ -9,13 +9,13 @@ from __future__ import print_function
 
 from Qt import QtWidgets
 from dayu_widgets.label import MLabel
-from wizards.wizard import MWizard
+from ui_center.resource_widget.wizards.wizard import MWizard
 
-from page_creat_resource import GetResourcePage
-from page_quality_check import QualityCheckView
-from page_EFX_export_set import EfxExportSetPage
-from page_thumbnail import ThumbnailPage
-from page_comment import CommentPage
+from ui_center.resource_widget.page_creat_resource import GetResourcePage
+from ui_center.resource_widget.page_quality_check import QualityCheckView
+from ui_center.resource_widget.page_EFX_export_set import EfxExportSetPage
+from ui_center.resource_widget.page_thumbnail import ThumbnailPage
+from ui_center.resource_widget.page_comment import CommentPage
 
 
 class EFXResourceWizard(MWizard):

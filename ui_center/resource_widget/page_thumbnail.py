@@ -7,17 +7,20 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import functools
+
 from Qt import QtWidgets
 from PySide2.QtWidgets import QGraphicsScene
 from PySide2.QtGui import QBrush, QColor
 from PySide2.QtGui import QPixmap, QClipboard
+
 from dayu_widgets.push_button import MPushButton
+from dayu_widgets.message import MMessage
 from ui_center.resource_widget.wizards.wizard import MWizardPage
 
 
-# 这里是启动界面之前做的
+# 启动界面之前做的,打开截图工具
 # import subprocess
-# 这个exe应当在外面执行 不然界面关闭程序会崩溃
 # exe_path = r"D:\software\Snipaste\Snipaste.exe"
 # subprocess.run(exe_path, shell=True)
 
@@ -35,13 +38,12 @@ class ThumbnailPage(MWizardPage):
 
         self.view = QtWidgets.QGraphicsScene()
         self.graphics_view = QtWidgets.QGraphicsView(self.view)
-        # self.view.setScene(self.scene)
-        # self.view.setRenderHints(QPainter.Antialiasing | QPainter.TextAntialiasing)
 
-        self.browser_button = MPushButton("Screen Shot").small()
-        self.clipboard_button = MPushButton("Save").small()
+        self.browser_button = MPushButton("Screen Shot").small().primary()
+        self.clipboard_button = MPushButton("Save Image").small().primary()
 
         preview_lay = QtWidgets.QVBoxLayout()
+        preview_lay.addStretch()
         preview_lay.addWidget(self.browser_button)
         preview_lay.addStretch()
         preview_lay.addWidget(self.clipboard_button)
@@ -52,22 +54,21 @@ class ThumbnailPage(MWizardPage):
         setting_lay.addSpacing(30)
         setting_lay.addLayout(preview_lay)
 
-        main_lay = QtWidgets.QVBoxLayout()
-        main_lay.addLayout(setting_lay)
+        self.main = QtWidgets.QVBoxLayout()
+        self.main.addLayout(setting_lay)
 
-        self.setLayout(main_lay)
+        self.setLayout(self.main)
 
     def bind_function(self):
         self.browser_button.clicked.connect(self.creat_screen_shot)
-        self.clipboard_button.clicked.connect(self.input_screen_shot)
+        self.clipboard_button.clicked.connect(self.save_screen_shot)
 
     def creat_screen_shot(self):
         import keyboard
         keyboard.press("F1")
         keyboard.release("F1")
 
-    def input_screen_shot(self):
-        # 传入图像
+    def save_screen_shot(self):
         clipboard = app.clipboard()
         image_data = clipboard.image(QClipboard.Clipboard)
 
@@ -75,7 +76,15 @@ class ThumbnailPage(MWizardPage):
             pixmap = QPixmap.fromImage(image_data)
             self.view.addPixmap(pixmap)
         else:
-            print("剪贴板中没有图像数据")
+            MainWindow = QtWidgets.QMainWindow()
+            MessageBox = QtWidgets.QMessageBox()
+            MessageBox.warning(self, "warning", "剪贴板中没有图片")
+            MainWindow.show()
+            # 这个不会用
+            # self.slot_show_message, MMessage.warning, {"text": "剪贴板中没有图片"}
+
+    def slot_show_message(self, func, config):
+        func(parent=self, **config)
 
 
 if __name__ == "__main__":

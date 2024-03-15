@@ -3,7 +3,6 @@
 # Author: Fan Shiyuan
 # Date  : 2023.12.12
 
-# Import future modules
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -20,10 +19,10 @@ from dayu_widgets.line_edit import MLineEdit
 from dayu_widgets.push_button import MPushButton
 from dayu_widgets.menu import MMenu
 from dayu_widgets.combo_box import MComboBox
-import functools
+
 from functools import partial
 
-from filter_tabel_view import FilterTableView
+from ui_center.workspace_widget.filter_tabel_view import FilterTableView
 from ui_center.workspace_widget import _mock_data as mock
 
 filter_items = []
@@ -314,11 +313,11 @@ if __name__ == "__main__":
     from dayu_widgets.qt import application
 
     with application() as app:
-        # test = TaskWidget()
-        # test.set_task_data(mock)
-        # test.filter_widget.set_checkbox_check('pipeline step')
-        # test.task_table_view.set_header_data(mock.header_list)
-        # test.task_table_view.update_data(mock.data_list)
-        test = TaskTableView()
-        dayu_theme.apply(test)
+        test = TaskWidget()
+        test.set_task_data(mock)
+        test.filter_widget.set_checkbox_check('pipeline step')
+        test.task_table_view.set_header_data(mock.header_list)
+        test.task_table_view.update_data(mock.data_list)
+        # test = TaskTableView()
+        # dayu_theme.apply(test)
         test.show()

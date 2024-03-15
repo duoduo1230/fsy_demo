@@ -9,14 +9,14 @@ from __future__ import print_function
 
 from Qt import QtWidgets
 from dayu_widgets.label import MLabel
-from wizards.wizard import MWizard
+from ui_center.resource_widget.wizards.wizard import MWizard
 from dayu_widgets import dayu_theme
 
-from page_creat_resource import GetResourcePage
-from page_quality_check import QualityCheckView
-from Page_REN_export_set import GetSequenceFolderPage
-from page_thumbnail import ThumbnailPage
-from page_comment import CommentPage
+from ui_center.resource_widget.page_creat_resource import GetResourcePage
+from ui_center.resource_widget.page_quality_check import QualityCheckView
+from ui_center.resource_widget.Page_REN_export_set import GetSequenceFolderPage
+from ui_center.resource_widget.page_thumbnail import ThumbnailPage
+from ui_center.resource_widget.page_comment import CommentPage
 
 
 class RENResourceWizard(MWizard):

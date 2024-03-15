@@ -9,8 +9,8 @@ from __future__ import print_function
 
 from Qt import QtWidgets
 from dayu_widgets.label import MLabel
-from wizards.wizard import MWizard
-from page_comment import CommentPage
+from ui_center.resource_widget.wizards.wizard import MWizard
+from ui_center.resource_widget.page_comment import CommentPage
 
 
 class WorkFileResourceWizard(MWizard):

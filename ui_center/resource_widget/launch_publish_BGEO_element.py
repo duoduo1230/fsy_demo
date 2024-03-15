@@ -11,11 +11,11 @@ from Qt import QtWidgets
 from dayu_widgets.label import MLabel
 from wizards.wizard import MWizard
 
-from page_creat_resource import GetResourcePage
-from page_quality_check import QualityCheckView
-from page_BGEO_export_set import BgeoExportSetPage
-from page_thumbnail import ThumbnailPage
-from page_comment import CommentPage
+from ui_center.resource_widget.page_creat_resource import GetResourcePage
+from ui_center.resource_widget.page_quality_check import QualityCheckView
+from ui_center.resource_widget.page_BGEO_export_set import BgeoExportSetPage
+from ui_center.resource_widget.page_thumbnail import ThumbnailPage
+from ui_center.resource_widget.page_comment import CommentPage
 
 
 class WorkFileResourceWizard(MWizard):
@@ -25,7 +25,7 @@ class WorkFileResourceWizard(MWizard):
         self._init_ui()
 
     def _init_ui(self):
-        self.set_title('Publish BGEO Element')
+        self.set_title('Publish BGEO Cache')
 
         self.resource_page = GetResourcePage("Create Resource")
         self.quality_page = QualityCheckView("Quality Check")

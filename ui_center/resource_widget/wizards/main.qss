@@ -1,6 +1,7 @@
 QWidget{
     font-size: 9pt;
     font-family:Microsoft YaHei;
+    color: #E1E1E1;
 }
 QGraphicsView#MTimeLogPunchCard{
     border: 0 solid red;
@@ -794,5 +795,9 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 
 
 /* =======================< QButtonGroup >=========================*/
+QButtonGroup:horizontal{
+    color: #E1E1E1;
+    background-color: #8f8f8f;
+}
 
 

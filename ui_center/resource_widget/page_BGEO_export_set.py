@@ -12,16 +12,12 @@ from PySide2.QtCore import Qt
 from Qt import QtWidgets
 
 from dayu_widgets import dayu_theme
-from dayu_widgets.divider import MDivider
 from dayu_widgets.label import MLabel
 from dayu_widgets.push_button import MPushButton
-from dayu_widgets.combo_box import MComboBox
-from dayu_widgets.menu import MMenu
-from dayu_widgets.line_edit import MLineEdit
 from dayu_widgets.item_model import MSortFilterModel
 from dayu_widgets.item_model import MTableModel
 from dayu_widgets.item_view import MListView
-from wizards.wizard import MWizardPage
+from ui_center.resource_widget.wizards.wizard import MWizardPage
 from ui_center.resource_widget import _mock_data as mock
 
 

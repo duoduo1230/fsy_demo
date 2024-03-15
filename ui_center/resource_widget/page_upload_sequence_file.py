@@ -11,13 +11,14 @@ from __future__ import print_function
 from PySide2.QtCore import Qt
 from Qt import QtWidgets
 from PySide2.QtWidgets import QFrame
+from dayu_widgets.qt import MIcon
 from dayu_widgets.label import MLabel
 from dayu_widgets.push_button import MPushButton
 from dayu_widgets.browser import MDragFileButton
 from dayu_widgets.check_box import MCheckBox
 from dayu_widgets.line_edit import MLineEdit
-from wizards.wizard import MWizardPage
-from dayu_widgets.qt import MIcon
+from ui_center.resource_widget.wizards.wizard import MWizardPage
+
 import os
 
 file_type_list = ['.jpg', '.png', 'tif', 'exr', 'dpx', 'tiff', 'jpeg']
