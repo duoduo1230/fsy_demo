@@ -4,11 +4,11 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+
 from PySide2 import QtWidgets
-from PySide2 import QtCore, QtGui
+from PySide2 import QtCore
 from dayu_widgets.tool_button import MToolButton
 from dayu_widgets.push_button import MPushButton
-from dayu_widgets.divider import MDivider
 from dayu_widgets.field_mixin import MFieldMixin
 from dayu_widgets.item_model import MSortFilterModel
 from dayu_widgets.item_model import MTableModel

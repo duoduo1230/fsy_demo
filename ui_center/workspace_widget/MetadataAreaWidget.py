@@ -1,21 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Import future modules
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
 from Qt import QtWidgets
 from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QSplitter
-from ui_center.workspace_widget import _mock_data as mock
+
 from dayu_widgets import dayu_theme
 from dayu_widgets.item_model import MSortFilterModel
 from dayu_widgets.item_model import MTableModel
 from dayu_widgets.item_view import MTableView
-# from filter_tabel_view import FilterTableView
 from dayu_widgets.line_edit import MLineEdit
+from ui_center.workspace_widget import _mock_data as mock
 
 
 class MetadataFileView(QtWidgets.QWidget):

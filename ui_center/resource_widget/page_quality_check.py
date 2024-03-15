@@ -16,9 +16,7 @@ from dayu_widgets.item_model import MTableModel
 from dayu_widgets.item_view import MTableView
 from dayu_widgets.push_button import MPushButton
 from dayu_widgets.text_edit import MTextEdit
-# from filter_tabel_view import FilterTableView
-from dayu_widgets.line_edit import MLineEdit
-from wizards.wizard import MWizardPage
+from ui_center.resource_widget.wizards.wizard import MWizardPage
 
 
 class QualityCheckView(MWizardPage):

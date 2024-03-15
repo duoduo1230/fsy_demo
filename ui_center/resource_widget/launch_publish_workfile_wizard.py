@@ -9,12 +9,12 @@ from __future__ import print_function
 
 from Qt import QtWidgets
 from dayu_widgets.label import MLabel
-from wizards.wizard import MWizard
+from ui_center.resource_widget.wizards.wizard import MWizard
 
-from page_version_number import VersionPage
-from page_quality_check import QualityCheckView
-from page_thumbnail import ThumbnailPage
-from page_comment import CommentPage
+from ui_center.resource_widget.page_version_number import VersionPage
+from ui_center.resource_widget.page_quality_check import QualityCheckView
+from ui_center.resource_widget.page_thumbnail import ThumbnailPage
+from ui_center.resource_widget.page_comment import CommentPage
 
 
 class NewWorkFileResourceWizard(MWizard):
