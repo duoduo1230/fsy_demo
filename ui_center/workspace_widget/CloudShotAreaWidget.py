@@ -5,9 +5,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Qt import QtWidgets
-from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QSplitter
+from Qt import QtWidgets, QtCore
 from dayu_widgets import dayu_theme
 from dayu_widgets.item_model import MSortFilterModel
 from dayu_widgets.item_model import MTableModel
@@ -45,8 +43,8 @@ class CloudShotWidget(QtWidgets.QWidget):
         name_widget2 = CloudShotView()
         name_widget3 = CloudShotView()
 
-        self.splitter = QSplitter(self)
-        self.splitter.setOrientation(Qt.Horizontal)
+        self.splitter = QtWidgets.QSplitter(self)
+        self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.addWidget(name_widget0)
         self.splitter.addWidget(name_widget1)
         self.splitter.addWidget(name_widget2)

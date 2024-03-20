@@ -7,9 +7,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Qt import QtWidgets
-from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QSplitter
+from Qt import QtWidgets, QtCore
 from dayu_widgets import dayu_theme
 from dayu_widgets.item_model import MSortFilterModel
 from dayu_widgets.item_model import MTableModel
@@ -49,15 +47,15 @@ class WorkResources(QtWidgets.QWidget):
             QGroupBox {color: #F7922D;}
         """
         resource_grp = QtWidgets.QGroupBox(self.tr('Resources'))
-        resource_grp.setAlignment(Qt.AlignCenter)
+        resource_grp.setAlignment(QtCore.Qt.AlignCenter)
         resource_grp.setStyleSheet(grp_style_sheet)
 
         version_grp = QtWidgets.QGroupBox(self.tr('Versions'))
-        version_grp.setAlignment(Qt.AlignCenter)
+        version_grp.setAlignment(QtCore.Qt.AlignCenter)
         version_grp.setStyleSheet(grp_style_sheet)
 
         snapshot_grp = QtWidgets.QGroupBox(self.tr('Snapshots'))
-        snapshot_grp.setAlignment(Qt.AlignCenter)
+        snapshot_grp.setAlignment(QtCore.Qt.AlignCenter)
         snapshot_grp.setStyleSheet(grp_style_sheet)
 
         resource_lay = QtWidgets.QVBoxLayout()
@@ -72,9 +70,9 @@ class WorkResources(QtWidgets.QWidget):
         snapshot_lay.addWidget(self.snapshots_view)
         snapshot_grp.setLayout(snapshot_lay)
 
-        splitter = QSplitter(self)
+        splitter = QtWidgets.QSplitter(self)
         splitter.setHandleWidth(15)
-        splitter.setOrientation(Qt.Horizontal)
+        splitter.setOrientation(QtCore.Qt.Horizontal)
         splitter.addWidget(resource_grp)
         splitter.addWidget(version_grp)
         splitter.addWidget(snapshot_grp)

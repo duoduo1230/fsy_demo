@@ -7,9 +7,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from PySide2.QtCore import Qt
-from PySide2 import QtCore
-from Qt import QtWidgets
+from Qt import QtWidgets, QtCore
 from dayu_widgets import dayu_theme
 from dayu_widgets.field_mixin import MFieldMixin
 from dayu_widgets.item_model import MSortFilterModel
@@ -146,6 +144,7 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
         setattr(self, self.project_filter_widget.objectName(), self.project_filter_widget)
         self.sequence_filter_widget.check.connect(partial(self.current, self.sequence_filter_widget.objectName()))
         setattr(self, self.sequence_filter_widget.objectName(), self.sequence_filter_widget)
+
         self.clear_filter_button.clicked.connect(self.clear_all_check_item)
         self.more_filter_button._action_group.triggered.connect(self.add_filter_widget)
 
@@ -247,9 +246,9 @@ class TaskWidget(QtWidgets.QMainWindow):
         self.filter_dock_widget = QtWidgets.QDockWidget(self)
         self.filter_dock_widget.setFeatures(
             QtWidgets.QDockWidget.DockWidgetMovable | QtWidgets.QDockWidget.DockWidgetFloatable | QtWidgets.QDockWidget.DockWidgetClosable)
-        self.filter_dock_widget.setAllowedAreas(Qt.RightDockWidgetArea | Qt.LeftDockWidgetArea)
+        self.filter_dock_widget.setAllowedAreas(QtCore.Qt.RightDockWidgetArea | QtCore.Qt.LeftDockWidgetArea)
         self.filter_dock_widget.setWidget(self.filter_widget)
-        self.addDockWidget(Qt.RightDockWidgetArea, self.filter_dock_widget)
+        self.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.filter_dock_widget)
         self.filter_dock_widget.setFloating(False)
 
         self.task_table_view.filter_button.clicked.connect(self.filter_dock_show)
