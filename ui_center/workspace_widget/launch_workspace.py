@@ -7,11 +7,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Qt import QtWidgets
+from Qt import QtWidgets, QtCore
 from dayu_widgets.tool_button import MToolButton
-from PySide2.QtWidgets import QSplitter
-from PySide2.QtCore import QSettings
 from dayu_widgets import dayu_theme
+
 from dayu_widgets.tab_widget import MTabWidget
 from ui_center.workspace_widget.task_widget import TaskWidget
 from ui_center.workspace_widget.CloudFileWidget import CloudFileWidget
@@ -28,7 +27,7 @@ from PySide2 import QtWidgets, QtCore
 class WorkspaceManager(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(WorkspaceManager, self).__init__(parent)
-        self.settings = QSettings("WorkSpace", "CheckBox")
+        self.settings = QtCore.QSettings("WorkSpace", "CheckBox")
         self.setWindowTitle(self.tr('Workspace'))
         self.resize(2200, 1200)
 
@@ -73,7 +72,7 @@ class WorkspaceManager(QtWidgets.QWidget):
         main_lay = QtWidgets.QVBoxLayout()
         main_lay.addLayout(title_lay)
 
-        main_splitter_v = QSplitter()
+        main_splitter_v = QtWidgets.QSplitter()
         main_splitter_v.setOrientation(QtCore.Qt.Vertical)
         main_splitter_v.addWidget(self.task_widget)
         main_splitter_v.addWidget(table_default)

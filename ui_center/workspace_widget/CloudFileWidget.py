@@ -5,9 +5,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Qt import QtWidgets
-from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QSplitter
+from Qt import QtWidgets, QtCore
 from ui_center.workspace_widget import _mock_data as mock
 from dayu_widgets import dayu_theme
 from dayu_widgets.item_model import MSortFilterModel
@@ -38,11 +36,11 @@ class CloudFileWidget(QtWidgets.QWidget):
             QGroupBox {color: #F7922D;}
         """
         resource_grp = QtWidgets.QGroupBox(self.tr('Resources'))
-        resource_grp.setAlignment(Qt.AlignCenter)
+        resource_grp.setAlignment(QtCore.Qt.AlignCenter)
         resource_grp.setStyleSheet(grp_style_sheet)
 
         version_grp = QtWidgets.QGroupBox(self.tr('Versions'))
-        version_grp.setAlignment(Qt.AlignCenter)
+        version_grp.setAlignment(QtCore.Qt.AlignCenter)
         version_grp.setStyleSheet(grp_style_sheet)
 
         resource_lay = QtWidgets.QVBoxLayout()
@@ -53,9 +51,9 @@ class CloudFileWidget(QtWidgets.QWidget):
         version_lay.addWidget(self.version_view)
         version_grp.setLayout(version_lay)
 
-        splitter = QSplitter(self)
+        splitter = QtWidgets.QSplitter(self)
         splitter.setHandleWidth(15)
-        splitter.setOrientation(Qt.Horizontal)
+        splitter.setOrientation(QtCore.Qt.Horizontal)
         splitter.addWidget(resource_grp)
         splitter.addWidget(version_grp)
         splitter.setStretchFactor(0, 50)

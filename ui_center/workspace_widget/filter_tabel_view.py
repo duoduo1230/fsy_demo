@@ -5,8 +5,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from PySide2 import QtWidgets
-from PySide2 import QtCore
+from Qt import QtWidgets, QtCore
 from dayu_widgets.tool_button import MToolButton
 from dayu_widgets.push_button import MPushButton
 from dayu_widgets.field_mixin import MFieldMixin
@@ -95,6 +94,7 @@ class FilterTableView(QtWidgets.QWidget, MFieldMixin):
 
         status = self.table_model.data(self.table_model.index(row_index, 0), QtCore.Qt.CheckStateRole)
         result["status"] = status
+        print(result)
         self.check.emit(result)
 
     def change_item_status(self, row, status):

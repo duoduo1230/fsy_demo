@@ -5,8 +5,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Qt import QtWidgets
-from PySide2.QtCore import Qt
+from Qt import QtWidgets, QtCore
 
 from dayu_widgets import dayu_theme
 from dayu_widgets.item_model import MSortFilterModel
@@ -39,7 +38,7 @@ class MetadataFileView(QtWidgets.QWidget):
         """
 
         metadata_grp = QtWidgets.QGroupBox(self.tr('Metadata'))
-        metadata_grp.setAlignment(Qt.AlignCenter)
+        metadata_grp.setAlignment(QtCore.Qt.AlignCenter)
         metadata_grp.setStyleSheet(grp_style_sheet)
 
         metadata_lay = QtWidgets.QVBoxLayout()
