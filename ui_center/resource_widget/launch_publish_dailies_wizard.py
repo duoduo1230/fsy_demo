@@ -10,7 +10,8 @@ from __future__ import print_function
 from ui_center.resource_widget.wizards.wizard import MWizard
 
 from ui_center.resource_widget.page_upload_sequence_file import MGetSequenceFilePage
-from ui_center.resource_widget.page_slate_template import WorkFileSlatePage
+from ui_center.resource_widget.page_slate_template import HouWorkFileSlatePage
+from ui_center.resource_widget.page_slate_template import NukeWorkFileSlatePage
 from ui_center.resource_widget.page_comment import CommentPage
 
 
@@ -21,20 +22,17 @@ class NewDailiesResourceWizard(MWizard):
         self._init_ui()
 
     def _init_ui(self):
-        self.set_title('Give Sequence File')
+        self.set_title('Publish Dailies Element')
 
         self.resource_page = MGetSequenceFilePage("Create Sequence File")
-        self.workfile_page = WorkFileSlatePage("Select Slate Config")
+        self.workfile_page = HouWorkFileSlatePage("Select Slate Config")
+        # self.workfile_page = NukeWorkFileSlatePage("Select Slate Config")
         self.comment_page = CommentPage("Write comment")
 
         self.add_page(self.resource_page)
         self.add_page(self.workfile_page)
         self.add_page(self.comment_page)
         self.go_to(0)
-
-        # 第一页需要写 未传入文件 Next 禁用
-        # 第二页默认选中了button  不用写
-        # 第三页描述 需要写  没有描述信息 next 禁用
 
 
 if __name__ == "__main__":

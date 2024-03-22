@@ -11,7 +11,7 @@ from Qt import QtWidgets
 from dayu_widgets.label import MLabel
 from ui_center.resource_widget.wizards.wizard import MWizard
 
-from ui_center.resource_widget.page_creat_resource import GetResourcePage
+from ui_center.resource_widget.page_create_resource import GetResourcePage
 from ui_center.resource_widget.page_quality_check import QualityCheckPage
 from ui_center.resource_widget.page_EFX_export_set import EfxExportSetPage
 from ui_center.resource_widget.page_thumbnail import ThumbnailPage
@@ -28,6 +28,7 @@ class EFXResourceWizard(MWizard):
         self.set_title('Publish EFX Element')
 
         self.resource_page = GetResourcePage("Create Resource")
+        self.resource_page.parent = self
         self.quality_page = QualityCheckPage("Quality Check")
         self.settings_page = EfxExportSetPage("Export Settings")
         self.thumbnail_page = ThumbnailPage("Upload Thumbnail")
@@ -39,12 +40,7 @@ class EFXResourceWizard(MWizard):
         self.add_page(self.thumbnail_page)
         self.add_page(self.comment_page)
         self.go_to(0)
-        
-        # 第一页需要写  self.resource_page.name_label.text() 没有内容 Next 启用
-        # 第二页 质检通过才启用Next
-        # 第三页先不管
-        # 第四页缩略图不用写
-        # 第五页描述 需要写  没有描述信息 next 禁用
+
 
 if __name__ == "__main__":
     from dayu_widgets.qt import application

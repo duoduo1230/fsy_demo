@@ -3,13 +3,11 @@
 # Author: Fan shiyuan
 # Date  : 2024.2
 
-# Import future modules
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from PySide2.QtCore import Qt
-from Qt import QtWidgets
+from Qt import QtWidgets, QtCore
 from PySide2.QtWidgets import QFrame
 from dayu_widgets.qt import MIcon
 from dayu_widgets.label import MLabel
@@ -22,7 +20,6 @@ from ui_center.resource_widget.wizards.wizard import MWizardPage
 import os
 
 file_type_list = ['.jpg', '.png', 'tif', 'exr', 'dpx', 'tiff', 'jpeg']
-# 这个界面还要加记录上次打开路径的功能
 
 
 class MGetSequenceFilePage(MWizardPage):
@@ -34,12 +31,19 @@ class MGetSequenceFilePage(MWizardPage):
 
         self._init_ui()
         self.bind_function()
+        self.register_field(
+            'file_path',
+            self._line_edit.text,
+            signal=self._line_edit.textChanged,
+            required=True
+        )
 
     def _init_ui(self):
 
         self.file_filter_label = MLabel(str(file_type_list))
 
         self.upload_file_button = MDragFileButton(text="Click or drag file here")
+        self.upload_file_button.set_dayu_filters(file_type_list)
         self._line_edit = MLineEdit().tiny()
         self.upload_file_button.set_dayu_svg("attachment_line.svg")
 
@@ -75,7 +79,7 @@ class MGetSequenceFilePage(MWizardPage):
         self.frame.setLayout(self.file_result_lay)
 
         self.form_layout = QtWidgets.QFormLayout()
-        self.form_layout.setLabelAlignment(Qt.AlignRight)
+        self.form_layout.setLabelAlignment(QtCore.Qt.AlignRight)
         self.form_layout.addRow(MLabel('File Filter:').h4(), self.file_filter_label)
         self.form_layout.addRow(MLabel('Give File:').h4(), self.upload_file_button)
         self.form_layout.addRow(MLabel('File Result:').h4(), self.frame)
@@ -89,9 +93,9 @@ class MGetSequenceFilePage(MWizardPage):
 
     def bind_function(self):
         self.upload_file_button.sig_file_changed.connect(self.show_widget)
+        self.delete_button.clicked.connect(self.hide_widget)
         self.upload_file_button.sig_file_changed.connect(self.change_line_edit)
         self._line_edit.textChanged.connect(self.input_file_type)
-        self.delete_button.clicked.connect(self.hide_widget)
         self.folder_button.clicked.connect(self.open_file_folder)
         self.sequence_checkbox.stateChanged.connect(self.change_file_pattern)
 
@@ -99,6 +103,8 @@ class MGetSequenceFilePage(MWizardPage):
         self.frame.setVisible(True)
 
     def hide_widget(self):
+        self._line_edit.clear()
+        self.sequence_checkbox.setChecked(0)
         self.frame.setVisible(False)
 
     def input_file_type(self):

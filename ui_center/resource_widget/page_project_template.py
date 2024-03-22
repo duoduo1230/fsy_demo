@@ -3,17 +3,58 @@
 # Author: Fan shiyuan
 # Date  : 2024.2
 
-# Import future modules
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from PySide2.QtCore import Qt
-from Qt import QtWidgets
+import functools
+
+from Qt import QtWidgets, QtCore
+
 from dayu_widgets.label import MLabel
 from dayu_widgets.push_button import MPushButton
-
+from dayu_widgets.button_group import MRadioButtonGroup
+from dayu_widgets.field_mixin import MFieldMixin
 from ui_center.resource_widget.wizards.wizard import MWizardPage
+
+
+class RadioButtonGroup(QtWidgets.QWidget, MFieldMixin):
+    def __init__(self, parent=None):
+        super(RadioButtonGroup, self).__init__(parent)
+        self._init_ui()
+
+    def _init_ui(self):
+        app_data = [
+            {"text": "Current File"},
+            {"text": "Startup File"},
+            {"text": "Empty File"},
+        ]
+
+        radio_group_button_h = MRadioButtonGroup(orientation=QtCore.Qt.Vertical)
+        radio_group_button_h.set_button_list(app_data)
+        radio_grp_h_lay = QtWidgets.QHBoxLayout()
+        radio_grp_h_lay.addWidget(radio_group_button_h)
+        radio_grp_h_lay.addStretch()
+
+        self.register_field("value2", 0)
+        self.register_field(
+            "value2_text", functools.partial(self.value_to_text, "value2", app_data)
+        )
+        self.bind(
+            "value2", radio_group_button_h, "dayu_checked", signal="sig_checked_changed"
+        )
+
+        main_lay = QtWidgets.QVBoxLayout()
+        main_lay.addLayout(radio_grp_h_lay)
+        main_lay.addStretch()
+        self.setLayout(main_lay)
+
+    def value_to_text(self, field, data_list):
+        return (
+            "Please Select One"
+            if self.field(field) < 0
+            else "You Selected [{}]".format(data_list[self.field(field)].get("text"))
+        )
 
 
 class WorkFileVersionPage(MWizardPage):
@@ -23,26 +64,7 @@ class WorkFileVersionPage(MWizardPage):
 
     def _init_ui(self):
 
-        mode_lay = QtWidgets.QHBoxLayout()
-        self.current_button = MPushButton("Current File").small()
-        startup_button = MPushButton("Startup File").small()
-        empty_button = MPushButton("Empty File").small()
-
-        self.current_button.setMaximumWidth(140)
-        startup_button.setMaximumWidth(140)
-        empty_button.setMaximumWidth(140)
-
-        # 设置默认选中self.current_button按钮
-        self.current_button.setCheckable(True)
-        self.current_button.setChecked(True)
-
-        mode_lay.addWidget(self.current_button)
-        mode_lay.addWidget(startup_button)
-        mode_lay.addWidget(empty_button)
-        mode_lay.addStretch()
-
-        mode_button_widget = QtWidgets.QWidget()
-        mode_button_widget.setLayout(mode_lay)
+        mode_button_widget = RadioButtonGroup()
 
         format_lay = QtWidgets.QHBoxLayout()
         format_button = MPushButton('.hip').small()
@@ -53,7 +75,7 @@ class WorkFileVersionPage(MWizardPage):
         format_button_widget.setLayout(format_lay)
 
         form_layout = QtWidgets.QFormLayout()
-        form_layout.setLabelAlignment(Qt.AlignRight)
+        form_layout.setLabelAlignment(QtCore.Qt.AlignRight)
         form_layout.addRow(MLabel('Create Mode:').h4(), mode_button_widget)
         form_layout.addRow(MLabel('File Format:').h4(), format_button_widget)
 
@@ -71,5 +93,5 @@ if __name__ == "__main__":
 
     with application() as app:
         test = WorkFileVersionPage()
-        dayu_theme.apply(test)
+        # dayu_theme.apply(test)
         test.show()

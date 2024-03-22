@@ -69,20 +69,19 @@ class ThumbnailPage(MWizardPage):
         keyboard.release("F1")
 
     def save_screen_shot(self):
-        clipboard = app.clipboard()
-        image_data = clipboard.image(QClipboard.Clipboard)
+        from dayu_widgets.qt import application
+        with application() as app:
+            clipboard = app.clipboard()
+            image_data = clipboard.image(QClipboard.Clipboard)
 
-        if image_data:
-            pixmap = QPixmap.fromImage(image_data)
-            self.view.addPixmap(pixmap)
-        else:
-            MainWindow = QtWidgets.QMainWindow()
-            MessageBox = QtWidgets.QMessageBox()
-            MessageBox.warning(self, "warning", "剪贴板中没有图片")
-            MainWindow.show()
-            # dayu widget也有弹窗不会用
-            # 这页在  总页运行会报错  72行  app
-            # self.slot_show_message, MMessage.warning, {"text": "剪贴板中没有图片"}
+            if image_data:
+                pixmap = QPixmap.fromImage(image_data)
+                self.view.addPixmap(pixmap)
+            else:
+                MainWindow = QtWidgets.QMainWindow()
+                MessageBox = QtWidgets.QMessageBox()
+                MessageBox.warning(self, "warning", "剪贴板中没有图片")
+                MainWindow.show()
 
     def slot_show_message(self, func, config):
         func(parent=self, **config)

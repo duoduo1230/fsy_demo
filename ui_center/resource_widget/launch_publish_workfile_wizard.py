@@ -34,11 +34,6 @@ class NewWorkFileResourceWizard(MWizard):
         self.add_page(self.comment_page)
         self.go_to(0)
         
-        # 第一页不用写 
-        # 第二页 质检通过才启用Next
-        # 第三页缩略图不用写
-        # 第四页描述 需要写  没有描述信息 next 禁用
-        
 
 if __name__ == "__main__":
     from dayu_widgets.qt import application

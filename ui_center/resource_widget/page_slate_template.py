@@ -3,27 +3,87 @@
 # Author: Fan shiyuan
 # Date  : 2024.2
 
-# Import future modules
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from PySide2.QtCore import Qt
-from Qt import QtWidgets
+import functools
 
-from dayu_widgets import dayu_theme
+from Qt import QtWidgets, QtCore
+
 from dayu_widgets.label import MLabel
 from dayu_widgets.push_button import MPushButton
+from dayu_widgets.button_group import MRadioButtonGroup
+from dayu_widgets.field_mixin import MFieldMixin
 from dayu_widgets.combo_box import MComboBox
 from dayu_widgets.menu import MMenu
 from dayu_widgets.line_edit import MLineEdit
 from ui_center.resource_widget.wizards.wizard import MWizardPage
 from ui_center.resource_widget import _mock_data as mock
+from dayu_widgets.button_group import MToolButtonGroup
 
 
-class WorkFileSlatePage(MWizardPage):
+class RadioButtonGroup(QtWidgets.QWidget, MFieldMixin):
     def __init__(self, parent=None):
-        super(WorkFileSlatePage, self).__init__(parent)
+        super(RadioButtonGroup, self).__init__(parent)
+        self._init_ui()
+
+    def _init_ui(self):
+        app_data = [
+            {"text": "Default Interior"},
+            {"text": "No Config"},
+        ]
+
+        radio_group_button_h = MRadioButtonGroup(orientation=QtCore.Qt.Vertical)
+        radio_group_button_h.set_button_list(app_data)
+        radio_grp_h_lay = QtWidgets.QHBoxLayout()
+        radio_grp_h_lay.addWidget(radio_group_button_h)
+        radio_grp_h_lay.addStretch()
+
+        self.register_field("value2", 0)
+        self.register_field(
+            "value2_text", functools.partial(self.value_to_text, "value2", app_data)
+        )
+        self.bind(
+            "value2", radio_group_button_h, "dayu_checked", signal="sig_checked_changed"
+        )
+
+        main_lay = QtWidgets.QVBoxLayout()
+        main_lay.addLayout(radio_grp_h_lay)
+        main_lay.addStretch()
+        self.setLayout(main_lay)
+
+    def value_to_text(self, field, data_list):
+        return (
+            "Please Select One"
+            if self.field(field) < 0
+            else "You Selected [{}]".format(data_list[self.field(field)].get("text"))
+        )
+
+
+class HouWorkFileSlatePage(MWizardPage):
+    def __init__(self, parent=None):
+        super(HouWorkFileSlatePage, self).__init__(parent)
+        self.setWindowTitle("Select Slate Config")
+        self._init_ui()
+
+    def _init_ui(self):
+        self.mode_button_widget = RadioButtonGroup()
+
+        self.form_layout = QtWidgets.QFormLayout()
+        self.form_layout.setLabelAlignment(QtCore.Qt.AlignRight)
+        self.form_layout.addRow(MLabel('Config List:').h4(), self.mode_button_widget)
+
+        main_lay = QtWidgets.QVBoxLayout()
+        main_lay.addLayout(self.form_layout)
+        main_lay.addStretch()
+
+        self.setLayout(main_lay)
+
+
+class NukeWorkFileSlatePage(MWizardPage):
+    def __init__(self, parent=None):
+        super(NukeWorkFileSlatePage, self).__init__(parent)
         self.setWindowTitle("Select Slate Config")
         self._init_ui()
         self.bind_function()
@@ -31,7 +91,7 @@ class WorkFileSlatePage(MWizardPage):
     def _init_ui(self):
 
         self.mode_lay = QtWidgets.QVBoxLayout()
-        self.interior_button = MPushButton("Comp Interior").small()
+        self.interior_button = MPushButton("default Interior").small()
         self.no_config_button = MPushButton("No Config").small()
         self.custom_button = MPushButton("Custom Config").small()
         self.interior_button.setMaximumWidth(140)
@@ -60,7 +120,7 @@ class WorkFileSlatePage(MWizardPage):
         self.timecode_widget.setLayout(self.timecode_lay)
 
         self.form_layout = QtWidgets.QFormLayout()
-        self.form_layout.setLabelAlignment(Qt.AlignRight)
+        self.form_layout.setLabelAlignment(QtCore.Qt.AlignRight)
         self.form_layout.addRow(MLabel('Config List:').h4(), self.mode_button_widget)
         self.config_label = MLabel('Config File:').h4()
         self.form_layout.addRow(self.config_label, self.config_combobox)
@@ -100,6 +160,6 @@ if __name__ == "__main__":
     from dayu_widgets.qt import application
 
     with application() as app:
-        test = WorkFileSlatePage()
+        test = NukeWorkFileSlatePage()
         dayu_theme.apply(test)
         test.show()

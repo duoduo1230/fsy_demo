@@ -83,7 +83,6 @@ class FilterTableView(QtWidgets.QWidget, MFieldMixin):
 
     def data_changed(self, *args, **kwargs):
         result = {}
-        # 当前行的第一列的index是 args[0]
         row_index = args[0].row()
         column_index = self.table_model.columnCount()
         for column in range(column_index):
@@ -94,7 +93,6 @@ class FilterTableView(QtWidgets.QWidget, MFieldMixin):
 
         status = self.table_model.data(self.table_model.index(row_index, 0), QtCore.Qt.CheckStateRole)
         result["status"] = status
-        print(result)
         self.check.emit(result)
 
     def change_item_status(self, row, status):

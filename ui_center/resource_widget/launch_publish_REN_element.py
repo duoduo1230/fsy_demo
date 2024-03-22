@@ -10,9 +10,9 @@ from __future__ import print_function
 from ui_center.resource_widget.wizards.wizard import MWizard
 from dayu_widgets import dayu_theme
 
-from ui_center.resource_widget.page_creat_resource import GetResourcePage
+from ui_center.resource_widget.page_create_resource import GetResourcePage
 from ui_center.resource_widget.page_quality_check import QualityCheckPage
-from ui_center.resource_widget.Page_REN_export_set import GetSequenceFolderPage
+from ui_center.resource_widget.page_REN_export_set import GetSequenceFolderPage
 from ui_center.resource_widget.page_thumbnail import ThumbnailPage
 from ui_center.resource_widget.page_comment import CommentPage
 
@@ -27,6 +27,7 @@ class RENResourceWizard(MWizard):
         self.set_title('Publish EFX Element')
 
         self.resource_page = GetResourcePage("Create Resource")
+        self.resource_page.parent = self
         self.quality_page = QualityCheckPage("Quality Check")
         self.settings_page = GetSequenceFolderPage("Export Settings")
         self.thumbnail_page = ThumbnailPage("Upload Thumbnail")
