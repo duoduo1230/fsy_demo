@@ -7,9 +7,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Qt import QtCore
-from Qt import QtWidgets
-from PySide2.QtCore import Qt
+from Qt import QtWidgets, QtCore
 
 from dayu_widgets import dayu_theme
 from dayu_widgets.line_edit import MLineEdit
@@ -23,10 +21,20 @@ from ui_center.resource_widget.wizards.wizard import MWizardPage
 
 
 class GetResourcePage(MWizardPage):
+
+    finished = QtCore.Signal()
+
     def __init__(self, parent=None):
         super(GetResourcePage, self).__init__(parent)
         self._init_ui()
         self.bind_function()
+        self.register_field(
+            'project_name',
+            self.current_select_item,
+            signal=self.finished,
+            required=True
+        )
+        self.parent = ""
 
     def _init_ui(self):
 
@@ -39,11 +47,11 @@ class GetResourcePage(MWizardPage):
 
         self.name_line_edit = MLineEdit().small()
         self.name_line_edit.setPlaceholderText(self.tr("点击下面按钮设置对应的名字"))
-        self.name_label = MLabel('Name not filled in')
-        self.name_label.setObjectName("error")
+        self.warn_label = MLabel('Name not filled in')
+        self.warn_label.setObjectName("error")
         self.name_lay = QtWidgets.QHBoxLayout()
         self.name_lay.addWidget(self.name_line_edit)
-        self.name_lay.addWidget(self.name_label)
+        self.name_lay.addWidget(self.warn_label)
         self.name_widget = QtWidgets.QWidget()
         self.name_widget.setLayout(self.name_lay)
 
@@ -70,11 +78,11 @@ class GetResourcePage(MWizardPage):
         self.version_lay.addWidget(self.version_label)
         self.version_lay.addWidget(self.continue_version_button)
 
-        # self.current_version_button = MCheckBox(self.tr("work/dailies/element三个版本号一致"))
-        # self.version_lay.addWidget(self.current_version_button)
+        self.current_version_button = MCheckBox(self.tr("work/dailies/element三个版本号一致"))
+        self.version_lay.addWidget(self.current_version_button)
 
         self.form_layout = QtWidgets.QFormLayout()
-        self.form_layout.setLabelAlignment(Qt.AlignRight)
+        self.form_layout.setLabelAlignment(QtCore.Qt.AlignRight)
 
         self.form_layout.addRow(MLabel('Available Resource List:').h4(), self.resource_view)
 
@@ -90,10 +98,17 @@ class GetResourcePage(MWizardPage):
         self.setLayout(main_lay)
 
     def bind_function(self):
-        self.resource_view.clicked.connect(self.change_window_style)
+        self.resource_view.clicked.connect(self.show_preset_lay)
+
         self.master_button.clicked.connect(self.get_button_text)
         self.task_button.clicked.connect(self.get_button_text)
         self.template_button.clicked.connect(self.get_button_text)
+
+        self.resource_view.clicked.connect(self.confirm_next)
+        self.master_button.clicked.connect(self.confirm_next)
+        self.task_button.clicked.connect(self.confirm_next)
+        self.template_button.clicked.connect(self.confirm_next)
+
         self.name_line_edit.textChanged.connect(self.name_line_edit_change)
 
     def get_button_text(self):
@@ -101,7 +116,7 @@ class GetResourcePage(MWizardPage):
         button_text = sender_button.text().lower()
         self.name_line_edit.setText(button_text)
 
-    def change_window_style(self, *args):
+    def show_preset_lay(self, *args):
         index = args[0]
         value = self.resource_model.data(index, QtCore.Qt.DisplayRole)
         if value == 'New Resource':
@@ -113,7 +128,7 @@ class GetResourcePage(MWizardPage):
 
             self.name_line_edit.setText('')
             self.name_line_edit.setFocus()
-            self.name_label.setText('Name Is Not Valid')
+            self.warn_label.setText('Name Is Not Valid')
             self.version_label.setText("v0000")
 
         else:
@@ -128,7 +143,7 @@ class GetResourcePage(MWizardPage):
                 self.preset_title_label.hide()
                 self.preset_widget.hide()
 
-    def name_line_edit_change(self, *args):
+    def get_name_data_list(self):
         value_list = []
         row_count = self.resource_view.model().rowCount()
         for row in range(row_count):
@@ -137,14 +152,40 @@ class GetResourcePage(MWizardPage):
                 value1 = value.split("_")[3]
                 value_list.append(value1)
 
+        return value_list
+
+    def name_line_edit_change(self, *args):
+        value_list = self.get_name_data_list()
         if args[0] != '':
             if args[0] in value_list:
-                self.name_label.setText('Name Exists')
+                self.warn_label.setText('Name Exists')
             else:
-                self.name_label.setText('')
-
+                self.warn_label.setText('')
         else:
-            self.name_label.setText('Name Is Not Valid')
+            self.warn_label.setText('Name Is Not Valid')
+
+    def current_select_item(self):
+        """ 得当前选中内容 """
+        index = self.resource_view.currentIndex()
+        item_name = self.resource_model.data(index, QtCore.Qt.DisplayRole)
+        return item_name
+
+    def confirm_next(self):
+        self.parent.next_button.setEnabled(False)
+        current_text = self.current_select_item()
+        if current_text != 'New Resource':
+            self.finished.emit()
+        else:
+            self.name_line_edit.textChanged.connect(self._line_edit_change())
+
+    def _line_edit_change(self):
+        # self.parent.next_button.setEnabled(False)
+        value_list = self.get_name_data_list()
+        if self.name_line_edit.text():
+            if self.name_line_edit.text() in value_list:
+                self.parent.next_button.setEnabled(False)
+            else:
+                self.finished.emit()
 
 
 if __name__ == "__main__":

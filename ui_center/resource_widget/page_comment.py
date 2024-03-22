@@ -7,7 +7,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Qt import QtWidgets
+from Qt import QtWidgets, QtCore
 from dayu_widgets.text_edit import MTextEdit
 from dayu_widgets.push_button import MPushButton
 from ui_center.resource_widget.wizards.wizard import MWizardPage
@@ -19,6 +19,12 @@ class CommentPage(MWizardPage):
         super(CommentPage, self).__init__(parent)
         self._init_ui()
         self.bind_function()
+        self.register_field(
+            'comment',
+            self.comment_text.toPlainText,
+            signal=self.comment_text.textChanged,
+            required=True
+        )
 
     def _init_ui(self):
 

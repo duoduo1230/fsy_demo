@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Import future modules
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Qt import QtWidgets
-from PySide2.QtCore import Qt
+from Qt import QtWidgets, QtCore
 from ui_center.resource_widget import _mock_data as mock
 from dayu_widgets import dayu_theme
 from dayu_widgets.item_model import MSortFilterModel
@@ -20,10 +18,21 @@ from ui_center.resource_widget.wizards.wizard import MWizardPage
 
 class QualityCheckPage(MWizardPage):
 
+    finished = QtCore.Signal()
+
     def __init__(self, parent=None):
         super(QualityCheckPage, self).__init__(parent)
         self._init_ui()
         self.bind_function()
+
+        # NOTE: dayu重写了激活下一步的方法，参考 D:\td\DaYu\ui_center\tools\batch_create_asset_wizard.py的152行
+        # Note: 注册的属性可以在每一页共享，就是说每一页可以调用，比如某一页的项目名注册成属性，其它页就可以使用这个属性来使用
+        self.register_field(
+            'qc_result',  # 注册一个qc_result的属性，
+            self.detail_text.toPlainText,  # qc_result属性的值，
+            signal=self.finished,  # 触发下一步的信号（finished发射信号的时候触发）
+            required=True
+        )
 
     def _init_ui(self):
         self.metadata_model = MTableModel()
@@ -51,7 +60,7 @@ class QualityCheckPage(MWizardPage):
             QGroupBox {color: #F7922D;}
         """
         qc_grp = QtWidgets.QGroupBox(self.tr('Quality Check List'))
-        qc_grp.setAlignment(Qt.AlignCenter)
+        qc_grp.setAlignment(QtCore.Qt.AlignCenter)
         qc_grp.setStyleSheet(grp_style_sheet)
 
         qc_lay = QtWidgets.QVBoxLayout()
@@ -64,7 +73,7 @@ class QualityCheckPage(MWizardPage):
         self.detail_text.setPlaceholderText(self.tr("质检项没有运行"))
         detail_lay.addWidget(self.detail_text)
         detail_grp = QtWidgets.QGroupBox(self.tr('Detail Information'))
-        detail_grp.setAlignment(Qt.AlignCenter)
+        detail_grp.setAlignment(QtCore.Qt.AlignCenter)
         detail_grp.setStyleSheet(grp_style_sheet)
         detail_grp.setLayout(detail_lay)
 
@@ -74,7 +83,8 @@ class QualityCheckPage(MWizardPage):
         self.setLayout(main_lay)
 
     def bind_function(self):
-        self.all_button.clicked.connect(self.chenge_tabel_color)
+        self.all_button.clicked.connect(self.chenge_table_color)
+        self.detail_text.textChanged.connect(self.confirm_next)
 
     def set_header_data(self, data):
         """
@@ -94,7 +104,7 @@ class QualityCheckPage(MWizardPage):
         """
         self.metadata_widget.set_data_list(data)
 
-    def chenge_tabel_color(self):
+    def chenge_table_color(self):
         for item in mock.qc_data_list:
             item["result"] = "PASSED"
         self.metadata_model.set_data_list(mock.qc_data_list)
@@ -108,7 +118,14 @@ class QualityCheckPage(MWizardPage):
         点击上面的item以后  两侧的按钮启用 MTextEdit 填写以下信息
         "Usage:\n校验所有引用外部文件的文件路径是否都在服务器上\nResult:\nFAILED\nInfo:\nRead1: D:/My_code/fsy_demo/ui_center/_icon/minus.png"
         """
-        # 先把界面的信号写完，组织完界面以后再去研究houdini 用到的质检项
+
+    def confirm_next(self):
+        # NOTE: 这里判断textedit的内容来作为是否发射成功的信号
+        if self.detail_text.toPlainText() == self.tr("质检全部通过"):
+            self.finished.emit()
+        else:
+            pass
+
 
 if __name__ == "__main__":
     from dayu_widgets.qt import application

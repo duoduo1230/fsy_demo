@@ -51,7 +51,6 @@ class RadioButtonGroup(QtWidgets.QWidget, MFieldMixin):
 
         main_lay = QtWidgets.QVBoxLayout()
         main_lay.addLayout(radio_grp_h_lay)
-        # main_lay.addWidget(button2)
         main_lay.addStretch()
         self.setLayout(main_lay)
 

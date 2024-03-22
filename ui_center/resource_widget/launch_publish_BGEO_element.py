@@ -9,7 +9,7 @@ from __future__ import print_function
 
 from wizards.wizard import MWizard
 
-from ui_center.resource_widget.page_creat_resource import GetResourcePage
+from ui_center.resource_widget.page_create_resource import GetResourcePage
 from ui_center.resource_widget.page_quality_check import QualityCheckPage
 from ui_center.resource_widget.page_BGEO_export_set import BgeoExportSetPage
 from ui_center.resource_widget.page_thumbnail import ThumbnailPage
@@ -26,6 +26,7 @@ class WorkFileResourceWizard(MWizard):
         self.set_title('Publish BGEO Cache')
 
         self.resource_page = GetResourcePage("Create Resource")
+        self.resource_page.parent = self
         self.quality_page = QualityCheckPage("Quality Check")
         self.settings_page = BgeoExportSetPage("Export Settings")
         self.thumbnail_page = ThumbnailPage("Upload Thumbnail")

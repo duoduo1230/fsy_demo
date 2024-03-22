@@ -4,12 +4,6 @@ from __future__ import print_function
 
 from dayu_widgets import dayu_theme
 
-# def score_color(time, y):
-#     expect = datetime.date.fromisoformat(time)
-#     if expect < today:
-#         return dayu_theme.error_color
-#
-#     return dayu_theme.info_color
 
 header_list = [
     {
