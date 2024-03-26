@@ -20,8 +20,8 @@ from dayu_widgets.combo_box import MComboBox
 
 from functools import partial
 
-from ui_center.workspace_widget.filter_tabel_view import FilterTableView
-from ui_center.workspace_widget import _mock_data as mock
+from ui_center3.workspace_widget.filter_tabel_view import FilterTableView
+from ui_center3.workspace_widget import _mock_data as mock
 
 filter_items = []
 for label in mock.header_list:
@@ -106,7 +106,7 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
 
     def __init__(self, parent=None):
         super(FilterWidget, self).__init__(parent)
-        self.setMinimumWidth(500)
+        self.setMinimumWidth(250)
         self._init_ui()
         self.bind_function()
 
@@ -181,7 +181,7 @@ class FilterWidget(QtWidgets.QWidget, MFieldMixin):
         :return:
         """
         self.view = FilterTableView()
-        self.view.set_filter_titel(target_name + " :")
+        self.view.set_filter_title(target_name + " :")
         self.view.setObjectName(target_name)
         self.view.set_header_hidden(True)
         filter_head_list, filter_data_list = mock.filter_data_create(target_name, mock.data_list)
@@ -317,6 +317,6 @@ if __name__ == "__main__":
         test.filter_widget.set_checkbox_check('pipeline step')
         test.task_table_view.set_header_data(mock.header_list)
         test.task_table_view.update_data(mock.data_list)
-        # test = TaskTableView()
+        # test = FilterWidget()
         # dayu_theme.apply(test)
         test.show()
