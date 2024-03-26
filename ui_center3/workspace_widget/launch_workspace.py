@@ -7,21 +7,20 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Qt import QtWidgets, QtCore
-from dayu_widgets.tool_button import MToolButton
-from dayu_widgets import dayu_theme
-
-from dayu_widgets.tab_widget import MTabWidget
-from ui_center.workspace_widget.task_widget import TaskWidget
-from ui_center.workspace_widget.CloudFileWidget import CloudFileWidget
-from ui_center.workspace_widget.CloudShotAreaWidget import CloudShotWidget
-from ui_center.workspace_widget.WorkAreaWidget import WorkResources
-from ui_center.workspace_widget.MetadataAreaWidget import MetadataFileView
-from ui_center.resource_widget.launch_create_resource import WorkFileResourceWizard
-from ui_center.workspace_widget import _mock_data as mock
 import importlib
 
-from PySide2 import QtWidgets, QtCore
+from Qt import QtWidgets, QtCore
+from dayu_widgets import dayu_theme
+from dayu_widgets.tool_button import MToolButton
+from dayu_widgets.tab_widget import MTabWidget
+
+from ui_center3.workspace_widget.task_widget import TaskWidget
+from ui_center3.workspace_widget.CloudFileWidget import CloudFileWidget
+from ui_center3.workspace_widget.CloudShotAreaWidget import CloudShotWidget
+from ui_center3.workspace_widget.WorkAreaWidget import WorkResources
+from ui_center3.workspace_widget.MetadataAreaWidget import MetadataFileView
+from ui_center3.resource_widget.launch_create_resource import WorkFileResourceWizard
+from ui_center3.workspace_widget import _mock_data as mock
 
 
 class WorkspaceManager(QtWidgets.QWidget):
@@ -29,7 +28,7 @@ class WorkspaceManager(QtWidgets.QWidget):
         super(WorkspaceManager, self).__init__(parent)
         self.settings = QtCore.QSettings("WorkSpace", "CheckBox")
         self.setWindowTitle(self.tr('Workspace'))
-        self.resize(2200, 1200)
+        self.resize(1600, 850)
 
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self._init_ui()
@@ -37,9 +36,8 @@ class WorkspaceManager(QtWidgets.QWidget):
         self.add_actions()
 
     def _init_ui(self):
-        # 标题
         title_label = QtWidgets.QLabel('Workspace Manager')
-        title_label.setStyleSheet("color: white; font-weight: bold; font-size: 42px;")
+        title_label.setStyleSheet("color: white; font-weight: bold; font-size: 32px;")
         self.refresh_button = MToolButton().svg("refresh_line.svg").icon_only()
         title_lay = QtWidgets.QHBoxLayout()
         title_lay.addStretch()
@@ -47,10 +45,9 @@ class WorkspaceManager(QtWidgets.QWidget):
         title_lay.addWidget(self.refresh_button)
         title_lay.addStretch()
 
-        # 上半部分
         self.task_widget = TaskWidget()
         self.task_widget.set_task_data(mock)
-        # 下半部分
+
         self.work_area_widget = WorkResources()
         could_dailies_file = CloudFileWidget()
         could_element_file = CloudFileWidget()
@@ -60,6 +57,7 @@ class WorkspaceManager(QtWidgets.QWidget):
         metadata_view = MetadataFileView()
         cloud_shot_view = CloudShotWidget()
         table_default = MTabWidget()
+        table_default.setMinimumHeight(350)
         table_default.addTab(self.work_area_widget, "Work Area")
         table_default.addTab(could_cache_file, "Cloud-Cache")
         table_default.addTab(could_dailies_file, "Cloud-Dailies File")

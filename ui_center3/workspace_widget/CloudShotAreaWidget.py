@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# Author: Fan Shiyuan
+# Date  : 2024.2.8
 
 from __future__ import absolute_import
 from __future__ import division
@@ -10,7 +12,7 @@ from dayu_widgets import dayu_theme
 from dayu_widgets.item_model import MSortFilterModel
 from dayu_widgets.item_model import MTableModel
 from dayu_widgets.item_view import MTableView
-from ui_center.workspace_widget import _mock_data as mock
+from ui_center3.workspace_widget import _mock_data as mock
 
 
 class CloudShotView(QtWidgets.QWidget):

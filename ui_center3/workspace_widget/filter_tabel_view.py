@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# Author: Fan Shiyuan
+# Date  : 2024.2.8
 
 from __future__ import absolute_import
 from __future__ import division
@@ -107,7 +109,7 @@ class FilterTableView(QtWidgets.QWidget, MFieldMixin):
             index, status, QtCore.Qt.CheckStateRole
         )
 
-    def set_filter_titel(self, name):
+    def set_filter_title(self, name):
         filter_label = QtWidgets.QLabel()
         filter_label.setText(name)
         self.search_lay.insertWidget(0, filter_label)
@@ -150,7 +152,7 @@ if __name__ == "__main__":
 
     with application() as app:
         test = FilterTableView()
-        test.set_filter_titel("project : ")
+        test.set_filter_title("project : ")
         test.set_header_data(filter_head_list)
         test.update_data(filter_data_list)
         dayu_theme.apply(test)

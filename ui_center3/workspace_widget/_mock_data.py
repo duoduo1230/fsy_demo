@@ -30,25 +30,25 @@ header_list = [
         "label": "Project",
         "key": "project",
         "searchable": True,
-        "width": 20,
+        "width": 5,
     },
     {
         "label": "Sequence Type",
         "key": "sequence type",
         "searchable": True,
-        "width": 20,
+        "width": 5,
     },
     {
         "label": "Shot/Asset",
         "key": "shot asset",
         "searchable": True,
-        "width": 40,
+        "width": 10,
     },
     {
         "label": "Pipeline Step",
         "key": "pipeline step",
         "searchable": True,
-        "width": 20,
+        "width": 10,
     },
     {
         "label": "State",
@@ -58,7 +58,7 @@ header_list = [
             "{}_{}.png".format("state", x.lower()),
             getattr(dayu_theme, x.lower() + "_color"),
         ),
-        "width": 20,
+        "width": 10,
     },
     {
         "label": "Assigned To",
@@ -70,13 +70,13 @@ header_list = [
         "label": "Start",
         "key": "start",
         "searchable": True,
-        "width": 40,
+        "width": 30,
     },
     {
         "label": "End",
         "key": "end",
         "searchable": True,
-        "width": 40,
+        "width": 30,
         "bg_color": score_color,
         "color": "#fff"
     },
@@ -102,19 +102,19 @@ header_list = [
         "label": "VFX Node",
         "key": "vfx node",
         "searchable": True,
-        "width": 30,
+        "width": 10,
     },
     {
         "label": "Retake Bid",
         "key": "retake bid",
         "searchable": True,
-        "width": 30,
+        "width": 10,
     },
     {
         "label": "Artist Note",
         "key": "artist note",
         "searchable": True,
-        "width": 30,
+        "width": 20,
     },
 
 ]
