@@ -9,14 +9,14 @@ from __future__ import print_function
 
 from Qt import QtWidgets
 from dayu_widgets.label import MLabel
-from ui_center.resource_widget.wizards.wizard import MWizard
-from ui_center.resource_widget.page_comment import CommentPage
+from ui_center3.resource_widget.wizards.wizard import MWizard
+from ui_center3.resource_widget.page_comment import CommentPage
 
 
 class WorkFileResourceWizard(MWizard):
     def __init__(self, parent=None):
         super(WorkFileResourceWizard, self).__init__(parent)
-        self.resize(800, 1000)
+        self.resize(600, 800)
         self._init_ui()
 
     def _init_ui(self):
