@@ -7,11 +7,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Qt import QtWidgets
-from PySide2.QtCore import Qt
-from Qt.QtWidgets import QDateEdit
-from PySide2.QtCore import QDate
-
+from Qt import QtWidgets, QtCore
 from dayu_widgets.label import MLabel
 from dayu_widgets.push_button import MPushButton
 from dayu_widgets.check_box import MCheckBox
@@ -24,14 +20,13 @@ class GetResourcePage(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(GetResourcePage, self).__init__(parent)
         self.setWindowTitle(self.tr('Add Time Log'))
-        self.setFixedSize(600, 600)
+        self.setFixedSize(400, 500)
         self._init_ui()
 
     def _init_ui(self):
 
         self.title_label = MLabel(str("Add Time Log")).h2()
-
-        self.date_widget = QDateEdit(QDate.currentDate())
+        self.date_widget = QtWidgets.QDateEdit(QtCore.QDate.currentDate())
         self.date_widget.setCalendarPopup(True)
 
         today_hours = "Today already {num1} hours, {num2} hours left".format(num1=0.0, num2=8.0)
@@ -55,7 +50,7 @@ class GetResourcePage(QtWidgets.QWidget):
         self.button_lay.addWidget(self.cancel_button)
 
         self.form_layout = QtWidgets.QFormLayout()
-        self.form_layout.setLabelAlignment(Qt.AlignRight)
+        self.form_layout.setLabelAlignment(QtCore.Qt.AlignRight)
         self.form_layout.addRow(MLabel('Task:').h2(), self.title_label)
         self.form_layout.addRow(MLabel('Date:').h4(), self.date_widget)
         self.form_layout.addRow(MLabel('Today Total:').h4(), self.file_filter_label)

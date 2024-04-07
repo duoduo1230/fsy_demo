@@ -1,20 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-###################################################################
-# Author: Mu yanru
+# Author: Fan Shiyuan
 # Date  : 2019.2
-# Email : muyanru345@163.com
-###################################################################
 
-# Import future modules
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import functools
 from Qt import QtWidgets
-
-# Import local modules
 from PySide2.QtGui import QPixmap
 from dayu_widgets.label import MLabel
 from dayu_widgets.push_button import MPushButton

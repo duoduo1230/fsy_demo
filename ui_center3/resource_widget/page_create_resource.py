@@ -16,8 +16,8 @@ from dayu_widgets.push_button import MPushButton
 from dayu_widgets.check_box import MCheckBox
 from dayu_widgets.item_model import MTableModel
 from dayu_widgets.item_view import MListView
-from ui_center.resource_widget import _mock_data as mock
-from ui_center.resource_widget.wizards.wizard import MWizardPage
+from ui_center3.resource_widget import _mock_data as mock
+from ui_center3.resource_widget.wizards.wizard import MWizardPage
 
 
 class GetResourcePage(MWizardPage):

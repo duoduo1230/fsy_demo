@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# Author: Fan Shiyuan
+# Date  : 2023.12.12
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
