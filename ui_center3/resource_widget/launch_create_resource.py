@@ -9,7 +9,7 @@ from __future__ import print_function
 
 from ui_center3.resource_widget.wizards.wizard import MWizard
 from ui_center3.resource_widget.page_create_resource import GetResourcePage
-from ui_center3.resource_widget.page_project_template import WorkFileVersionPage
+from ui_center3.resource_widget.page_project_template import WorkFileTemplatePage
 from ui_center3.resource_widget.page_thumbnail import ThumbnailPage
 from ui_center3.resource_widget.page_comment import CommentPage
 
@@ -25,7 +25,7 @@ class WorkFileResourceWizard(MWizard):
 
         self.resource_page = GetResourcePage("Create Resource")
         self.resource_page.parent = self
-        self.workfile_page = WorkFileVersionPage("Work File")
+        self.workfile_page = WorkFileTemplatePage("Work File")
         self.thumbnail_page = ThumbnailPage("Upload Thumbnail")
         self.comment_page = CommentPage("Write comment")
 

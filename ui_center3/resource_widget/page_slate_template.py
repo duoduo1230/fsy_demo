@@ -94,9 +94,12 @@ class NukeWorkFileSlatePage(MWizardPage):
         self.interior_button = MPushButton("default Interior").small()
         self.no_config_button = MPushButton("No Config").small()
         self.custom_button = MPushButton("Custom Config").small()
-        self.interior_button.setMaximumWidth(140)
-        self.no_config_button.setMaximumWidth(140)
-        self.custom_button.setMaximumWidth(140)
+        # 设置默认选中的样式
+        self.interior_button.setStyleSheet("border-color: #F09013; border-weight: 2px;")
+
+        self.interior_button.setMaximumWidth(100)
+        self.no_config_button.setMaximumWidth(100)
+        self.custom_button.setMaximumWidth(100)
         self.mode_lay.addWidget(self.interior_button)
         self.mode_lay.addWidget(self.no_config_button)
         self.mode_lay.addWidget(self.custom_button)
@@ -107,7 +110,7 @@ class NukeWorkFileSlatePage(MWizardPage):
         self.config_button.set_data(mock.config_list)
         self.config_combobox = MComboBox().small()
         self.config_combobox.set_placeholder(self.tr("Select Slate Config"))
-        self.config_combobox.setMaximumWidth(200)
+        self.config_combobox.setMaximumWidth(140)
         self.config_combobox._root_menu = self.config_button
         
         self.timecode_line_edt = MLineEdit().small()
@@ -140,7 +143,14 @@ class NukeWorkFileSlatePage(MWizardPage):
         self.config_button._action_group.triggered.connect(self.select_slate_config)
         self.interior_button.clicked.connect(self.hide_config_button)
         self.no_config_button.clicked.connect(self.hide_config_button)
-        
+
+        # 取消样式点击任意按钮都能取消样式
+        self.no_config_button.clicked.connect(self.clear_style)
+        self.custom_button.clicked.connect(self.clear_style)
+
+    def clear_style(self):
+        self.interior_button.setStyleSheet("")
+
     def show_config_item(self):
         self.config_label.show()
         self.config_combobox.show()
