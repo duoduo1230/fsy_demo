@@ -20,6 +20,7 @@ from ui_center3.workspace_widget.CloudShotAreaWidget import CloudShotWidget
 from ui_center3.workspace_widget.WorkAreaWidget import WorkResources
 from ui_center3.workspace_widget.MetadataAreaWidget import MetadataFileView
 from ui_center3.resource_widget.launch_create_resource import WorkFileResourceWizard
+from ui_center3.resource_widget.add_time_log import GetResourcePage
 from ui_center3.workspace_widget import _mock_data as mock
 
 
@@ -28,7 +29,7 @@ class WorkspaceManager(QtWidgets.QWidget):
         super(WorkspaceManager, self).__init__(parent)
         self.settings = QtCore.QSettings("WorkSpace", "CheckBox")
         self.setWindowTitle(self.tr('Workspace'))
-        self.resize(1600, 850)
+        self.resize(1300, 750)
 
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self._init_ui()
@@ -156,14 +157,22 @@ class WorkspaceManager(QtWidgets.QWidget):
         super().closeEvent(event)
 
     def add_actions(self):
-        action = QtWidgets.QAction('creat workfile ', self.task_widget)
-        action.triggered.connect(self.current)
-        self.task_widget.menu.addAction(action)
+        create_workfile = QtWidgets.QAction('create workfile ', self.task_widget)
+        create_workfile.triggered.connect(self.show_create_workfile)
+        add_timelogs = QtWidgets.QAction('add timelogs ', self.task_widget)
+        add_timelogs.triggered.connect(self.show_add_timelogs)
 
-    def current(self):
+        self.task_widget.menu.addAction(create_workfile)
+        self.task_widget.menu.addAction(add_timelogs)
+
+    def show_create_workfile(self):
         print(self.task_widget.task_table_view.current_item())
-        test = WorkFileResourceWizard()
-        test.show()
+        test1 = WorkFileResourceWizard()
+        test1.show()
+
+    def show_add_timelogs(self):
+        test2 = GetResourcePage()
+        test2.show()
 
 
 def main():

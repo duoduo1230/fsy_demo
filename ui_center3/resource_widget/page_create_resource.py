@@ -135,7 +135,7 @@ class GetResourcePage(MWizardPage):
             version = value.split("_")[4]
             number_part = version[1:]
             new_number = int(number_part) + 1
-            new_version = f'v{new_number:04d}'
+            new_version = 'v{:04d}'.format(new_number)
             self.version_label.setText(new_version)
             if self.form_layout.rowCount() == 4:
                 self.name_title_label.hide()

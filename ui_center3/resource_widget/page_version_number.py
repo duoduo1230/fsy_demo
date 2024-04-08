@@ -16,50 +16,49 @@ from dayu_widgets import dayu_theme
 from dayu_widgets.divider import MDivider
 from dayu_widgets.label import MLabel
 from dayu_widgets.spin_box import MSpinBox
-from dayu_widgets.button_group import MRadioButtonGroup
 from dayu_widgets.field_mixin import MFieldMixin
 
 from ui_center3.resource_widget.wizards.wizard import MWizardPage
 
 
-class RadioButtonGroup(QtWidgets.QWidget, MFieldMixin):
+class RadioButton(QtWidgets.QWidget, MFieldMixin):
     def __init__(self, parent=None):
-        super(RadioButtonGroup, self).__init__(parent)
+        super(RadioButton, self).__init__(parent)
         self._init_ui()
+        self.bind_function()
 
     def _init_ui(self):
-        app_data = [
-            {"text": "正常升级版本号 Normal Version Number"},
-            {"text": "使用连续版本号 Continue Version Number"},
-            {"text": "workfile/dailies/element 三版本号保持一致"},
-            {"text": "升级到指定版本号 To Specified Version Number"}
-        ]
+        self.normal_radio_button = QtWidgets.QRadioButton(u'正常升级版本号 Normal Version Number')
+        self.normal_radio_button.setChecked(True)
+        self.continue_version_radio_button = QtWidgets.QRadioButton(u'使用连续版本号 Continue Version number')
+        self.sync_version_radio_button = QtWidgets.QRadioButton(u'workfile/dailies/element三版本号保持一致')
+        self.spec_version_radio_button = QtWidgets.QRadioButton(u'升级到指定版本号 To Specified Version number')
+        self.version_spinbox = MSpinBox().small()
+        self.version_spinbox.setEnabled(False)
 
-        radio_group_button_h = MRadioButtonGroup(orientation=QtCore.Qt.Vertical)
-        radio_group_button_h.set_button_list(app_data)
-        radio_grp_h_lay = QtWidgets.QHBoxLayout()
-        radio_grp_h_lay.addWidget(radio_group_button_h)
-        radio_grp_h_lay.addStretch()
-
-        self.register_field("value2", 0)
-        self.register_field(
-            "value2_text", functools.partial(self.value_to_text, "value2", app_data)
-        )
-        self.bind(
-            "value2", radio_group_button_h, "dayu_checked", signal="sig_checked_changed"
-        )
+        self.spec_version_lay = QtWidgets.QHBoxLayout()
+        self.spec_version_lay.addWidget(self.spec_version_radio_button)
+        self.spec_version_lay.addWidget(self.version_spinbox)
+        self.spec_version_lay.addStretch()
 
         main_lay = QtWidgets.QVBoxLayout()
-        main_lay.addLayout(radio_grp_h_lay)
-        main_lay.addStretch()
+        main_lay.addWidget(self.normal_radio_button)
+        main_lay.addWidget(self.continue_version_radio_button)
+        main_lay.addWidget(self.sync_version_radio_button)
+        main_lay.addLayout(self.spec_version_lay)
         self.setLayout(main_lay)
 
-    def value_to_text(self, field, data_list):
-        return (
-            "Please Select One"
-            if self.field(field) < 0
-            else "You Selected [{}]".format(data_list[self.field(field)].get("text"))
-        )
+    def bind_function(self):
+        self.spec_version_radio_button.clicked.connect(self.enable_version_spinbox)
+        self.normal_radio_button.clicked.connect(self.disable_version_spinbox)
+        self.continue_version_radio_button.clicked.connect(self.disable_version_spinbox)
+        self.sync_version_radio_button.clicked.connect(self.disable_version_spinbox)
+
+    def enable_version_spinbox(self):
+        self.version_spinbox.setEnabled(True)
+
+    def disable_version_spinbox(self):
+        self.version_spinbox.setEnabled(False)
 
 
 class VersionPage(MWizardPage):
@@ -67,28 +66,26 @@ class VersionPage(MWizardPage):
         super(VersionPage, self).__init__(parent)
         self.setWindowTitle("Warning")
         self._init_ui()
-        # self.bind_function()
 
     def _init_ui(self):
         _text = "   Incoming Version Number:\n   {}\n".format("1001")
         version_label = MLabel(_text)
 
         self.version_checkbox_lay = QtWidgets.QVBoxLayout()
-        self.spinbox_lay = QtWidgets.QHBoxLayout()
         self.version_spinbox = MSpinBox().small()
-        self.spinbox_lay.addWidget(self.version_spinbox)
-        # self.spinbox_lay.addStretch()
+        self.radio_button_group = RadioButton()
 
-        self.radio_button_group = RadioButtonGroup()
+        self.spinbox_lay = QtWidgets.QHBoxLayout()
+        self.spinbox_lay.addWidget(self.version_spinbox)
+        self.spinbox_lay.addStretch()
 
         widget_lay = QtWidgets.QVBoxLayout()
         # widget_lay.addWidget(MLabel())
         widget_lay.addLayout(self.spinbox_lay)
-        self.spinbox_lay.addStretch()
 
         self.button_lay = QtWidgets.QHBoxLayout()
         self.button_lay.addWidget(self.radio_button_group)
-        self.button_lay.addLayout(widget_lay)
+        # self.button_lay.addLayout(widget_lay)
 
         main_lay = QtWidgets.QVBoxLayout()
         main_lay.addStretch()

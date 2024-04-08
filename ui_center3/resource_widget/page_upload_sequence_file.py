@@ -43,15 +43,18 @@ class MGetSequenceFilePage(MWizardPage):
         self.file_filter_label = MLabel(str(file_type_list))
 
         self.upload_file_button = MDragFileButton(text="Click or drag file here")
+        self.upload_file_button.setMinimumHeight(200)
         self.upload_file_button.set_dayu_filters(file_type_list)
         self._line_edit = MLineEdit().tiny()
         self.upload_file_button.set_dayu_svg("attachment_line.svg")
 
         self.delete_button = MPushButton().tiny()
-        self.delete_button.setMaximumWidth(40)
+        self.delete_button.setMaximumWidth(100)
         self.delete_button.setIcon(MIcon("minus.png"))
+        self.delete_button.setObjectName("minus")
         self.folder_button = MPushButton().tiny()
         self.folder_button.setIcon(MIcon("folder_line.svg"))
+        self.folder_button.setObjectName("folder_line")
         self.file_type_label = MLabel("")
 
         self.file_lay = QtWidgets.QHBoxLayout()
@@ -121,7 +124,7 @@ class MGetSequenceFilePage(MWizardPage):
 
     def open_file_folder(self):
         folder, filename = os.path.split(self._line_edit.text())
-        command = f'start {folder}'
+        command = 'start {}'.format(folder)
         os.system(command)
 
     def check_sequence_button(self, status):

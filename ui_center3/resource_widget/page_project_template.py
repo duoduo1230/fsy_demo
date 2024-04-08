@@ -57,18 +57,31 @@ class RadioButtonGroup(QtWidgets.QWidget, MFieldMixin):
         )
 
 
-class WorkFileVersionPage(MWizardPage):
+class WorkFileTemplatePage(MWizardPage):
     def __init__(self, parent=None):
-        super(WorkFileVersionPage, self).__init__(parent)
+        super(WorkFileTemplatePage, self).__init__(parent)
         self._init_ui()
+        self.bind_function()
 
     def _init_ui(self):
+        self.current_button = MPushButton("Current File").small()
+        # 设置默认选中的样式
+        self.current_button.setStyleSheet("border-color: #F09013; border-weight: 2px;")
 
-        mode_button_widget = RadioButtonGroup()
+        self.startup_button = MPushButton("Startup File").small()
+        self.empty_button = MPushButton("Empty File").small()
+        self.current_button.setMaximumWidth(100)
+        self.startup_button.setMaximumWidth(100)
+        self.empty_button.setMaximumWidth(100)
+
+        self.mode_lay = QtWidgets.QVBoxLayout()
+        self.mode_lay.addWidget(self.current_button)
+        self.mode_lay.addWidget(self.startup_button)
+        self.mode_lay.addWidget(self.empty_button)
 
         format_lay = QtWidgets.QHBoxLayout()
         format_button = MPushButton('.hip').small()
-        format_button.setMaximumWidth(140)
+        format_button.setMaximumWidth(40)
         format_lay.addWidget(format_button)
         format_lay.addStretch()
         format_button_widget = QtWidgets.QWidget()
@@ -76,7 +89,9 @@ class WorkFileVersionPage(MWizardPage):
 
         form_layout = QtWidgets.QFormLayout()
         form_layout.setLabelAlignment(QtCore.Qt.AlignRight)
-        form_layout.addRow(MLabel('Create Mode:').h4(), mode_button_widget)
+        # mode_button_widget = RadioButtonGroup()
+        # form_layout.addRow(MLabel('Create Mode:').h4(), mode_button_widget)
+        form_layout.addRow(MLabel('Create Mode:').h4(), self.mode_lay)
         form_layout.addRow(MLabel('File Format:').h4(), format_button_widget)
 
         main_lay = QtWidgets.QVBoxLayout()
@@ -85,6 +100,14 @@ class WorkFileVersionPage(MWizardPage):
 
         self.setLayout(main_lay)
 
+    def bind_function(self):
+        # 取消样式点击任意按钮都能取消样式
+        self.startup_button.clicked.connect(self.clear_style)
+        self.empty_button.clicked.connect(self.clear_style)
+
+    def clear_style(self):
+        self.current_button.setStyleSheet("")
+
 
 if __name__ == "__main__":
     # Import local modules
@@ -92,6 +115,6 @@ if __name__ == "__main__":
     from dayu_widgets.qt import application
 
     with application() as app:
-        test = WorkFileVersionPage()
+        test = WorkFileTemplatePage()
         # dayu_theme.apply(test)
         test.show()
