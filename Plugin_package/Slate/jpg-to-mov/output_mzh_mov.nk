@@ -1,0 +1,251 @@
+#! C:/Program Files/Nuke11.2v2/nuke-11.2.2.dll -nx
+#write_info Output file:"D:\fanshiyuan\shuiyin\test01\ep04_1190_ani_prz-audit_v0000.mov" format:"1920 1080 1" chans:":rgba.red:rgba.green:rgba.blue:" framerange:"1 122" fps:"0" colorspace:"default (Gamma2.2)" datatype:"unknown" transfer:"unknown" views:"main" colorManagement:"Nuke"
+version 11.2 v2
+define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="0" y="0" w="3818" h="2044" screen="0">
+        <splitter orientation="1">
+            <split size="52"/>
+            <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                <page id="Toolbar.1"/>
+            </dock>
+            <split size="2887" stretch="1"/>
+            <splitter orientation="2">
+                <split size="1166"/>
+                <dock id="" activePageId="Viewer.1">
+                    <page id="Viewer.1"/>
+                </dock>
+                <split size="821"/>
+                <dock id="" activePageId="DAG.1" focus="true">
+                    <page id="DAG.1"/>
+                    <page id="Curve Editor.1"/>
+                    <page id="DopeSheet.1"/>
+                </dock>
+            </splitter>
+            <split size="871"/>
+            <dock id="" activePageId="Properties.1">
+                <page id="Properties.1"/>
+                <page id="uk.co.thefoundry.backgroundrenderview.1"/>
+            </dock>
+        </splitter>
+    </window>
+</layout>
+}
+Root {
+ inputs 0
+ name D:/slate_jpg/output_mzh_mov.nk
+ last_frame 122
+ lock_range true
+ format "2048 1556 0 0 2048 1556 1 2K_Super_35(full-ap)"
+ proxy_type scale
+ proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
+ colorManagement Nuke
+ workingSpaceLUT linear
+ monitorLut sRGB
+ int8Lut sRGB
+ int16Lut sRGB
+ logLut Cineon
+ floatLut linear
+}
+BackdropNode {
+ inputs 0
+ name header
+ xpos -631
+ ypos 190
+ bdwidth 120
+ bdheight 202
+ addUserKnob {20 DaYu}
+ addUserKnob {22 dayu_backdrop_auto_resize l "Auto Resize to Selection" +STARTLINE}
+}
+Read {
+ inputs 0
+ file_type tiff
+ file Y:/_ZAM_/lib/pvfx_root/apps/nuke/gizmos/TG_Logo.tif
+ format "200 200 0 0 200 200 1 "
+ origset true
+ name Read8
+ xpos -919
+ ypos 116
+}
+Transform {
+ translate {-60 -20}
+ center {1024 778}
+ name Transform_To_LB
+ xpos -919
+ ypos 285
+}
+Transform {
+ translate {30 965}
+ scale 0.56
+ name Transform
+ xpos -919
+ ypos 342
+}
+Reformat {
+ type "to box"
+ box_width 1920
+ box_height 1080
+ box_fixed true
+ resize none
+ center false
+ name Reformat_To_Source
+ xpos -919
+ ypos 395
+}
+FrameHold {
+ name FrameHold1
+ xpos -919
+ ypos 434
+}
+Read {
+ inputs 0
+ file_type jpeg
+ file D:/fanshiyuan/shuiyin/test/ep04_1190_ani_prz-audit_v0000/jpg/ep04_1190_ani_prz-audit_v0000.%04d.jpg
+ format "2048 1152 0 0 2048 1152 1 22"
+ first 1001
+ last 1025
+ origset true
+ on_error checkerboard
+ version 7
+ raw true
+ name Read_Input
+ xpos -611
+ ypos -256
+}
+Reformat {
+ format "1920 1080 0 0 1920 1080 1 HD_1080"
+ name Reformat1
+ xpos -611
+ ypos -76
+}
+Reformat {
+ format "1920 1080 0 0 1920 1080 1 HD_1080"
+ name Reformat2
+ xpos -611
+ ypos 26
+}
+Crop {
+ box {0 138.3240051 1920 941.6699829}
+ name Crop1
+ xpos -611
+ ypos 75
+}
+Text2 {
+ font_size_toolbar 100
+ font_width_toolbar 100
+ font_height_toolbar 100
+ message "\[lindex \[split \[lrange \[split \[basename \[metadata input/filename]] .] 0 0] _] 0]_\[lindex \[split \[lrange \[split \[basename \[metadata input/filename]] .] 0 0] _] 1]_\[string replace \[lindex \[split \[lrange \[split \[basename \[metadata input/filename]] .] 0 0] _] 4] 0 2 v]_23\[date %m%d]"
+ old_message {{101 112 48 52 95 49 49 57 48 95 118 48 48 95 50 51 49 50 49 50}
+   }
+ old_expression_markers {{0 3 5 8 10 12 16 19}
+   }
+ box {762.8812485 862 1674 962}
+ transforms {{0 2}
+   }
+ cursor_position 279
+ font {{ Tahoma : Regular : tahoma.ttf : 0 }}
+ global_font_scale 0.6
+ scale {1 1}
+ cursor_initialised true
+ autofit_bbox false
+ initial_cursor_position {{922.5 1004}
+   }
+ group_animations {{0} imported: 0 selected: items: "root transform/"}
+ animation_layers {{1 11 1024 778 -786 152 0.55 0.55 0 0 0 0}
+   }
+ name version
+ xpos -611
+ ypos 210
+}
+Text2 {
+ font_size_toolbar 100
+ font_width_toolbar 100
+ font_height_toolbar 100
+ message "\[expr \[frame]-1000] / \[expr \[python \{nuke.thisNode().lastFrame()\}]-1000]"
+ old_message {{45 57 57 57 32 47 32 50 53}
+   }
+ old_expression_markers {{0 3 7 8}
+   }
+ box {1594.649994 978.5 1960.350006 1035.5}
+ xjustify center
+ transforms {{0 2}
+   }
+ cursor_position 72
+ font {{ Tahoma : Regular : tahoma.ttf : 0 }}
+ global_font_scale 0.4
+ center {1024 778}
+ cursor_initialised true
+ autofit_bbox false
+ initial_cursor_position {{1766.5 1002}
+   }
+ group_animations {{0} imported: 0 selected: items: "root transform/"}
+ animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+   }
+ name frame
+ xpos -611
+ ypos 252
+}
+Text2 {
+ font_size_toolbar 100
+ font_width_toolbar 100
+ font_height_toolbar 100
+ message " \[python -execlocal \{\ndef x():\n    if 'input/timecode' in nuke.thisNode().metadata():\n        return nuke.thisNode().metadata().get('input/timecode')\n    else:\n        return '00:00:00:00'\nret=x()\}] / \[expr \[frame]-1000]"
+ old_message {{32 48 48 58 48 48 58 48 48 58 48 48 32 47 32 45 57 57 57}
+   }
+ old_expression_markers {{1 11 15 18}
+   }
+ box {1522 56 1896 87.5}
+ xjustify justify
+ transforms {{0 2}
+   }
+ cursor_position 201
+ font {{ Tahoma : Regular : tahoma.ttf : 0 }}
+ global_font_scale 0.4
+ center {1024 778}
+ cursor_initialised true
+ autofit_bbox false
+ initial_cursor_position {{1766.5 1002}
+   }
+ group_animations {{0} imported: 0 selected: items: "root transform/"}
+ animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+   }
+ name timecode
+ xpos -611
+ ypos 297
+}
+Merge2 {
+ inputs 2
+ name Merge1
+ xpos -611
+ ypos 440
+}
+set N702f880 [stack 0]
+Viewer {
+ frame 1
+ frame_range 122-122
+ name Viewer1
+ xpos -611
+ ypos 830
+}
+push $N702f880
+Write {
+ file "D:\\fanshiyuan\\shuiyin\\test01\\ep04_1190_ani_prz-audit_v0000.mov"
+ raw true
+ file_type mov
+ meta_encoder mov32
+ mov32_pixel_format {{0} "default (YCbCrA 8-bit 444 Biased (r408))" "RGBA  8-bit" "YCbCrA 8-bit 444 Biased (r408)" "YCbCr  8-bit 422 (2vuy)"}
+ mov64_codec ap4x
+ mov64_fps 25
+ mov64_bitrate 20000
+ mov64_bitrate_tolerance 40000000
+ mov64_quality_min 2
+ mov64_quality_max 31
+ mov64_gop_size 12
+ mov64_b_frames 0
+ create_directories true
+ checkHashOnRead false
+ version 19
+ name Output
+ xpos -611
+ ypos 623
+}
