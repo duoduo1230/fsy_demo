@@ -1,0 +1,171 @@
+#! C:/Program Files/Nuke11.2v2/nuke-11.2.2.dll -nx
+version 11.2 v2
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {1 dayu_orm_version l dayu_version}
+ addUserKnob {22 set_info l "Auto Set Info" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name header
+  xpos 1283
+  ypos -388
+  bdwidth 120
+  bdheight 202
+  addUserKnob {20 DaYu}
+  addUserKnob {22 dayu_backdrop_auto_resize l "Auto Resize to Selection" +STARTLINE}
+ }
+ Read {
+  inputs 0
+  file_type tiff
+  file Y:/_ZAM_/lib/pvfx_root/apps/nuke/gizmos/TG_Logo.tif
+  format "200 200 0 0 200 200 1 "
+  origset true
+  name Read2
+  xpos 986
+  ypos -462
+ }
+ Transform {
+  translate {-60 -20}
+  center {1024 778}
+  name Transform_To_LB
+  xpos 986
+  ypos -293
+ }
+ Transform {
+  translate {30 965}
+  scale 0.56
+  name Transform
+  xpos 986
+  ypos -236
+ }
+ Reformat {
+  type "to box"
+  box_width 1920
+  box_height 1080
+  box_fixed true
+  resize none
+  center false
+  name Reformat_To_Source
+  xpos 986
+  ypos -183
+ }
+ FrameHold {
+  first_frame 18
+  name FrameHold1
+  xpos 986
+  ypos -144
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos 1303
+  ypos -592
+ }
+ Reformat {
+  format "1920 1080 0 0 1920 1080 1 HD_1080"
+  name Reformat1
+  xpos 1303
+  ypos -552
+ }
+ Crop {
+  box {0 138.3240051 1920 941.6699829}
+  name Crop1
+  xpos 1303
+  ypos -503
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[lindex \[split \[lrange \[split \[basename \[metadata input/filename]] .] 0 0] _] 0]_\[lindex \[split \[lrange \[split \[basename \[metadata input/filename]] .] 0 0] _] 1]_\[string replace \[lindex \[split \[lrange \[split \[basename \[metadata input/filename]] .] 0 0] _] 4] 0 2 v]_24\[date %m%d]"
+  old_message {{101 112 49 48 95 48 48 49 48 95 118 48 51 95 50 51 48 57 48 52}
+    }
+  old_expression_markers {{0 3 5 8 10 12 16 19}
+    }
+  box {762.8812485 862 1674 962}
+  transforms {{0 2}
+    }
+  cursor_position 262
+  font {{ Tahoma : Regular : tahoma.ttf : 0 }}
+  global_font_scale 0.6
+  scale {1 1}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{922.5 1004}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 778 -786 152 0.55 0.55 0 0 0 0}
+    }
+  name version
+  xpos 1303
+  ypos -368
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[python \{nuke.frame() if nuke.frame()<1000 else nuke.frame()\}] / \[expr \[python \{nuke.thisNode().lastFrame()\}]]"
+  old_message {{57 54 32 47 32 49 49 52}
+    }
+  old_expression_markers {{0 1 5 7}
+    }
+  box {1594.649994 978.5 1960.350006 1035.5}
+  xjustify center
+  transforms {{0 2}
+    }
+  cursor_position 110
+  font {{ Tahoma : Regular : tahoma.ttf : 0 }}
+  global_font_scale 0.4
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{1766.5 1002}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name frame
+  xpos 1303
+  ypos -326
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message " \[python -execlocal \{\ndef x():\n    if 'input/timecode' in nuke.thisNode().metadata():\n        return nuke.thisNode().metadata().get('input/timecode')\n    else:\n        return '00:00:00:00'\nret=x()\}] / \[if \{\[file ext \[metadata input/filename]] != \".mov\"\} \{return \[frame]\} \{return \[expr \[frame]]\}] "
+  old_message {{32 48 48 58 48 48 58 48 51 58 50 48 32 47 32 57 54 32}
+    }
+  old_expression_markers {{1 11 15 16}
+    }
+  box {1522 56 1896 87.5}
+  xjustify justify
+  transforms {{0 2}
+    }
+  cursor_position 296
+  font {{ Tahoma : Regular : tahoma.ttf : 0 }}
+  global_font_scale 0.4
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{1766.5 1002}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name timecode
+  xpos 1303
+  ypos -281
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos 1303
+  ypos -138
+ }
+ Output {
+  name Output1
+  xpos 1303
+  ypos -38
+ }
+end_group

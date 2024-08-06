@@ -1,0 +1,99 @@
+#! C:/Program Files/Nuke11.2v2/nuke-11.2.2.dll -nx
+version 11.2 v2
+Gizmo {
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -580
+  ypos -198
+ }
+ Transform {
+  scale 1.07
+  center {1024 576}
+  name Transform1
+  xpos -580
+  ypos -158
+ }
+ Reformat {
+  format "2048 1152 0 0 2048 1152 1 "
+  name Reformat1
+  xpos -580
+  ypos -99
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message fsy
+  old_message {{102 115 121}
+    }
+  box {930.9499512 1037.900024 1117.449951 1150.900024}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 3
+  font {{ Bitstream Charter : Bold : BitstreamCharterBold.pfb : 0 }}
+  global_font_scale 0.57
+  center {1024 576}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{992 1145.5}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 576 0 0 1 1 0 0 0 0}
+    }
+  color {0 0 0 0}
+  name RS1
+  xpos -580
+  ypos 20
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[date %D]"
+  old_message {{48 55 47 49 57 47 50 52}
+    }
+  old_expression_markers {{0 7}
+    }
+  box {1512.25 0.5 1943.75 113.5}
+  xjustify right
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 9
+  font {{ Bitstream Charter : Bold : BitstreamCharterBold.pfb : 0 }}
+  global_font_scale 0.57
+  center {1024 576}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{1949.5 1123}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 576 0 0 1 1 0 0 0 0}
+    }
+  color {0 0 0 0}
+  name Date
+  xpos -580
+  ypos 90
+ }
+ Reformat {
+  format "2048 1152 0 0 2048 1152 1 "
+  name Reformat4
+  xpos -580
+  ypos 151
+ }
+ Crop {
+  box {0 0 2048 1152}
+  name Crop2
+  xpos -580
+  ypos 177
+ }
+ Output {
+  name Output1
+  xpos -580
+  ypos 277
+ }
+end_group

@@ -1,0 +1,74 @@
+#! C:/Program Files/Nuke11.2v2/nuke-11.2.2.dll -nx
+version 11.2 v2
+Gizmo {
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 398
+  ypos -13
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message test
+  old_message {{116 101 115 116}
+    }
+  box {956 1008 1112 1078.5}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 4
+  font {{ Bitstream Charter : Bold : BitstreamCharterBold.pfb : 0 }}
+  global_font_scale 0.42
+  center {1024 576}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{992 1145.5}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 576 0 0 1 1 0 0 0 0}
+    }
+  color {1 1 1 0}
+  name fsy
+  xpos 398
+  ypos 27
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[make_timecode 00:00:00:00 24 1]"
+  old_message {{48 48 58 48 48 58 48 48 58 48 48}
+    }
+  old_expression_markers {{0 10}
+    }
+  box {1190.1875 2.75 1873.8125 85.25}
+  xjustify right
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 32
+  font {{ Bitstream Charter : Bold : BitstreamCharterBold.pfb : 0 }}
+  global_font_scale 0.4
+  center {1024 576}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{992 1145.5}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 576 0 0 1 1 0 0 0 0}
+    }
+  color {1 1 1 0}
+  name time_code
+  xpos 398
+  ypos 88
+ }
+ Output {
+  name Output1
+  xpos 398
+  ypos 188
+ }
+end_group
