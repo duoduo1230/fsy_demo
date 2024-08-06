@@ -1,0 +1,301 @@
+#! C:/Program Files/Nuke11.2v2/nuke-11.2.2.dll -nx
+version 11.2 v2
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {1 dayu_orm_version l dayu_version}
+ addUserKnob {22 set_info l "Auto Set Info" +STARTLINE}
+}
+set cut_paste_input [stack 0]
+version 11.2 v2
+Input {
+ inputs 0
+ name Input1
+ selected true
+ xpos -266
+ ypos 210
+}
+Reformat {
+ format "2048 1152 0 0 2048 1152 1 "
+ name Reformat1
+ selected true
+ xpos -266
+ ypos 236
+}
+Crop {
+ box {0 37 2048 1115}
+ name Crop3
+ selected true
+ xpos -266
+ ypos 313
+}
+Dot {
+ name Dot3
+ selected true
+ xpos -232
+ ypos 393
+}
+set N4327880 [stack 0]
+Dot {
+ name Dot1
+ selected true
+ xpos -412
+ ypos 393
+}
+Transform {
+ translate {598 184}
+ scale 0.3
+ center {1024 576}
+ name Transform5
+ selected true
+ xpos -446
+ ypos 722
+}
+Read {
+ inputs 0
+ file_type tiff
+ file Y:/td/dayu_app_fitment/nuke/nodes/phenom_user/gizmos/rs_frame1.tif
+ format "2048 1152 0 0 2048 1152 1 "
+ origset true
+ raw true
+ name Read2
+ selected true
+ xpos -637
+ ypos 568
+}
+Merge2 {
+ inputs 2
+ name Merge2
+ selected true
+ xpos -637
+ ypos 722
+}
+Multiply {
+ value {{curve x1000 1 0}}
+ name Multiply1
+ selected true
+ xpos -637
+ ypos 795
+}
+push $cut_paste_input
+Roto {
+ output alpha
+ cliptype none
+ curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 2097664}
+    {t x44800000 x44100000}
+    {a pt1x 0 pt1y 0 pt2x 0 pt2y 0 pt3x 0 pt3y 0 pt4x 0 pt4y 0 ptex00 0 ptex01 0 ptex02 0 ptex03 0 ptex10 0 ptex11 0 ptex12 0 ptex13 0 ptex20 0 ptex21 0 ptex22 0 ptex23 0 ptex30 0 ptex31 0 ptex32 0 ptex33 0 ptof1x 0 ptof1y 0 ptof2x 0 ptof2y 0 ptof3x 0 ptof3y 0 ptof4x 0 ptof4y 0 pterr 0 ptrefset 0 ptmot x40800000 ptref 0}
+    {curvegroup Rectangle2 512 bezier
+     {{cc
+       {f 8192}
+       {px x44838000
+        {0 0}
+        {xc3829259 x4313f224}
+        {0 0}
+        {0 0}
+        {x45076e07 x4313f224}
+        {0 0}
+        {0 0}
+        {x45076e08 xc2d08221}
+        {0 0}
+        {0 0}
+        {xc3829259 xc2d08221}
+        {0 0}}}     idem}
+     {tx x44838000 x44898000 xc29b0000}
+     {a osw x41200000 osf 0 str 1 spx x44800000 spy x44100000 sb 1 ltn x44838000 ltm x44838000 tt x41000000}}
+    {curvegroup Rectangle1 512 bezier
+     {{cc
+       {f 8192}
+       {px x44838000
+        {0 0}
+        {xc23698e0 x449f3e92}
+        {0 0}
+        {0 0}
+        {x4505659c x449f3e92}
+        {0 0}
+        {0 0}
+        {x4505659c x447afd23}
+        {0 0}
+        {0 0}
+        {xc23698e0 x447afd23}
+        {0 0}}}     idem}
+     {tx x44838000 x44828000 x448da000}
+     {a osw x41200000 osf 0 str 1 spx x44800000 spy x44100000 sb 1 ltn x44838000 ltm x44838000 tt x41000000}}}}}}
+ toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 tt 8 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+ toolbar_brush_hardness 0.200000003
+ toolbar_source_transform_scale {1 1}
+ toolbar_source_transform_center {1024 576}
+ colorOverlay {0 0 0 0}
+ lifetime_type "all frames"
+ lifetime_start 1052
+ lifetime_end 1052
+ motionblur_shutter_offset_type centred
+ source_black_outside true
+ name Roto5
+ selected true
+ xpos -75
+ ypos 433
+}
+push $N4327880
+Grade {
+ inputs 1+1
+ white 0.8
+ name Grade2
+ selected true
+ xpos -266
+ ypos 439
+}
+Text2 {
+ font_size_toolbar 100
+ font_width_toolbar 100
+ font_height_toolbar 100
+ message RS2
+ old_message {{82 83 50}
+   }
+ box {992 1124.5 1029 1145.5}
+ transforms {{0 2}
+   }
+ cursor_position 3
+ font {{ Bitstream Charter : Bold : BitstreamCharterBold.pfb : 0 }}
+ global_font_scale 0.2
+ center {1024 576}
+ cursor_initialised true
+ autofit_bbox false
+ initial_cursor_position {{992 1145.5}
+   }
+ group_animations {{0} imported: 0 selected: items: "root transform/"}
+ animation_layers {{1 11 1024 576 0 0 1 1 0 0 0 0}
+   }
+ name RS
+ selected true
+ xpos -266
+ ypos 487
+}
+Text2 {
+ font_size_toolbar 100
+ font_width_toolbar 100
+ font_height_toolbar 100
+ message TNG
+ old_message {{84 78 71}
+   }
+ box {18.79999924 1122.900024 69.5 1143.900024}
+ transforms {{0 2}
+   }
+ cursor_position 3
+ font {{ Bitstream Charter : Bold : BitstreamCharterBold.pfb : 0 }}
+ global_font_scale 0.2
+ center {1024 576}
+ cursor_initialised true
+ autofit_bbox false
+ initial_cursor_position {{992 1145.5}
+   }
+ group_animations {{0} imported: 0 selected: items: "root transform/"}
+ animation_layers {{1 11 1024 576 0 0 1 1 0 0 0 0}
+   }
+ name TG
+ selected true
+ xpos -266
+ ypos 517
+}
+Text2 {
+ font_size_toolbar 100
+ font_width_toolbar 100
+ font_height_toolbar 100
+ message " \[value frame]/\[python \{nuke.thisNode().firstFrame()-1000\}]-\[python \{nuke.thisNode().lastFrame()-1000\}]"
+ old_message {{32 49 49 57 49 47 49 45 49 57 49}
+   }
+ old_expression_markers {{1 4 6 6 8 10}
+   }
+ box {1872.699951 0.69999981 2027.699951 21.69999981}
+ xjustify right
+ transforms {{0 2}
+   }
+ cursor_position 103
+ font {{ Bitstream Charter : Regular : BitstreamCharter.pfb : 0 }}
+ global_font_scale 0.2
+ center {1024 576}
+ cursor_initialised true
+ autofit_bbox false
+ initial_cursor_position {{286.5 687.5}
+   }
+ group_animations {{0} imported: 0 selected: items: "root transform/"}
+ animation_layers {{1 11 1024 576 0 0 1 1 0 0 0 0}
+   }
+ name Frame
+ selected true
+ xpos -266
+ ypos 551
+}
+Text2 {
+ font_size_toolbar 100
+ font_width_toolbar 100
+ font_height_toolbar 100
+ message "\[date %D] "
+ old_message {{48 55 47 49 57 47 50 52 32}
+   }
+ old_expression_markers {{0 7}
+   }
+ box {1945.5 1125.5 2038.5 1146.5}
+ transforms {{0 2}
+   }
+ font {{ Bitstream Charter : Regular : BitstreamCharter.pfb : 0 }}
+ global_font_scale 0.2
+ center {1024 576}
+ cursor_initialised true
+ initial_cursor_position {{1945.5 1146.5}
+   }
+ group_animations {{0} imported: 0 selected: items: "root transform/"}
+ animation_layers {{1 11 1024 576 0 0 1 1 0 0 0 0}
+   }
+ name Date
+ selected true
+ xpos -266
+ ypos 583
+}
+Multiply {
+ value {{curve x1000 0 1}}
+ name Multiply4
+ selected true
+ xpos -266
+ ypos 717
+}
+Merge2 {
+ inputs 2
+ name Merge5
+ selected true
+ xpos -266
+ ypos 801
+}
+Reformat {
+ format "2048 1152 0 0 2048 1152 1 "
+ name Reformat4
+ selected true
+ xpos -266
+ ypos 934
+}
+Output {
+ name Output1
+ selected true
+ xpos -266
+ ypos 1034
+}
+end_group
