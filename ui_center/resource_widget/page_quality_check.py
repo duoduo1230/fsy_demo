@@ -12,8 +12,8 @@ from dayu_widgets.item_model import MTableModel
 from dayu_widgets.item_view import MTableView
 from dayu_widgets.push_button import MPushButton
 from dayu_widgets.text_edit import MTextEdit
-from ui_center3.resource_widget import _mock_data as mock
-from ui_center3.resource_widget.wizards.wizard import MWizardPage
+from ui_center.resource_widget import _mock_data as mock
+from ui_center.resource_widget.wizards.wizard import MWizardPage
 
 
 class QualityCheckPage(MWizardPage):
@@ -109,6 +109,7 @@ class QualityCheckPage(MWizardPage):
             item["result"] = "PASSED"
         self.metadata_model.set_data_list(mock.qc_data_list)
         self.detail_text.setText(self.tr("质检全部通过"))
+        self.detail_text.setStyleSheet("color: #02C136;")
 
         """
         点击中间按钮会出现两种情况，质检全部通过 两侧的按钮也是禁用的  然后 MTextEdit 填写质检全部通过（绿色字体）

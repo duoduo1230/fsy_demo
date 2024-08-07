@@ -18,8 +18,8 @@ from dayu_widgets.field_mixin import MFieldMixin
 from dayu_widgets.combo_box import MComboBox
 from dayu_widgets.menu import MMenu
 from dayu_widgets.line_edit import MLineEdit
-from ui_center3.resource_widget.wizards.wizard import MWizardPage
-from ui_center3.resource_widget import _mock_data as mock
+from ui_center.resource_widget.wizards.wizard import MWizardPage
+from ui_center.resource_widget import _mock_data as mock
 from dayu_widgets.button_group import MToolButtonGroup
 
 

@@ -8,12 +8,12 @@ from __future__ import division
 from __future__ import print_function
 
 from dayu_widgets import dayu_theme
-from ui_center3.resource_widget.wizards.wizard import MWizard
-from ui_center3.resource_widget.page_create_resource import GetResourcePage
-from ui_center3.resource_widget.page_quality_check import QualityCheckPage
-from ui_center3.resource_widget.page_REN_export_set import GetSequenceFolderPage
-from ui_center3.resource_widget.page_thumbnail import ThumbnailPage
-from ui_center3.resource_widget.page_comment import CommentPage
+from ui_center.resource_widget.wizards.wizard import MWizard
+from ui_center.resource_widget.page_create_resource import GetResourcePage
+from ui_center.resource_widget.page_quality_check import QualityCheckPage
+from ui_center.resource_widget.page_REN_export_set import GetSequenceFolderPage
+from ui_center.resource_widget.page_thumbnail import ThumbnailPage
+from ui_center.resource_widget.page_comment import CommentPage
 
 
 class RENResourceWizard(MWizard):

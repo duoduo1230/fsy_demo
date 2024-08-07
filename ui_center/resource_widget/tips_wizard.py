@@ -119,7 +119,7 @@ if __name__ == "__main__":
     from dayu_widgets.qt import application
 
     with application() as app:
-        test = SuccessMessage()
+        test = FailMessage()
         dayu_theme.apply(test)
         print(__file__)
         test.show()
