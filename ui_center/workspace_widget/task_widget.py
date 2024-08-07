@@ -20,8 +20,8 @@ from dayu_widgets.combo_box import MComboBox
 
 from functools import partial
 
-from ui_center3.workspace_widget.filter_tabel_view import FilterTableView
-from ui_center3.workspace_widget import _mock_data as mock
+from ui_center.workspace_widget.filter_tabel_view import FilterTableView
+from ui_center.workspace_widget import _mock_data as mock
 
 filter_items = []
 for label in mock.header_list:
@@ -31,6 +31,7 @@ for label in mock.header_list:
 class TaskTableView(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(TaskTableView, self).__init__(parent)
+        self.resize(1600,400)
         self._init_ui()
 
     def _init_ui(self):
@@ -314,9 +315,9 @@ if __name__ == "__main__":
     with application() as app:
         test = TaskWidget()
         test.set_task_data(mock)
-        test.filter_widget.set_checkbox_check('pipeline step')
-        test.task_table_view.set_header_data(mock.header_list)
-        test.task_table_view.update_data(mock.data_list)
-        # test = FilterWidget()
+        # test.filter_widget.set_checkbox_check('pipeline step')
+        # test.task_table_view.set_header_data(mock.header_list)
+        # test.task_table_view.update_data(mock.data_list)
+        # test = TaskTableView()
         # dayu_theme.apply(test)
         test.show()
