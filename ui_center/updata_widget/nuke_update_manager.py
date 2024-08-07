@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Author: Fan shiyuan
-# Date  : 2024.2
 
 from __future__ import absolute_import
 from __future__ import division
@@ -17,7 +15,7 @@ from dayu_widgets.item_view import MTreeView
 from dayu_widgets.line_edit import MLineEdit
 from dayu_widgets.push_button import MPushButton
 from dayu_widgets.label import MLabel
-from ui_center3.updata_widget import _mock_data as mock
+from ui_center.updata_widget import nuke_file_info as mock
 
 
 class DataTreeView(QtWidgets.QWidget, MFieldMixin):
@@ -79,31 +77,27 @@ class UpdataManager(QtWidgets.QWidget):
         title_lay.addWidget(title_label)
         title_lay.addStretch()
 
-        self.parse_sel_bnt = MPushButton("Parse Selection").small()
-        self.parse_all_bnt = MPushButton("Parse All").small()
-
-        bnt_lay = QtWidgets.QHBoxLayout()
-        bnt_lay.addWidget(self.parse_sel_bnt)
-        bnt_lay.addWidget(self.parse_all_bnt)
-
         data_tree_widget = DataTreeView()
 
-        error_label = MLabel('Has new version,need updata')
+        error_label = MLabel('New version')
         error_label.setStyleSheet("background-color: #FF2727; color: black;")
-        warning_label = MLabel("Already newest, no need updata")
+        warning_label = MLabel("Has new version  but not in project")
         warning_label.setStyleSheet("background-color: #FFB14B; color: black;")
-        success_label = MLabel("Has new version  but no matched level")
+        success_label = MLabel("New version exists")
         success_label.setStyleSheet("background-color: #53FF4B; color: black;")
+        self.input_btn = MPushButton("Input/Update").small()
+
+        # Already newest
 
         tips_label_lay = QtWidgets.QHBoxLayout()
+        tips_label_lay.addWidget(success_label)
         tips_label_lay.addWidget(error_label)
         tips_label_lay.addWidget(warning_label)
-        tips_label_lay.addWidget(success_label)
         tips_label_lay.addStretch()
+        tips_label_lay.addWidget(self.input_btn)
 
         main_lay = QtWidgets.QVBoxLayout()
         main_lay.addWidget(title_label)
-        main_lay.addLayout(bnt_lay)
         main_lay.addWidget(data_tree_widget)
         main_lay.addLayout(tips_label_lay)
 
