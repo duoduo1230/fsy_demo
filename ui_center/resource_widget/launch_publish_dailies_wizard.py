@@ -7,11 +7,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from ui_center3.resource_widget.wizards.wizard import MWizard
-from ui_center3.resource_widget.page_upload_sequence_file import MGetSequenceFilePage
-from ui_center3.resource_widget.page_slate_template import HouWorkFileSlatePage
-from ui_center3.resource_widget.page_slate_template import NukeWorkFileSlatePage
-from ui_center3.resource_widget.page_comment import CommentPage
+from ui_center.resource_widget.wizards.wizard import MWizard
+from ui_center.resource_widget.page_upload_sequence_file import MGetSequenceFilePage
+from ui_center.resource_widget.page_slate_template import HouWorkFileSlatePage
+from ui_center.resource_widget.page_slate_template import NukeWorkFileSlatePage
+from ui_center.resource_widget.page_comment import CommentPage
 
 
 class NewDailiesResourceWizard(MWizard):

@@ -16,7 +16,7 @@ from PySide2.QtGui import QPixmap, QClipboard
 
 from dayu_widgets.push_button import MPushButton
 from dayu_widgets.message import MMessage
-from ui_center3.resource_widget.wizards.wizard import MWizardPage
+from ui_center.resource_widget.wizards.wizard import MWizardPage
 
 
 # 启动界面之前做的,打开截图工具

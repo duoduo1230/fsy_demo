@@ -7,11 +7,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from ui_center3.resource_widget.wizards.wizard import MWizard
-from ui_center3.resource_widget.page_version_number import VersionPage
-from ui_center3.resource_widget.page_quality_check import QualityCheckPage
-from ui_center3.resource_widget.page_thumbnail import ThumbnailPage
-from ui_center3.resource_widget.page_comment import CommentPage
+from ui_center.resource_widget.wizards.wizard import MWizard
+from ui_center.resource_widget.page_version_number import VersionPage
+from ui_center.resource_widget.page_quality_check import QualityCheckPage
+from ui_center.resource_widget.page_thumbnail import ThumbnailPage
+from ui_center.resource_widget.page_comment import CommentPage
 
 
 class NewWorkFileResourceWizard(MWizard):

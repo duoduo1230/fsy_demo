@@ -18,7 +18,7 @@ from dayu_widgets.label import MLabel
 from dayu_widgets.spin_box import MSpinBox
 from dayu_widgets.field_mixin import MFieldMixin
 
-from ui_center3.resource_widget.wizards.wizard import MWizardPage
+from ui_center.resource_widget.wizards.wizard import MWizardPage
 
 
 class RadioButton(QtWidgets.QWidget, MFieldMixin):
