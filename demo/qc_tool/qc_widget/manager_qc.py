@@ -14,7 +14,7 @@ class MyQC():
         error_result = []
         for qc in qc_instance_list:
             try:
-                result = qc.run()
+                info, result = qc.run()
                 if not result:
                     error_result.append(qc)
             except:
@@ -25,7 +25,7 @@ class MyQC():
     @staticmethod
     def repair(qc_instance_list):
         for qc in qc_instance_list:
-            result = qc.repair()
+            info, result = qc.repair()
 
     @staticmethod
     def get_qc_items(path):
@@ -59,11 +59,7 @@ class MyQC():
 if __name__ == "__main__":
     MyQC.import_module()
 
-    detail_information_titel = {
-        'Usage:': 'Usage',
-        'Result': 'result',
-        'Info': 'info'
-    }
+
 
 
 

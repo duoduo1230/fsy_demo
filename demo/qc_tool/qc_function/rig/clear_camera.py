@@ -2,14 +2,17 @@
 
 import os
 
-current_dir = os.path.abspath('.')
+current_dir = os.path.abspath('../mdl')
 parent_dir = os.path.dirname(current_dir)
 
 class ClearCamera():
-    name = 'Clear Camera'
 
     def __init__(self):
         super().__init__()
+        self.description = u'清除冗余相机'
+        self.error_message = u''
+        self.check_result = ''
+        self.extra_data = []
         
     def get_all(self, *args, **kwargs):
         import pymel.core as pm
@@ -18,27 +21,31 @@ class ClearCamera():
         
     def run(self):
         self.extra_data = self.get_all()
-        print(self.extra_data)
-        self.error_message = ''
+
         if self.extra_data:
-            # self.error_message += u'{}<br/>'.format(cam.name())
-            print(self.extra_data)
-            # return False
+            cam_list = []
+            for cam in self.extra_data:
+                cam_list.append(cam.name())
+
+            self.error_message = u'存在冗余相机' + str(cam_list)
+            self.check_result = 'FAILED'
+
         else:
-            self.error_message = ''
-            # return True
-        return self.error_message
+            self.check_result = 'PASSED'
+
+        return self.error_message, self.check_result
+
         
     def repair(self, *args, **kwargs):
         import pymel.core as pm
-        import app._maya.util as util
-        if not self.extra_data:
-            print('There are no extra cameras available')
-        else:
+        if self.extra_data:
             for cam in self.extra_data:
                 camera_transform = pm.PyNode(cam).getParent()
                 pm.delete(camera_transform)
-            print('Remove excess cameras')
+            self.error_message = u'相机删除'
+            self.check_result = 'PASSED'
+
+        return self.error_message, self.check_result
 
 
 def get_qc():

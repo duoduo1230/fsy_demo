@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
 class OverlayMesh():
-    name = 'Overlay Mesh'
 
     def __init__(self):
         super().__init__()
-        self.error_mesh = []
+        self.description = u'检查重复模型'
+        self.error_message = u''
+        self.check_result = ''
+
         self.extra_data = []
-        self.check_info = ''
 
     def get_all(self,):
         import pymel.core as pm
@@ -17,6 +18,7 @@ class OverlayMesh():
         return re
 
     def run(self):
+
         import pymel.core as pm
 
         for level in self.get_all():
@@ -24,7 +26,6 @@ class OverlayMesh():
             overlay_mesh['vernum'] = {}
             overlay_mesh['verposition'] = {}
             for node in level:
-                print(node)
                 x, y, z, xx, yy, zz = pm.xform(node, q=1, ws=1, bb=1)
                 bb = '%.3f' % x + ',' + '%.3f' % y + ',' + '%.3f' % z + ',' + '%.3f' % xx + ',' + '%.3f' % yy + ',' + '%.3f' % zz
                 overlay_mesh['vernum'].setdefault((bb, node.numVertices()), []).append(node)
@@ -41,28 +42,28 @@ class OverlayMesh():
                             overlay_mesh['verposition'].setdefault(num_node_ver.getPosition().get(), []).append(
                                 num_node)
 
-                    result = True
                     for ver_position, same_ver_position in overlay_mesh['verposition'].items():
-                        if len(same_ver_position) < 2:
-                            result = False
-                            break
-                    if result:
-                        self.extra_data.extend(same_ver_position)
+                        if len(same_ver_position) >= 2:
+                            self.extra_data.extend(same_ver_position)
 
+        self.extra_data = set(self.extra_data)
         if self.extra_data:
-            for overlay_node in self.extra_data:
-                self.error_mesh.append(overlay_node)
-            self.check_info = '{} There are duplicate models present'.format(self.error_mesh)
-            return False
+            self.error_message = u'存在重复模型{}'.format(self.extra_data)
+            self.check_result = 'FAILED'
         else:
-            self.check_info = 'Quality inspection passed'
-            return True
+            self.error_message = u''
+            self.check_result = 'PASSED'
+
+        return self.error_message, self.check_result
 
     def repair(self):
         if self.extra_data:
             import pymel.core as pm
             pm.select(self.extra_data)
-            self.check_info = 'Select duplicate models'
+            self.error_message = u'已选中重复模型'
+            self.check_result = 'EXCEPTION'
+
+        return self.error_message, self.check_result
 
 def get_qc():
     return OverlayMesh()
