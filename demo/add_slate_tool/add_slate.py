@@ -8,17 +8,11 @@ from dayu_widgets.item_model import MTableModel
 from dayu_widgets.item_view import MTableView
 from dayu_widgets.menu import MMenu
 from dayu_widgets.combo_box import MComboBox
-from dayu_widgets.check_box import MCheckBox
 from dayu_widgets.line_edit import MLineEdit
 from dayu_widgets.push_button import MPushButton
-from dayu_widgets.qt import MIcon
-from dayu_widgets.browser import MClickBrowserFolderPushButton
-from dayu_widgets.message import MMessage
-from dayu_widgets.drawer import MDrawer
 from dayu_widgets.browser import MClickBrowserFolderToolButton
 from ui_center.resource_widget.warning_dialod import MErrorMessageBox, MSuccessMessageBox
 import os
-import functools
 import tempfile
 
 cache_dir = tempfile.gettempdir()
@@ -229,13 +223,13 @@ class AddSlateTool(QtWidgets.QWidget):
         Please upload the file
         '''
         if not self.drag_folder_button.get_dayu_path():
-            test = MErrorMessageBox('Please input the file !')
+            test = MErrorMessageBox(u'请传入文件!')
             dayu_theme.apply(test)
             test.show()
             test.exec_()
             return
         if not self.folder_lineedit.text():
-            test = MErrorMessageBox('Please set the output path !')
+            test = MErrorMessageBox(u'请设置输出路径!')
             dayu_theme.apply(test)
             test.show()
             test.exec_()
@@ -270,11 +264,11 @@ class AddSlateTool(QtWidgets.QWidget):
 
         # 渲染并判断是否成功
         if not self.nuke_render(version_dict):
-            msg = MSuccessMessageBox(parent=self, msg=self.tr('Finished rendering.'))
+            msg = MSuccessMessageBox(parent=self, msg=self.tr('渲染完成'))
             msg.exec_()
             return
         else:
-            msg = MErrorMessageBox(parent=self, msg=self.tr('Rendering error.'))
+            msg = MErrorMessageBox(parent=self, msg=self.tr('渲染报错'))
             msg.exec_()
             return
 
@@ -286,6 +280,8 @@ class AddSlateTool(QtWidgets.QWidget):
             template_code = r.read()
 
         result = template_code.format('{}', version_data=version_dict)
+        # 此路径为读取模板py以后，将模板备份到这个路径下，这个写法不太保险，以为可能执行该命令得人，没有这个路径
+        # 暂时定为这样，后面再优化
         scripts_path = r"D:\temp\demo_tool\PY\add_slate_template.py"
         with open(scripts_path, 'w') as f:
             f.write(result)
