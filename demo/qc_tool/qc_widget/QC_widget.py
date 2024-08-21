@@ -84,9 +84,15 @@ class QCManager(MyQC, QtWidgets.QWidget):
 
         grp_style_sheet = """
             QGroupBox {
+                color: #F7922D;
                 border: 2px solid gray;
                 border-radius: 8px;
-                margin-top: 20px;
+                margin-top: 8px; /* 调整这个值来控制标题的垂直位置 */
+            }
+            QGroupBox::title {
+                subcontrol-origin: margin;
+                subcontrol-position: top center; /* 将标题放置在顶部中央 */
+                padding: 0 3px;
             }
         """
         self.choose_item_layout = QtWidgets.QVBoxLayout()
