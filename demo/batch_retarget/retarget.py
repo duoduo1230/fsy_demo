@@ -183,14 +183,16 @@ def get_frame_range():
 def create_custom_humanik(template_file):
     # 清理骨骼
     # clear_skeletal()
-
-    # 创建humnaIk
+    #
     humanIK_api.hik_initialize()
-
-    # 设置骨骼定义
+    # 获取template模板信息
     result = parse_definition_xml(template_file)
-    root = result.get("Hips").get("object")
+
+    # 此处得到的root是None
+    root = result.get("Hips").get("bone")
+    # 选中骨骼
     cmds.select(root)
+    # 设置骨骼定义
     humanIK_api.set_definition("Character1", result)
     try:
         humanIK_api.lock_definition()
@@ -200,16 +202,26 @@ def create_custom_humanik(template_file):
 
 
 def batch_retarget(character, source, animation_fbx, output, fps=60):
-    anim_path = pathlib.Path(animation_fbx)
-
     character_path = pathlib.Path(character)
+    anim_path = pathlib.Path(animation_fbx)
     namespace = character_path.stem
+
+    # 方法将路径中的反斜杠 \ 转换为正斜杠 /
+    # anim_path.as_posix()
 
     error = False
     error_info = ""
     try:
+        # 这里的fbx_file返回的是什么？
+        # 这个方法不太明白
+        # <batch_retarget.FBX_Scene.FBX_Class object at 0x00000272565774A8>
+        # (1, 173)
         fbx_file = FBX_Scene.FBX_Class(anim_path.as_posix())
+        print('_______________________________')
+        print(fbx_file)
         start, end = fbx_file.get_time_range()
+        print(start, end)
+
         if not start and not end:
             start, end = get_frame_range()
         fbx_file.close()
@@ -269,13 +281,13 @@ def batch_retarget(character, source, animation_fbx, output, fps=60):
     return error, error_info
 
 
-def create_humanik(fbx, template_file, save_path):
+def create_humanik(ma, template_file, save_path):
     # 新建场景
     cmds.file(force=True, new=True)
 
-    # 导入绑定FBX
-    print(">>> Import {}...".format(fbx))
-    cmds.file(fbx, i=True)
+    # 导入ma工程文件
+    print(">>> Import {}...".format(ma))
+    cmds.file(ma, i=True)
 
     # 创建humanik绑定
     create_custom_humanik(template_file)

@@ -118,15 +118,16 @@ class BatchFbxWidget(QtWidgets.QDialog):
             return
         line_edit.setText(dialog)
 
-    def retarget(self):
+    def create(self):
         error_list = {}
         character = self.target_edit.text()
         source = self.source_edit.text()
 
         fps = int(self.fps_combo_box.currentText())
+        # 此处得anim 应该改为 anim_fbx
         for index, anim in enumerate(self.animation_file_list):
             anim = anim.replace("\\", "/")
-
+            # 此处是运行的进程
             runnable = MyRunnable(self, anim.decode('gbk'), index + 1)
             self.pool.start(runnable)
 
@@ -160,20 +161,21 @@ class BatchFbxWidget(QtWidgets.QDialog):
             QtWidgets.QMessageBox.information(self, "Tip", u"批量转换完成")
 
     def run(self):
-        self.animation_folder = self.animation_edit.text()
-        self.output_folder = self.output_edit.text()
-        self.is_skip = self.skip_check.checkState()
+        self.animation_folder = self.animation_edit.text()   # fbx
+        self.output_folder = self.output_edit.text()         # 输出文件夹
+        self.is_skip = self.skip_check.checkState()          # 是否跳过存在得重定向
+
         if not self.animation_folder and not self.output_folder:
             QtWidgets.QMessageBox.warning(self, "Tip", u"请选择动画FBX文件夹和输出文件夹")
             return
-
+        # 获取self.animation_folder该路径下得所有fbx文件
         self.animation_file_list = retarget.list_fbx_file(self.animation_folder)
         if not self.animation_file_list:
             QtWidgets.QMessageBox.warning(self, "Tip", u"未找到FBX文件，请重新选择动画文件夹")
             return
 
         # self.worker_object.start()
-        result = self.retarget()
+        result = self.create()
         self.show_result(result)
 
 

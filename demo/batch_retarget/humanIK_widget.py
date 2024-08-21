@@ -72,18 +72,14 @@ class HumanIkWidget(QtWidgets.QDialog):
 
     def run(self):
         template_file = self.template_comb.itemData(self.template_comb.currentIndex(), QtCore.Qt.UserRole)
-        print(123456789)
-        print(template_file)
-        fbx = self.fbx_edit.text()
-        print(fbx)
-        if not fbx:
+        ma = self.fbx_edit.text()
+
+        if not ma:
             return
 
         try:
-            output_file = os.path.join(os.path.dirname(fbx), os.path.basename(fbx).replace(".ma", "_humanIK.ma"))
-            print('123'*10)
-            print(output_file)
-            retarget.create_humanik(fbx, template_file, output_file)
+            output_file = os.path.join(os.path.dirname(ma), os.path.basename(ma).replace(".ma", "_humanIK.ma"))
+            retarget.create_humanik(ma, template_file, output_file)
             QtWidgets.QMessageBox.information(self, u"成功", "humanIK转换成功")
         except Exception as e:
             QtWidgets.QMessageBox.warning(self, u"错误", u"生成失败：{}".format(traceback.format_exc()))
