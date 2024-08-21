@@ -5,6 +5,7 @@ from maya import mel
 
 
 def create_definition():
+    # 用于在Maya中创建一个新的HumanIK（HIK）角色定义
     return mel.eval("hikCreateDefinition();")
 
 
@@ -17,9 +18,13 @@ def set_definition(character, definition_info):
 
 
 def hik_initialize():
+    # 用于在Maya中打开HumanIK（HIK）角色控制工具界面
     mel.eval('HIKCharacterControlsTool();')
+    # 创建一个新的HumanIK（HIK）角色定义
     create_definition()
     set_hik_char('Character1')
+
+    # 是Maya中的一个Python命令，用于刷新Maya的用户界面
     cmds.refresh()
 
 
@@ -88,7 +93,9 @@ def hik_update_tool():
 
 
 def set_hik_char(targetChar):
+    # 这个命令用于打开HumanIK角色控制工具界面
     mel.eval("HIKCharacterControlsTool;")
+    # 这个命令用于设置当前的HIK角色为 targetChar， targetChar 是一个变量，代表你想要设置的角色名称。
     mel.eval('hikSetCurrentCharacter("{0}")'.format(targetChar))
     hik_update_tool()
 
