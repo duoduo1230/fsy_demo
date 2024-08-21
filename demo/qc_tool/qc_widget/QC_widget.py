@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import pathlib
 from Qt import QtWidgets, QtCore
 from dayu_widgets import dayu_theme
