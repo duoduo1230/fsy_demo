@@ -1,0 +1,17 @@
+version: v2.0
+
+resources:
+
+  repositories:
+    - repository: FalconDev/Pipeline/common/stream_templates
+      name: stream_templates
+
+on:
+  tag:
+    tags:
+      - "*"
+    from-branches:
+      - "master"
+
+extends:
+  template: standardci.yml@stream_templates

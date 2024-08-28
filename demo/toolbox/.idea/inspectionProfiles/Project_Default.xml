@@ -1,0 +1,15 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="LanguageDetectionInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="Magician.unreal.MagicianUEPlugin_NB.scripts.scene.model_importer.import_weapon_tex.selected" />
+          <option value="Magician.unreal.MagicianUEPlugin_NB.scripts.scene.model_importer.import_weapon_tex.texture_" />
+          <option value="Magician.unreal.MagicianUEPlugin_NB.scripts.scene.model_importer.import_weapon_tex.read_material_property" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

@@ -1,0 +1,8 @@
+MenuName: MagicianToolbox
+
+Steps:
+  - label: 启动工具架
+    type: menu
+    command: |
+      from Magician_Toolbox import magician_toolbox
+      magician_toolbox.main()
