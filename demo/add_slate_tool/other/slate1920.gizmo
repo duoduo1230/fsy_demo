@@ -1,0 +1,228 @@
+#! C:/Program Files/Nuke11.2v2/nuke-11.2.2.dll -nx
+version 11.2 v2
+Gizmo {
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 501
+  ypos -251
+ }
+ Group {
+  name Gizmo1
+  tile_color 0x3e23ffff
+  xpos 501
+  ypos -190
+  addUserKnob {20 User}
+  addUserKnob {41 Aspect_Ratio T NoOp1.Aspect_Ratio}
+ }
+  Constant {
+   inputs 0
+   channels rgb
+   name Constant1
+   xpos -56
+   ypos -467
+  }
+set Nb4241c00 [stack 0]
+  Reformat {
+   type "to box"
+   box_width {{"\[value Input1.width]"}}
+   box_height {{(NoOp1.res)}}
+   box_fixed true
+   black_outside true
+   name Reformat1
+   xpos -166
+   ypos -444
+  }
+  Crop {
+   box {0 0 {"\[value Input1.width]"} {NoOp1.res}}
+   name Crop1
+   xpos -166
+   ypos -396
+  }
+  Transform {
+   translate {0 {"floor((\[value Input1.height]-(NoOp1.res))/2)"}}
+   center {960 405}
+   name Transform1
+   label "<font color =#548DD4> T :<font color = red>\[value this.translate.x]|\[value this.translate.y] </font><font color =#548DD4> R :<font color = red>\[expr int(\[value this.rotate])] </font><font color =#548DD4> S :<font color = red>\[value this.scale.w]|\[value this.scale.h]</font>"
+   xpos -166
+   ypos -343
+  }
+  Constant {
+   inputs 0
+   channels rgb
+   color 1
+   name Constant2
+   xpos -276
+   ypos -320
+  }
+  Merge2 {
+   inputs 2
+   name Merge1
+   xpos -166
+   ypos -297
+  }
+  Invert {
+   channels alpha
+   name Invert1
+   label "\[if \{\[value this.channels]==\"rgb\"||\[value this.channels]==\"rgba\"\} \{return \"(\[value channels])\"\} \{return \" \"\}]"
+   xpos -166
+   ypos -249
+  }
+push $Nb4241c00
+  ShuffleCopy {
+   inputs 2
+   name ShuffleCopy1
+   label "\[value in]->\[value out]"
+   xpos -56
+   ypos -249
+  }
+  Premult {
+   name Premult1
+   label "\[if \{\[value this.channels]==\"rgb\"||\[value this.channels]==\"rgba\"\} \{return \"(\[value channels])\"\} \{return \" \"\}]"
+   xpos -56
+   ypos -179
+  }
+  Input {
+   inputs 0
+   name Input1
+   xpos -386
+   ypos -583
+  }
+  Dot {
+   name Dot3
+   xpos -352
+   ypos -512
+  }
+set Na6f70000 [stack 0]
+  Dot {
+   name Dot1
+   xpos -352
+   ypos -103
+  }
+  Merge2 {
+   inputs 2
+   name Merge2
+   xpos -56
+   ypos -107
+  }
+  Output {
+   name Output1
+   xpos -56
+   ypos -53
+  }
+push $Na6f70000
+  Dot {
+   name Dot2
+   xpos -242
+   ypos -512
+  }
+  NoOp {
+   name NoOp1
+   xpos -276
+   ypos -448
+   addUserKnob {20 User}
+   addUserKnob {7 Aspect_Ratio t "Default is (1.777)16:9\nCommon Aspect Ratios are\n- 1.777 (16:9) (1920x1080)\n- 2.33 (21:9) (1792x768)\n- 2.35 Cinamascope\n- 2.37 (21:9) (2560x1080)" R 1.777 2.39}
+   Aspect_Ratio 2.35
+   addUserKnob {3 Test}
+   Test {{"\[value Input1.width] /Aspect_Ratio"}}
+   addUserKnob {3 res}
+   res {{floor(Test)}}
+  }
+ end_group
+ Reformat {
+  format "1920 1080 0 0 1920 1080 1 HD_1080"
+  name Reformat2
+  xpos 501
+  ypos -136
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[lindex \[split \[file tail \[file rootname \[metadata input/filename]]] \".\"] 0]"
+  old_expression_markers {{0 -1}
+    }
+  box {94.82500079 1015.887497 599.1749992 1048.112503}
+  transforms {{0 2}
+    }
+  cursor_position 76
+  font {{ Tahoma : Regular : tahoma.ttf : 0 }}
+  global_font_scale 0.3
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{922.5 1004}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name version
+  xpos 501
+  ypos -64
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[date %Y-%m-%d] \[date %H:%M:%S]"
+  old_message {{50 48 50 52 45 48 56 45 50 56 32 49 48 58 50 48 58 48 50}
+    }
+  old_expression_markers {{0 9 11 18}
+    }
+  box {1617.5 1019 1900.5 1050}
+  transforms {{0 2}
+    }
+  font {{ Microsoft Sans Serif : Regular : micross.ttf : 0 }}
+  global_font_scale 0.3
+  center {1024 576}
+  cursor_initialised true
+  initial_cursor_position {{1617.5 1050}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 576 0 0 1 1 0 0 0 0}
+    }
+  name datatime
+  xpos 501
+  ypos -14
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[if \{\[file ext \[metadata input/filename]] != \".mov\"\} \{return \[frame]\} \{return \[expr \[frame]+1000]\}] \[if \{\[file ext \[metadata input/filename]] != \".mov\"\} \{return \\\[\[python \{nuke.thisNode().firstFrame()\}]\} \{return \\\[\[expr 1001]\}] - \[if \{\[file ext \[metadata input/filename]] != \".mov\"\} \{return \[python \{nuke.thisNode().lastFrame()\}]\\]\} \{return \[expr \[python \{nuke.thisNode().lastFrame()\}]+1000]\\]\}] \[timecode]"
+  old_message {{49 32 91 49 32 45 32 49 48 48 93 32 91 116 105 109 101 99 111 100 101 93}
+    }
+  old_expression_markers {{0 0 2 3 7 10}
+    }
+  box {770.1000061 34 1547 68.44999981}
+  transforms {{0 2}
+    }
+  cursor_position 406
+  font {{ Microsoft Sans Serif : Regular : micross.ttf : 0 }}
+  global_font_scale 0.25
+  center {1024 576}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{769.2000122 43.39999962}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 576 0 0 1 1 0 0 0 0}
+    }
+  name time_frame
+  xpos 501
+  ypos 37
+ }
+ Crop {
+  box {0 0 1920 1080}
+  crop false
+  name Crop1
+  xpos 501
+  ypos 108
+ }
+ Output {
+  name Output1
+  xpos 501
+  ypos 208
+ }
+end_group

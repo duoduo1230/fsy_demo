@@ -25,7 +25,8 @@ def create_every_version_node(read_filename, meta_codec_type, out_path, fps, sla
         reformat_node['box_height'].setValue(1152)
         reformat_node['type'].setValue('to box')
     else:
-        reformat_node = nuke.createNode(reformat)
+        reformat_node = nuke.createNode('Reformat')
+        reformat_node['format'].setValue(reformat)
 
     write_node = nuke.createNode('Write')
     write_node['file'].setValue(out_path)
