@@ -240,7 +240,7 @@ class AddSlateTool(QtWidgets.QWidget):
         # 若没有选择就默认
         fps = self.fps_type_combobox.currentText() if self.fps_type_combobox.currentText() else 24
         meta_codec_type = META_CODEC_DICT.get(self.trans_code_combobox.currentText()) if self.trans_code_combobox.currentText() else 'apcn'
-        slate = self.slate_combobox.currentText() if self.slate_combobox.currentText() else 'Masking_1'
+        slate = self.slate_combobox.currentText() if self.slate_combobox.currentText() else 'slate_1920'
         format_ = self.reformat_combobox.currentText() if self.reformat_combobox.currentText() else '1920*1080'
         reformat = REFORMAT_DICT.get(format_)
 
@@ -261,6 +261,8 @@ class AddSlateTool(QtWidgets.QWidget):
                     'slate': slate,
                     'reformat': reformat,
                 })
+        print('++++++++++++++++++++++++++++')
+        print(version_dict)
 
         # 渲染并判断是否成功
         if not self.nuke_render(version_dict):
@@ -273,6 +275,8 @@ class AddSlateTool(QtWidgets.QWidget):
             return
 
     def nuke_render(self, version_dict):
+        print(version_dict)
+        print(type(version_dict))
         current_folder = os.path.dirname(__file__)
         nuke_template = os.path.join(current_folder, 'template_script.py')
 
