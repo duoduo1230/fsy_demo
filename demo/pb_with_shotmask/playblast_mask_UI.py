@@ -51,8 +51,11 @@ def create_shot_mask():
     return cmds.createNode("zshotmask")
 
 def init_shot_mask(node):
+    # 遮幅透明度
     cmds.setAttr("{}.borderAlpha".format(node), 0.3)
+    # 字号
     cmds.setAttr("{}.fontScale".format(node), 0.63)
+    # 字体颜色
     cmds.setAttr("{}.fontColorR".format(node), 1)
     cmds.setAttr("{}.fontColorG".format(node), 0.647)
     cmds.setAttr("{}.fontColorB".format(node), 0)
@@ -193,7 +196,6 @@ class MaskWindow(QtWidgets.QDialog):
         self.cam_lay.addWidget(self.cam_combobox)
         self.cam_lay.addStretch()
 
-
         self.font_size_lab = MLabel(u"字号：")
         self.font_size_spinbox = QtWidgets.QDoubleSpinBox()
         self.font_size_spinbox.setRange(0.01, 2)
@@ -247,6 +249,9 @@ class MaskWindow(QtWidgets.QDialog):
         self.frame_lay.addWidget(self.frame_end_line)
         self.frame_lay.addStretch()
 
+        self.cam_btn = MPushButton(u'创建360度相机')
+        self.cam_btn.setMaximumWidth(185)
+
         self.selected_lay = QtWidgets.QGridLayout()
         self.selected_lay.addLayout(self.size_lay, 1, 1)
         self.selected_lay.addLayout(self.out_lay, 1, 2)
@@ -254,6 +259,7 @@ class MaskWindow(QtWidgets.QDialog):
         self.selected_lay.addLayout(self.cam_lay, 2, 1)
         self.selected_lay.addLayout(self.color_lay, 2, 2)
         self.selected_lay.addLayout(self.font_lay, 2, 3)
+        self.selected_lay.addWidget(self.cam_btn, 3, 1)
 
         self.folder_button = MClickBrowserFolderToolButton().huge()
         self.folder_lineedit = MLineEdit().small()
@@ -267,7 +273,7 @@ class MaskWindow(QtWidgets.QDialog):
         self.form_layout.addRow(MLabel(u'文件名:'), self.filename_lineeit)
         self.form_layout.addRow(MLabel(u'输出路径:'), self.folder_layout)
 
-        self.cam_btn = MPushButton(u'创建360度相机')
+
         self.run_btn = MPushButton(u'拍屏')
 
         self.model_editor_widget = self.create_model_widget()
@@ -291,7 +297,7 @@ class MaskWindow(QtWidgets.QDialog):
         main_lay.addLayout(self.selected_lay)
         main_lay.addWidget(MDivider(""))
         main_lay.addLayout(self.form_layout)
-        main_lay.addWidget(self.cam_btn)
+        # main_lay.addWidget(self.cam_btn)
         main_lay.addWidget(self.run_btn)
 
         self.setLayout(main_lay)
@@ -433,8 +439,6 @@ class MaskWindow(QtWidgets.QDialog):
         # self.cam_combobox.set_value('scene_name1')
 
         cmds.modelEditor(self._model_editor, edit=True, camera='scene_name1')
-        self.cam_combobox.setFocus(True)
-
 
     def fix_size(self, widget):
         w, h = get_desk_resolution()
@@ -623,7 +627,6 @@ class MaskWindow(QtWidgets.QDialog):
         pm.playblast(editorPanelName=self._model_editor, startTime=start_time, endTime=end_time, filename=ouput_path,
                      forceOverwrite=True, viewer=False, format=fmt, percent=100, quality=100,
                      clearCache=False, widthHeight=resolution, compression=compression)
-
 
     def closeEvent(self, *args):
         # Delete widget.
