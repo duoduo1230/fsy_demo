@@ -20,6 +20,7 @@ import pymel.core as pm
 import maya.OpenMaya as om
 import os
 import getpass
+import subprocess
 from datetime import datetime
 from functools import partial
 
@@ -56,13 +57,6 @@ def init_shot_mask(node):
     cmds.setAttr("{}.fontColorG".format(node), 0.647)
     cmds.setAttr("{}.fontColorB".format(node), 0)
 
-
-def save_state(self):
-    settings = QtCore.QSettings(self.settings, QtCore.QSettings.IniFormat)
-    settings.beginGroup("Playblast")
-    settings.setValue("proj_name", self.proj_line.text())
-    settings.endGroup()
-
 def get_desk_resolution(typ=QtWidgets.QApplication):
     app = maya_main_window(typ)
     screen_resolution = app.desktop().screenGeometry()
@@ -80,13 +74,77 @@ def get_active_camera():
     return activeCamera.fullPathName()
 
 
+def get_bounding_box(objects=[]):
+    x = []
+    y = []
+    z = []
+    _x = []
+    _y = []
+    _z = []
+
+    allObject = []
+
+    allT = cmds.ls(type="mesh")
+    for i in allT:
+        root = pm.PyNode(i)
+        A = root.listRelatives(ap=True)
+        objectName = A[0].longName()
+        allObject.append(objectName)
+
+    for i in allObject:
+        si = cmds.xform(i, q=1, bb=1)
+        x.append(si[0])
+        y.append(si[1])
+        z.append(si[2])
+        _x.append(si[3])
+        _y.append(si[4])
+        _z.append(si[5])
+
+    size = [min(x), min(y), min(z), max(_x), max(_y), max(_z)]
+    maxLength = [abs(size[0]) + abs(size[3]),
+                 abs(size[1]) + abs(size[4]),
+                 abs(size[2]) + abs(size[5])]
+
+    return size, maxLength
+
+
+def make_suitable_camera(objects=[]):
+    '''Makes a camera based the bounding box of the geometry.'''
+    size, maxLength = get_bounding_box(objects=objects)
+
+    x = (size[0] + size[3]) / 2
+    y = (size[1] + size[4]) / 2
+    z = (size[2] + size[5]) / 2
+
+    cameraname = cmds.camera(name="scene_name")
+
+    cmds.setAttr("%s.farClipPlane" % cameraname[0], 10000000)
+
+    cmds.move(x, y + max(maxLength) * 0.1, z + max(maxLength) * 2.4, cameraname[0])
+    cmds.move(x, y, z, "%s.scalePivot" % cameraname[0], "%s.rotatePivot" % cameraname[0])
+    cmds.setAttr("%s.rotateX" % cameraname[0], -5)
+
+    return cameraname[0]
+
+
+def get_resolution(half=False):
+    res_x = pm.general.getAttr('defaultResolution.width')
+    res_y = pm.general.getAttr('defaultResolution.height')
+    if half:
+        return res_x / 2, res_y / 2
+    else:
+        return res_x, res_y
+
+
 class MaskWindow(QtWidgets.QDialog):
     def __init__(self, zshotmask, parent=None):
         super(MaskWindow, self).__init__(parent)
         self.setWindowTitle(u"拍屏工具")
         self.setObjectName("MyMaskWindow")
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        # 创建加水印的节点
         self._zshotmask = zshotmask
+        # 水印节点的属性
         self.font_edit = [
             ["topLeftText", "topCenterText", "topRightText"],
             ["bottomLeftText", "bottomCenterText", "bottomRightText"]
@@ -96,43 +154,16 @@ class MaskWindow(QtWidgets.QDialog):
         self.bind_function()
         self._init_ui_data()
     def _init_ui(self):
+
         # 给进度条
         self.slider = MSlider(QtCore.Qt.Horizontal)
 
         # 设置水印的 lineedit
         self.collapse = self.create_collapse()
-        # self.line_edit_lay = QtWidgets.QGridLayout()
-        # self.l_s = MLineEdit().small()
-        # self.l_x = MLineEdit().small()
-        # self.m_s = MLineEdit().small()
-        # self.m_x = MLineEdit().small()
-        # self.r_s = MLineEdit().small()
-        # self.r_x = MLineEdit().small()
-        # self.line_edit_lay.addWidget(self.l_s, 1, 1)
-        # self.line_edit_lay.addWidget(self.m_s, 1, 2)
-        # self.line_edit_lay.addWidget(self.r_s, 1, 3)
-        # self.line_edit_lay.addWidget(self.l_x, 2, 1)
-        # self.line_edit_lay.addWidget(self.m_x, 2, 2)
-        # self.line_edit_lay.addWidget(self.r_x, 2, 3)
-
-        # grp_style_sheet = """
-        #     QGroupBox {
-        #         color: #F7922D;
-        #         border: 2px solid gray;
-        #         border-radius: 8px;
-        #         margin-top: 8px; /* 调整这个值来控制标题的垂直位置 */
-        #     }
-        # """
-        #
-        # self.check_item_groupBox = QtWidgets.QGroupBox()
-        # self.check_item_groupBox.setAlignment(QtCore.Qt.AlignCenter)
-        # self.check_item_groupBox.setMaximumHeight(100)
-        # self.check_item_groupBox.setStyleSheet(grp_style_sheet)
-        # self.check_item_groupBox.setLayout(self.line_edit_lay)
 
         # 显示信息的checkbox
-        self.light_check_box = MCheckBox(u"灯光")
-        self.srf_check_box = MCheckBox(u"贴图")
+        self.light_check_box = MCheckBox(u"显示灯光")
+        self.srf_check_box = MCheckBox(u"显示贴图")
         self.smooth_check_box = MCheckBox(u"抗锯齿")
 
         self.show_lay = QtWidgets.QGridLayout()
@@ -152,6 +183,16 @@ class MaskWindow(QtWidgets.QDialog):
         self.size_lay.addWidget(self.size_lab)
         self.size_lay.addWidget(self.size_combobox)
         self.size_lay.addStretch()
+
+        self.cam_label = MLabel(u"摄像机：")
+        self.cam_menu = MMenu(exclusive=False, parent=self)
+        self.cam_combobox = MComboBox()
+        self.cam_combobox.setMinimumWidth(118)
+        self.cam_lay = QtWidgets.QHBoxLayout()
+        self.cam_lay.addWidget(self.cam_label)
+        self.cam_lay.addWidget(self.cam_combobox)
+        self.cam_lay.addStretch()
+
 
         self.font_size_lab = MLabel(u"字号：")
         self.font_size_spinbox = QtWidgets.QDoubleSpinBox()
@@ -191,27 +232,19 @@ class MaskWindow(QtWidgets.QDialog):
 
         self.sequence_check_box = MCheckBox(u"序列")
 
-        self.cam_label = MLabel(u"摄像机：")
-        self.cam_menu = MMenu(exclusive=False, parent=self)
-        self.cam_combobox = MComboBox()
-        self.cam_combobox.setMinimumWidth(118)
-        self.cam_lay = QtWidgets.QHBoxLayout()
-        self.cam_lay.addWidget(self.cam_label)
-        self.cam_lay.addWidget(self.cam_combobox)
-        self.cam_lay.addStretch()
 
         self.frame_range = MLabel(u"帧范围：")
-        self.start = MLineEdit().small()
-        self.start.setMaximumWidth(60)
-        self.end = MLineEdit().small()
-        self.end.setMaximumWidth(60)
+        self.frame_start_line = MLineEdit().small()
+        self.frame_start_line.setMaximumWidth(60)
+        self.frame_end_line = MLineEdit().small()
+        self.frame_end_line.setMaximumWidth(60)
         _lab = MLabel("-")
 
         self.frame_lay = QtWidgets.QHBoxLayout()
         self.frame_lay.addWidget(self.frame_range)
-        self.frame_lay.addWidget(self.start)
+        self.frame_lay.addWidget(self.frame_start_line)
         self.frame_lay.addWidget(_lab)
-        self.frame_lay.addWidget(self.end)
+        self.frame_lay.addWidget(self.frame_end_line)
         self.frame_lay.addStretch()
 
         self.selected_lay = QtWidgets.QGridLayout()
@@ -228,13 +261,15 @@ class MaskWindow(QtWidgets.QDialog):
         self.folder_layout.addWidget(self.folder_lineedit)
         self.folder_layout.addWidget(self.folder_button)
 
-        self.file_name = MLineEdit().small()
-        self.file_name.setMaximumWidth(350)
+        self.filename_lineeit = MLineEdit().small()
+        self.filename_lineeit.setMaximumWidth(350)
         self.form_layout = QtWidgets.QFormLayout()
-        self.form_layout.addRow(MLabel(u'文件名:'), self.file_name)
+        self.form_layout.addRow(MLabel(u'文件名:'), self.filename_lineeit)
         self.form_layout.addRow(MLabel(u'输出路径:'), self.folder_layout)
 
+        self.cam_btn = MPushButton(u'创建360度相机')
         self.run_btn = MPushButton(u'拍屏')
+
         self.model_editor_widget = self.create_model_widget()
         self.model_editor_widget.setParent(self)
         self.model_editor_widget.setObjectName("model_editor_widget")
@@ -248,40 +283,72 @@ class MaskWindow(QtWidgets.QDialog):
         main_lay = QtWidgets.QVBoxLayout()
         main_lay.addLayout(self.model_editor_layout)
         main_lay.addWidget(self.slider)
-        main_lay.addWidget( self.collapse)
-        main_lay.addLayout(self.show_lay)
+        main_lay.addWidget(MDivider(u"设置水印信息"))
+        main_lay.addWidget(self.collapse)
         main_lay.addWidget(MDivider(""))
+        # main_lay.addWidget(self.create_cam_checkbox)
+        main_lay.addLayout(self.show_lay)
         main_lay.addLayout(self.selected_lay)
         main_lay.addWidget(MDivider(""))
         main_lay.addLayout(self.form_layout)
+        main_lay.addWidget(self.cam_btn)
         main_lay.addWidget(self.run_btn)
 
         self.setLayout(main_lay)
 
     def _init_ui_data(self):
+        # 初始化信息的时候，应该是获取工程里面现有信息，填写到界面，目的是方便用户不用反复填写默认信息。
+        # 后面会根据界面的修改，再修改水印信息，支持用户自定义。
+
+        # 获取首尾帧
         start, end = self.get_playbackOptions()
-        cam_list = self.get_cam()
+        # 获取文件名和路径名。
         path_, self.name_ = self.get_project_path()
 
         self.slider.setRange(start, end)
         current_time1 = int(cmds.currentTime(q=1))
         self.slider.setValue(current_time1)
-        self.start.setText(str(start))
-        self.end.setText(str(end))
+        self.frame_start_line.setText(str(start))
+        self.frame_end_line.setText(str(end))
 
-        self.file_name.setText(self.name_)
+        self.filename_lineeit.setText(self.name_)
         self.folder_lineedit.setText(path_)
 
-        self.cam_menu.set_data(cam_list)
-        # self.cam_combobox._set_value(cam_list[1])
         for shape in cmds.ls(cameras=True):
             trans = cmds.listRelatives(shape, p=True)[0]
             self.cam_combobox.addItem(trans, shape)
         # 字号
         self.font_size_spinbox.setValue(1)
+        # 初始化水印信息
         self.set_mask_text()
 
+    def set_mask_text(self):
+        # 水印信息的初始化问题
+        # 日期
+        tct_txt = u"{}".format(datetime.now().strftime("%Y/%m/%d"))
+        start, end = self.get_playbackOptions()
+        frame = '-'.join([str(start), str(end)])
+        frame_info = frame
+        uer = getpass.getuser()
+        current_frame = int(cmds.currentTime(query=True))
+
+        cmds.setAttr("{}.topLeftText".format(self._zshotmask), str(self.name_), typ="string")
+        cmds.setAttr("{}.topCenterText".format(self._zshotmask), u"", typ="string")
+        cmds.setAttr("{}.topRightText".format(self._zshotmask), uer, typ="string")
+        cmds.setAttr("{}.bottomLeftText".format(self._zshotmask), frame_info, typ="string")
+        cmds.setAttr("{}.bottomCenterText".format(self._zshotmask), tct_txt, typ="string")
+        cmds.setAttr("{}.bottomRightText".format(self._zshotmask), current_frame, typ="string")
+
+        # 添加遮幅描述的信号
+        for row, row_ls in enumerate(self.font_edit):
+            for index, font_edit in enumerate(row_ls):
+                text = cmds.getAttr("{}.{}".format(self._zshotmask, font_edit))
+                edit = getattr(self, font_edit)
+                # print(type(text), text.encode('ascii', 'ignore').decode('ascii'))
+                edit.setText(text.encode('ascii', 'ignore').decode('ascii'))
+
     def bind_function(self):
+        # format_combobox信息的修改
         self.size_menu._action_group.triggered.connect(
             lambda action: self.select_config(action, self.size_combobox))
         self.color_menu._action_group.triggered.connect(
@@ -296,7 +363,7 @@ class MaskWindow(QtWidgets.QDialog):
         # 相机
         self.cam_combobox.currentIndexChanged.connect(self.change_camera)
         # 字号
-        self.font_size_spinbox.valueChanged.connect(self.change_mask_size)
+        self.font_size_spinbox.valueChanged.connect(self.change_font_size)
         # 抗锯齿
         self.smooth_check_box.stateChanged.connect(self.change_anti_aliasing)
         # 灯光
@@ -304,13 +371,16 @@ class MaskWindow(QtWidgets.QDialog):
         # 贴图
         self.srf_check_box.stateChanged.connect(self.change_texture)
 
-        # # 控制水印样式
-        # self.l_s.textChanged.connect(self.change_mask_text)
-        # self.l_x.textChanged.connect(self.change_mask_text)
-        # self.m_s.textChanged.connect(self.change_mask_text)
-        # self.m_x.textChanged.connect(self.change_mask_text)
-        # self.r_s.textChanged.connect(self.change_mask_text)
-        # self.r_x.textChanged.connect(self.change_mask_text)
+        # 修改首尾帧设置同时修改UI中的滑块
+        self.frame_start_line.returnPressed.connect(self.set_start_frame_text)
+        # self.frame_start_line.textChanged.connect(self.change_slider_range)
+        self.frame_end_line.returnPressed.connect(self.set_end_frame_text)
+        # self.frame_end_line.textChanged.connect(self.change_slider_range)
+
+        # 创建相机命令
+        self.cam_btn.clicked.connect(self.create_360_cam)
+        # 拍屏命令
+        self.run_btn.clicked.connect(self.play_blast)
 
     def select_config(self, action, combobox):
         if action.isChecked():
@@ -327,30 +397,44 @@ class MaskWindow(QtWidgets.QDialog):
                 layout.addWidget(getattr(self, font_edit), row, index)
         return mask_widget
 
-    def set_mask_text(self):
-        # 水印信息的初始化问题
-        # 日期
-        tct_txt = u"{}".format(datetime.now().strftime("%Y/%m/%d"))
-        start, end = self.get_playbackOptions()
+    def set_start_frame_text(self):
+        # # 设置播放范围的最小值
+        start_1 = self.frame_start_line.text()
+        print(start_1)
+        pm.playbackOptions(min=int(start_1))
+        self.slider.setMinimum(int(start_1))
 
-        t = int(cmds.currentTime(q=True))
-        padding = 5 if t < 0 else 4
-        current_time2 = "{}".format(t).zfill(padding)
-        frame = '-'.join([str(start), str(end)])
-        frame_info = frame + '/' + current_time2
+    def set_end_frame_text(self, *args):
+        end_1 = self.frame_end_line.text()
+        print(end_1)
+        pm.playbackOptions(max=int(end_1))
+        self.slider.setMaximum(int(end_1))
 
-        uer = getpass.getuser()
-        cmds.setAttr("{}.topLeftText".format(self._zshotmask), str(self.name_), typ="string")
-        cmds.setAttr("{}.topCenterText".format(self._zshotmask), u"", typ="string")
-        cmds.setAttr("{}.topRightText".format(self._zshotmask), uer, typ="string")
-        cmds.setAttr("{}.bottomLeftText".format(self._zshotmask), frame_info, typ="string")
-        cmds.setAttr("{}.bottomCenterText".format(self._zshotmask), u"", typ="string")
-        cmds.setAttr("{}.bottomRightText".format(self._zshotmask), tct_txt, typ="string")
-        
-        self.l_s.setText(self.name_)
-        self.r_s.setText(uer)
-        self.l_x.setText(frame_info)
-        self.r_x.setText(tct_txt)
+    def create_360_cam(self):
+        cam = make_suitable_camera()
+
+        # 设置相机360度动画
+        start_time = self.frame_start_line.text()
+        end_time = self.frame_end_line.text()
+        cmds.currentTime(start_time, edit=True)
+        cmds.setKeyframe("{}.rx".format(cam), "{}.ry".format(cam), "{}.rz".format(cam))
+        cmds.currentTime(end_time, edit=True)
+        cmds.setAttr("{}.rotateY".format(cam), 360)
+        cmds.setKeyframe("{}.rx".format(cam), "{}.ry".format(cam), "{}.rz".format(cam))
+        # self.cam_combobox.clear()
+        # for shape in cmds.ls(cameras=True):
+        #     trans = cmds.listRelatives(shape, p=True)[0]
+        #     self.cam_combobox.addItem(trans, shape)
+
+        # 进入相机视角
+        # cmds.lookThru("{}".format(cam))
+        # 创建以后就要刷新上面的相机
+        # 此处还需要修改上面的相机设置
+        # self.cam_combobox.set_value('scene_name1')
+
+        cmds.modelEditor(self._model_editor, edit=True, camera='scene_name1')
+        self.cam_combobox.setFocus(True)
+
 
     def fix_size(self, widget):
         w, h = get_desk_resolution()
@@ -422,21 +506,25 @@ class MaskWindow(QtWidgets.QDialog):
         设置滑块控制视口,还有屏幕内显示得帧速率
         """
         cmds.currentTime(value)
-        start, end = self.get_playbackOptions()
-        frame = '-'.join([str(start), str(end)])
-
         padding = 5 if value < 0 else 4
         current_time = "{}".format(value).zfill(padding)
-        frame_info = frame + '/' + current_time
-        cmds.setAttr("{}.bottomLeftText".format(self._zshotmask), frame_info, typ="string")
+        cmds.setAttr("{}.bottomRightText".format(self._zshotmask), current_time, typ="string")
 
-    def change_mask_size(self, value):
+        # start, end = self.get_playbackOptions()
+        # start_time = int(self.frame_start_line.text())
+        # end_time = int(self.frame_end_line.text())
+        # frame = '-'.join([str(start_time), str(end_time)])
+        #
+        # padding = 5 if value < 0 else 4
+        # current_time = "{}".format(value).zfill(padding)
+        # frame_info = frame + '/' + current_time
+        # cmds.setAttr("{}.bottomLeftText".format(self._zshotmask), frame_info, typ="string")
+
+    def change_font_size(self, value):
         """
         改变字体
         :param value: [int]
         """
-        print(value)
-        print(type(value))
         cmds.setAttr("{}.fontScale".format(self._zshotmask), value)
 
     @classmethod
@@ -466,7 +554,7 @@ class MaskWindow(QtWidgets.QDialog):
         v = True if value == 2 else False
         cmds.modelEditor(self._model_editor, edit=True, displayTextures=v)
 
-    def change_mask_text(self):
+    def change_mask_text(self, index, text):
         """
         Change the text of mask by index.
 
@@ -475,12 +563,81 @@ class MaskWindow(QtWidgets.QDialog):
         """
         cmds.setAttr("{}.{}".format(self._zshotmask, index), text, typ="string")
 
+    def create_360_cam(self):
+        cam = make_suitable_camera()
+        # 设置相机360度动画
+        start_time = self.frame_start_line.text()
+        end_time = self.frame_end_line.text()
+        cmds.currentTime(start_time, edit=True)
+        cmds.setKeyframe("{}.rx".format(cam), "{}.ry".format(cam), "{}.rz".format(cam))
+        cmds.currentTime(end_time, edit=True)
+        cmds.setAttr("{}.rotateY".format(cam), 360)
+        cmds.setKeyframe("{}.rx".format(cam), "{}.ry".format(cam), "{}.rz".format(cam))
+
+        cmds.modelEditor(self._model_editor, edit=True, camera='scene_name1')
+
+        self.cam_combobox.clear()
+        for shape in cmds.ls(cameras=True):
+            trans = cmds.listRelatives(shape, p=True)[0]
+            self.cam_combobox.addItem(trans, shape)
+
+        # 进入相机视角
+        # cmds.lookThru("{}".format(cam))
+        # 创建以后就要刷新上面的相机
+        # 此处还需要修改上面的相机设置
+        self.cam_combobox.set_value('scene_name1')
+
+    def play_blast(self):
+        """
+        Playblast with some tags.
+
+        :returns:[str] The sequence if the video type is "mov", such as "D:\temp\PPP\images\EP02_SC07_Ani.####.tif".
+
+        """
+        # Check if filling the output folder or file name.
+        # 没有路径和文件名直接报个窗口,此处不写也行作为优化项
+        output_folder = self.folder_lineedit.text()
+        file_name = self.filename_lineeit.text()
+        if not output_folder or not file_name:
+            return
+        # 组成一个文件路径
+        video_type = self.format_combobox.currentText()
+        if video_type == 'mov':
+            fmt = "qt"
+            compression = "Video"
+        else:
+            fmt = "avi"
+            compression = ""
+
+        ouput_path = os.path.join(output_folder, file_name + '.' + video_type)
+
+        # Get play blast tags from ui.
+        start_time = int(self.frame_start_line.text())
+        end_time = int(self.frame_end_line.text())
+
+        if self.size_combobox.currentText() == u"full":
+            resolution = get_resolution()
+        else:
+            resolution = get_resolution(half=True)
+
+        pm.playblast(editorPanelName=self._model_editor, startTime=start_time, endTime=end_time, filename=ouput_path,
+                     forceOverwrite=True, viewer=False, format=fmt, percent=100, quality=100,
+                     clearCache=False, widthHeight=resolution, compression=compression)
+
+
     def closeEvent(self, *args):
         # Delete widget.
         if cmds.window(self._model_editor, exists=True):
             cmds.deleteUI(self._model_editor)
         delete_shotmask()
-        self.save_state()
+        # 此处删除掉创建的360相机
+        cameras = cmds.ls(type='camera')
+        for camera in cameras:
+            transform = cmds.listRelatives(camera, parent=True)[0]
+            if 'scene_name' in transform:
+                transform = cmds.listRelatives(camera, parent=True)[0]
+                cmds.delete(transform)
+
 
 def main():
     node = create_shot_mask()
