@@ -606,9 +606,6 @@ class MaskWindow(QtWidgets.QDialog):
             shutil.rmtree(temp_img_dir)
         temp_img_path = os.path.join(temp_img_dir, file_name)
 
-        print('111'*10)
-        print("temp_img_path", temp_img_path)
-
         for frame in range(int(start_time), int(end_time) + 1):
             self.slider.setValue(frame)
             fp = 5 if frame < 0 else 4

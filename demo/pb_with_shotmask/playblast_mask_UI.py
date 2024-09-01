@@ -21,6 +21,8 @@ import maya.OpenMaya as om
 import os
 import getpass
 import subprocess
+import tempfile
+import shutil
 from datetime import datetime
 from functools import partial
 FFMPEG = os.path.join(os.path.dirname(__file__), "ffmpeg.exe")
@@ -138,6 +140,32 @@ def get_resolution(half=False):
         return res_x / 2, res_y / 2
     else:
         return res_x, res_y
+
+
+def imgs_to_videos(images, output, start_number=0, fps=30):
+    """
+    Convert images to videos by ffmpeg.
+
+    :param images: [str] Such as "D:/aa.####.jpg"
+    :param output: [str] The file path to output.
+    :param start_number: [int] From which frame to Convert the video.
+    :param fps: [str] Frame rate of the video
+
+    :return: [bool] Return True if successful, otherwise False.
+    """
+    if os.path.exists(output):
+        os.remove(output)
+
+    cmd_str = '{ffmpeg} -framerate {fps} -start_number {start_number} -f image2 -i {images} -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2" {output}'
+    cmd = cmd_str.format(ffmpeg=FFMPEG, fps=fps, images=images, output=output, start_number=start_number)
+    print(cmd)
+
+    sp = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    out, err = sp.communicate()
+    if err:
+        from pprint import pprint
+        pprint(err)
+
 
 
 class MaskWindow(QtWidgets.QDialog):
@@ -597,35 +625,47 @@ class MaskWindow(QtWidgets.QDialog):
         :returns:[str] The sequence if the video type is "mov", such as "D:\temp\PPP\images\EP02_SC07_Ani.####.tif".
 
         """
-        # Check if filling the output folder or file name.
-        # 没有路径和文件名直接报个窗口,此处不写也行作为优化项
+        # 文件名和路径名
         output_folder = self.folder_lineedit.text()
         file_name = self.filename_lineeit.text()
-        if not output_folder or not file_name:
-            return
-        # 组成一个文件路径
-        video_type = self.format_combobox.currentText()
-        if video_type == 'mov':
-            fmt = "qt"
-            compression = "Video"
-        else:
-            fmt = "avi"
-            compression = ""
-
-        ouput_path = os.path.join(output_folder, file_name + '.' + video_type)
-
-        # Get play blast tags from ui.
+        # 开始时间和结束时间
         start_time = int(self.frame_start_line.text())
         end_time = int(self.frame_end_line.text())
+        if not output_folder or not file_name:
+            return
 
+        # 输出文件类型
+        video_type = self.format_combobox.currentText()
+
+        # 输出文件尺寸
         if self.size_combobox.currentText() == u"full":
             resolution = get_resolution()
         else:
             resolution = get_resolution(half=True)
 
-        pm.playblast(editorPanelName=self._model_editor, startTime=start_time, endTime=end_time, filename=ouput_path,
-                     forceOverwrite=True, viewer=False, format=fmt, percent=100, quality=100,
-                     clearCache=False, widthHeight=resolution, compression=compression)
+        compression = "jpg"
+        fmt = "image"
+        temp_img_dir = os.path.join(tempfile.gettempdir(), "m_pb_images")
+        if os.path.exists(temp_img_dir):
+            shutil.rmtree(temp_img_dir)
+        temp_img_path = os.path.join(temp_img_dir, file_name)
+
+        for frame in range(int(start_time), int(end_time) + 1):
+            self.slider.setValue(frame)
+            fp = 5 if frame < 0 else 4
+            pm.playblast(editorPanelName=self._model_editor, startTime=frame, endTime=frame, filename=temp_img_path,
+                         forceOverwrite=True, viewer=False, format=fmt, percent=100, quality=100,
+                         clearCache=False, widthHeight=resolution, compression=compression, fp=fp)
+
+        # Convert images to videos.
+        img = temp_img_path + ".%04d.jpg"
+        video_path = os.path.join(output_folder, "{}.{}".format(file_name, video_type))
+        print('video_path', video_path)
+
+        imgs_to_videos(img, video_path, start_number=start_time)
+        if os.path.exists(video_path):
+            cmd = "start {}".format(video_path)
+            subprocess.Popen(cmd, shell=True)
 
     def closeEvent(self, *args):
         # Delete widget.
