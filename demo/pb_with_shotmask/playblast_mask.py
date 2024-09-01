@@ -193,8 +193,15 @@ class MaskWindow(QtWidgets.QDialog):
         self.model_editor_widget.setObjectName("model_editor_widget")
         self.fix_size(self.model_editor_widget)
 
-        self.slider = MSlider(QtCore.Qt.Horizontal)
+        self.model_editor_layout = QtWidgets.QHBoxLayout()
+        self.model_editor_layout.addStretch()
+        self.model_editor_layout.addWidget(self.model_editor_widget)
+        self.model_editor_layout.addStretch()
 
+        # maya时间 的playbackOptions
+        # 此处也不太明白写到哪里了，知道了
+        self.slider = MSlider(QtCore.Qt.Horizontal)
+        # 设置水印
         self.collapse = self.create_collapse(expand=False)
 
         font_size_lab = MLabel(u"字体大小：")
@@ -292,7 +299,7 @@ class MaskWindow(QtWidgets.QDialog):
         h_layout.addWidget(self.play_btn)
 
         v_layout = QtWidgets.QVBoxLayout(self)
-        v_layout.addWidget(self.model_editor_widget)
+        v_layout.addLayout(self.model_editor_layout)
         v_layout.addWidget(self.slider)
         v_layout.addWidget(self.collapse)
         v_layout.addLayout(h_layout)
@@ -319,36 +326,40 @@ class MaskWindow(QtWidgets.QDialog):
         """
         Initialize UI data.
         """
+        # 获取当前maya间滑块的起始时间还有结束时间
         start = int(cmds.playbackOptions(minTime=1, q=1))
         end = int(cmds.playbackOptions(maxTime=1, q=1))
 
-        # Set mask font size.
-        self.font_size_spinbox.setValue(0.5)
+        # 设置字体大小
+        self.font_size_spinbox.setValue(1)
 
         # Set slider value.
+        # 给进度滑块设置值
         self.slider.setRange(start, end)
         current_time = int(cmds.currentTime(q=1))
         self.slider.setValue(current_time)
 
-        # Set output size.
+        # 设置输出尺寸，为渲染尺寸，或者渲染尺寸的一半
         self.size_comb.addItems([u"完整尺寸", u"一半尺寸"])
 
         # Set frame range.
         self.frame_start_line.setText(str(start))
         self.frame_end_line.setText(str(end))
 
-        # Set camera.
+        # 获取场景中所有的相机,添加item， 默认选择 persp
         for shape in get_cameras():
             trans = cmds.listRelatives(shape, p=True)[0]
             self.cam_comb.addItem(trans, shape)
+        self.cam_comb.set_value('persp')
 
-        # Set color space.
+        # 设置色彩空间
         self.color_comb.addItems(["sRGB gamma", "Raw"])
 
-        # Set video type.
+        # 设置输出文件格式
         self.type_comb.addItems(["mov", "avi"])
 
         # Set file name.
+        # 如果有工程文件名，那就作为输出的名字，自动填写到页面当中
         scene_name = cmds.file(sceneName=True, q=True)
         if scene_name:
             file_name = os.path.basename(scene_name).split(".")[0]
@@ -413,11 +424,12 @@ class MaskWindow(QtWidgets.QDialog):
         cmds.setAttr("{}.bottomRightText".format(self._zshotmask), current_time, typ="string")
 
         # Update line edit
+        # 添加遮幅描述的信号
         for row, row_ls in enumerate(self.font_edit):
             for index, font_edit in enumerate(row_ls):
                 text = cmds.getAttr("{}.{}".format(self._zshotmask, font_edit))
                 edit = getattr(self, font_edit)
-                print(type(text), text.encode('ascii', 'ignore').decode('ascii'))
+                # print(type(text), text.encode('ascii', 'ignore').decode('ascii'))
                 edit.setText(text.encode('ascii', 'ignore').decode('ascii'))
 
     def create_collapse(self, expand=False):
@@ -593,6 +605,10 @@ class MaskWindow(QtWidgets.QDialog):
         if os.path.exists(temp_img_dir):
             shutil.rmtree(temp_img_dir)
         temp_img_path = os.path.join(temp_img_dir, file_name)
+
+        print('111'*10)
+        print("temp_img_path", temp_img_path)
+
         for frame in range(int(start_time), int(end_time) + 1):
             self.slider.setValue(frame)
             fp = 5 if frame < 0 else 4
@@ -603,6 +619,8 @@ class MaskWindow(QtWidgets.QDialog):
         # Convert images to videos.
         img = temp_img_path + ".%04d.jpg"
         video_path = os.path.join(output_folder, "{}.{}".format(file_name, video_type))
+        print('video_path', video_path)
+
         imgs_to_videos(img, video_path, start_number=start_time)
         if os.path.exists(video_path):
             cmd = "start {}".format(video_path)

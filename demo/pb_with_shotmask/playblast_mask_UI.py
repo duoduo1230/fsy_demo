@@ -23,6 +23,7 @@ import getpass
 import subprocess
 from datetime import datetime
 from functools import partial
+FFMPEG = os.path.join(os.path.dirname(__file__), "ffmpeg.exe")
 
 
 def maya_main_window(typ=QtWidgets.QWidget):
@@ -158,6 +159,16 @@ class MaskWindow(QtWidgets.QDialog):
         self._init_ui_data()
     def _init_ui(self):
 
+        self.model_editor_widget = self.create_model_widget()
+        self.model_editor_widget.setParent(self)
+        self.model_editor_widget.setObjectName("model_editor_widget")
+        self.fix_size(self.model_editor_widget)
+
+        self.model_editor_layout = QtWidgets.QHBoxLayout()
+        self.model_editor_layout.addStretch()
+        self.model_editor_layout.addWidget(self.model_editor_widget)
+        self.model_editor_layout.addStretch()
+
         # 给进度条
         self.slider = MSlider(QtCore.Qt.Horizontal)
 
@@ -233,8 +244,6 @@ class MaskWindow(QtWidgets.QDialog):
         self.out_lay.addStretch()
 
         self.sequence_check_box = MCheckBox(u"序列")
-
-
         self.frame_range = MLabel(u"帧范围：")
         self.frame_start_line = MLineEdit().small()
         self.frame_start_line.setMaximumWidth(60)
@@ -273,18 +282,7 @@ class MaskWindow(QtWidgets.QDialog):
         self.form_layout.addRow(MLabel(u'文件名:'), self.filename_lineeit)
         self.form_layout.addRow(MLabel(u'输出路径:'), self.folder_layout)
 
-
         self.run_btn = MPushButton(u'拍屏')
-
-        self.model_editor_widget = self.create_model_widget()
-        self.model_editor_widget.setParent(self)
-        self.model_editor_widget.setObjectName("model_editor_widget")
-        self.fix_size(self.model_editor_widget)
-
-        self.model_editor_layout = QtWidgets.QHBoxLayout()
-        self.model_editor_layout.addStretch()
-        self.model_editor_layout.addWidget(self.model_editor_widget)
-        self.model_editor_layout.addStretch()
 
         main_lay = QtWidgets.QVBoxLayout()
         main_lay.addLayout(self.model_editor_layout)
@@ -479,12 +477,13 @@ class MaskWindow(QtWidgets.QDialog):
     def create_model_widget(self):
         if cmds.window("ModelEditor", exists=True):
             cmds.deleteUI("ModelEditor")
-
+        # 创建一个窗口，名称为 “ModelEditor”
         window1 = cmds.window('ModelEditor')
+        # 创建一个表单布局控件
         form = cmds.formLayout()
-        # 创建一个新的模型编辑器
+        # 中用于查看和编辑 3D 模型的视图
         self._model_editor = cmds.modelEditor()
-
+        # 创建一个列布局控件。列布局允许将控件按照垂直方向排列
         column = cmds.columnLayout('true')
         cmds.formLayout(form, edit=True,
                         attachForm=[(column, 'top', 0), (column, 'left', 0), (self._model_editor, 'top', 0),
