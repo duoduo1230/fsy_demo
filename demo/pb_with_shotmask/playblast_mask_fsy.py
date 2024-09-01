@@ -31,12 +31,15 @@ from dayu_widgets.line_edit import MLineEdit
 from dayu_widgets.combo_box import MComboBox
 from dayu_widgets.check_box import MCheckBox
 from dayu_widgets.collapse import MCollapse
+from dayu_widgets.spin_box import MSpinBox
+from dayu_widgets.menu import MMenu
 from dayu_widgets import dayu_theme
 
 FFMPEG = os.path.join(os.path.dirname(__file__), "ffmpeg.exe")
 
 
 def maya_main_window(typ=QtWidgets.QWidget):
+
     main_window_ptr = omui.MQtUtil.mainWindow()
     return wrapInstance(int(main_window_ptr), typ)
 
@@ -73,8 +76,11 @@ def change_fps(node):
 
 
 def init_shot_mask(node):
+    # 遮幅透明度
     cmds.setAttr("{}.borderAlpha".format(node), 0.3)
+    # 字号
     cmds.setAttr("{}.fontScale".format(node), 0.63)
+    # 字体颜色
     cmds.setAttr("{}.fontColorR".format(node), 1)
     cmds.setAttr("{}.fontColorG".format(node), 0.647)
     cmds.setAttr("{}.fontColorB".format(node), 0)
@@ -166,8 +172,9 @@ class MaskWindow(QtWidgets.QDialog):
 
     def __init__(self, zshotmask, parent=None):
         super(MaskWindow, self).__init__(parent)
-
+        # 在哪控制了工具页面的大小？？
         # Set class properties.
+        self.resize(950, 750)
         self._zshotmask = zshotmask
         self.model_editor_widget = ""
         self._model_editor = ""
@@ -176,16 +183,20 @@ class MaskWindow(QtWidgets.QDialog):
             ["bottomLeftText", "bottomCenterText", "bottomRightText"]
         ]
         self.settings = os.path.join(cmds.internalVar(usd=True), "mf_playblast.ini")
-
+        # 这个文件是干啥的？
+        # print('000'*10)
+        # print(os.path.join(cmds.internalVar(usd=True), "mf_playblast.ini"))
         # Set widget attributes.
         self.setWindowTitle(u"拍屏工具")
         self.setObjectName("MyMaskWindow")
+        # 在关闭时自动删除自身
+        # 当窗口接受到关闭事件（QCloseEvent）时，Qt会自动调用该窗口的析构函数，从而释放其占用的资源
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 
         # Execute functions.
         self._init_ui()
-        self.bind_func()
-        self._init_ui_data()
+        # self.bind_func()
+        # self._init_ui_data()
 
     def _init_ui(self):
         self.model_editor_widget = self.create_model_widget()
@@ -197,18 +208,71 @@ class MaskWindow(QtWidgets.QDialog):
         self.model_editor_layout.addStretch()
         self.model_editor_layout.addWidget(self.model_editor_widget)
         self.model_editor_layout.addStretch()
+        # 以上窗口先不看
 
-        # maya时间 的playbackOptions
-        # 此处也不太明白写到哪里了，知道了
+        # 获取当前maya间滑块的起始时间还有结束时间
+        self.start = int(cmds.playbackOptions(minTime=1, q=1))
+        self.end = int(cmds.playbackOptions(maxTime=1, q=1))
+        # 给进度条设置起始帧结束帧
         self.slider = MSlider(QtCore.Qt.Horizontal)
-        # 设置水印
-        self.collapse = self.create_collapse(expand=False)
+        self.slider.setRange(self.start, self.end)
+        current_time = int(cmds.currentTime(q=1))
+        self.slider.setValue(current_time)
 
-        font_size_lab = MLabel(u"字体大小：")
-        self.font_size_spinbox = QtWidgets.QDoubleSpinBox()
-        self.font_size_spinbox.setRange(0.01, 2)
-        self.font_size_spinbox.setSingleStep(0.02)
-        self.font_size_spinbox.setMinimumWidth(80)
+        self.line_edit_lay = QtWidgets.QGridLayout()
+        l_s = MLineEdit().small()
+        l_x = MLineEdit().small()
+        m_s = MLineEdit().small()
+        m_x = MLineEdit().small()
+        r_s = MLineEdit().small()
+        r_x = MLineEdit().small()
+        self.line_edit_lay.addWidget(l_s, 1, 1)
+        self.line_edit_lay.addWidget(l_x, 1, 2)
+        self.line_edit_lay.addWidget(m_s, 1, 3)
+        self.line_edit_lay.addWidget(m_x, 2, 1)
+        self.line_edit_lay.addWidget(r_s, 2, 2)
+        self.line_edit_lay.addWidget(r_x, 2, 3)
+
+        grp_style_sheet = """
+            QGroupBox {
+                color: #F7922D;
+                border: 2px solid gray;
+                border-radius: 8px;
+                margin-top: 8px; /* 调整这个值来控制标题的垂直位置 */
+            }
+            QGroupBox::title {
+                subcontrol-origin: margin;
+                subcontrol-position: top center; /* 将标题放置在顶部中央 */
+                padding: 0 3px;
+                font-size: 20px; /* 设置标题的字号 */
+            }
+        """
+
+        self.check_item_groupBox = QtWidgets.QGroupBox(u'设置水印')
+        self.check_item_groupBox.setAlignment(QtCore.Qt.AlignCenter)
+        self.check_item_groupBox.setMinimumHeight(80)
+        self.check_item_groupBox.setStyleSheet(grp_style_sheet)
+        self.check_item_groupBox.setLayout(self.line_edit_lay)
+
+        font_size_lab = MLabel(u"字号：")
+        self.font_size_spinbox = MSpinBox().medium()
+        
+        self.mask_menu = MMenu(exclusive=False, parent=self)
+        self.mask_menu.set_data(['2.39', '2.35'])
+        self.mask_combobox = MComboBox().small()
+        self.mask_combobox.setMinimumWidth(100)
+        self.mask_combobox._root_menu = self.mask_menu
+        self.mask_lab = MLabel(u"遮幅：")
+
+        # 组成第一层
+        self.mask_lay = QtWidgets.QHBoxLayout()
+        self.mask_lay.addWidget(font_size_lab)
+        self.mask_lay.addWidget(self.font_size_spinbox)
+        self.mask_lay.addStretch()
+        self.mask_lay.addWidget(self.mask_lab)
+        self.mask_lay.addWidget(self.mask_combobox)
+
+
         proj_lab = MLabel(u"项目名称：")
         self.proj_line = MLineEdit().large()
         h_lay1 = QtWidgets.QHBoxLayout()
@@ -301,7 +365,11 @@ class MaskWindow(QtWidgets.QDialog):
         v_layout = QtWidgets.QVBoxLayout(self)
         v_layout.addLayout(self.model_editor_layout)
         v_layout.addWidget(self.slider)
-        v_layout.addWidget(self.collapse)
+        # v_layout.addWidget(self.collapse)
+
+        v_layout.addWidget(self.check_item_groupBox)
+        v_layout.addLayout(self.mask_lay)
+
         v_layout.addLayout(h_layout)
         v_layout.addWidget(tip_lab, alignment=QtCore.Qt.AlignCenter)
 
@@ -309,6 +377,9 @@ class MaskWindow(QtWidgets.QDialog):
 
     def fix_size(self, widget):
         w, h = get_desk_resolution()
+        print(w)# 1920
+        print(h)# 1200
+        print('-----'*10)
         if 2560 < w < 3840:
             weight = 1022
 
@@ -321,30 +392,22 @@ class MaskWindow(QtWidgets.QDialog):
         height = int(weight / float("%.4f" % get_dar()))
         widget.setFixedWidth(weight)
         widget.setFixedHeight(height)
+        print(weight) # 766
+        print(height) # 430
 
     def _init_ui_data(self):
         """
         Initialize UI data.
         """
-        # 获取当前maya间滑块的起始时间还有结束时间
-        start = int(cmds.playbackOptions(minTime=1, q=1))
-        end = int(cmds.playbackOptions(maxTime=1, q=1))
-
         # 设置字体大小
         self.font_size_spinbox.setValue(1)
-
-        # Set slider value.
-        # 给进度滑块设置值
-        self.slider.setRange(start, end)
-        current_time = int(cmds.currentTime(q=1))
-        self.slider.setValue(current_time)
 
         # 设置输出尺寸，为渲染尺寸，或者渲染尺寸的一半
         self.size_comb.addItems([u"完整尺寸", u"一半尺寸"])
 
         # Set frame range.
-        self.frame_start_line.setText(str(start))
-        self.frame_end_line.setText(str(end))
+        self.frame_start_line.setText(str(self.start))
+        self.frame_end_line.setText(str(self.end))
 
         # 获取场景中所有的相机,添加item， 默认选择 persp
         for shape in get_cameras():
@@ -352,7 +415,7 @@ class MaskWindow(QtWidgets.QDialog):
             self.cam_comb.addItem(trans, shape)
         self.cam_comb.set_value('persp')
 
-        # 设置色彩空间
+        # 设置色彩空降
         self.color_comb.addItems(["sRGB gamma", "Raw"])
 
         # 设置输出文件格式
@@ -415,7 +478,8 @@ class MaskWindow(QtWidgets.QDialog):
         tlt_txt = u"焦距:{0}".format(str(round(focal_length, 1)))
         cmds.setAttr("{}.bottomLeftText".format(self._zshotmask), tlt_txt, typ="string")
 
-        tct_txt = u"{}-{}".format(getpass.getuser(), datetime.now().strftime("%Y/%m/%d"))
+        # tct_txt = u"{}-{}".format(getpass.getuser(), datetime.now().strftime("%Y/%m/%d"))
+        tct_txt = u"{}".format(datetime.now().strftime("%Y/%m/%d"))
         cmds.setAttr("{}.bottomCenterText".format(self._zshotmask), tct_txt, typ="string")
 
         t = int(cmds.currentTime(q=True))
@@ -424,11 +488,11 @@ class MaskWindow(QtWidgets.QDialog):
         cmds.setAttr("{}.bottomRightText".format(self._zshotmask), current_time, typ="string")
 
         # Update line edit
-        # 添加遮幅描述的信号
         for row, row_ls in enumerate(self.font_edit):
             for index, font_edit in enumerate(row_ls):
                 text = cmds.getAttr("{}.{}".format(self._zshotmask, font_edit))
                 edit = getattr(self, font_edit)
+                # 转码
                 # print(type(text), text.encode('ascii', 'ignore').decode('ascii'))
                 edit.setText(text.encode('ascii', 'ignore').decode('ascii'))
 
@@ -505,6 +569,9 @@ class MaskWindow(QtWidgets.QDialog):
         :param text: [str] To display.
         """
         cmds.setAttr("{}.{}".format(self._zshotmask, index), text, typ="string")
+        # 这里面的text从哪来的
+        print('777'*10)
+        print(text)
 
     def change_mask_size(self, value):
         """
@@ -605,7 +672,6 @@ class MaskWindow(QtWidgets.QDialog):
         if os.path.exists(temp_img_dir):
             shutil.rmtree(temp_img_dir)
         temp_img_path = os.path.join(temp_img_dir, file_name)
-
         for frame in range(int(start_time), int(end_time) + 1):
             self.slider.setValue(frame)
             fp = 5 if frame < 0 else 4
@@ -616,8 +682,6 @@ class MaskWindow(QtWidgets.QDialog):
         # Convert images to videos.
         img = temp_img_path + ".%04d.jpg"
         video_path = os.path.join(output_folder, "{}.{}".format(file_name, video_type))
-        print('video_path', video_path)
-
         imgs_to_videos(img, video_path, start_number=start_time)
         if os.path.exists(video_path):
             cmd = "start {}".format(video_path)
@@ -648,18 +712,9 @@ def main():
     # Create shot mask
     node = create_shot_mask()
     init_shot_mask(node)
-
-    # Set font family
-    font_path = os.path.join(os.path.dirname(__file__), "data/Alibaba-PuHuiTi-Medium.ttf")
-    _id = QtGui.QFontDatabase.addApplicationFont(font_path)
-    dayu_theme.font_family = "Alibaba PuHuiTi M"
-    dayu_theme.font_size_base = 18
-
-    # Show window
-    check_exists()
     maya_window = maya_main_window()
     win = MaskWindow(node, parent=maya_window)
-    dayu_theme.apply(win)
+    # dayu_theme.apply(win)
     win.show()
 
 
