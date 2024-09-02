@@ -4,7 +4,7 @@ class CheckReference():
 
     def __init__(self):
         super().__init__()
-        self.description = u'检查当前场景是否存在reference'
+        self.description = u'检查当前场景是否存在未加载reference'
         self.error_message = ''
         self.check_result = ''
 
