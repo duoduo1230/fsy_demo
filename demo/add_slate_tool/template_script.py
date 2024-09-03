@@ -6,8 +6,7 @@ import nuke
 write_dict = {}
 version_data = eval(r"{version_data}")
 
-def create_every_version_node(read_filename, meta_codec_type, out_path, fps, slate, reformat):
-    print(123456)
+def create_every_version_node(read_filename, meta_codec_type, out_path, fps, slate):
     root = nuke.Root()
     root['fps'].setValue(int(fps))
 
@@ -19,14 +18,14 @@ def create_every_version_node(read_filename, meta_codec_type, out_path, fps, sla
 
     nuke.createNode(slate)
 
-    if reformat == '2K_2048':
-        reformat_node = nuke.createNode('Reformat')
-        reformat_node['box_width'].setValue(2048)
-        reformat_node['box_height'].setValue(1152)
-        reformat_node['type'].setValue('to box')
-    else:
-        reformat_node = nuke.createNode('Reformat')
-        reformat_node['format'].setValue(reformat)
+    # if reformat == '2K_2048':
+    #     reformat_node = nuke.createNode('Reformat')
+    #     reformat_node['box_width'].setValue(2048)
+    #     reformat_node['box_height'].setValue(1152)
+    #     reformat_node['type'].setValue('to box')
+    # else:
+    #     reformat_node = nuke.createNode('Reformat')
+    #     reformat_node['format'].setValue(reformat)
 
     write_node = nuke.createNode('Write')
     write_node['file'].setValue(out_path)
@@ -35,7 +34,7 @@ def create_every_version_node(read_filename, meta_codec_type, out_path, fps, sla
     write_node['meta_codec'].setValue(meta_codec_type)
     write_node['create_directories'].setValue(True)
 
-    write_node.setInput(0, reformat_node)
+    # write_node.setInput(0, reformat_node)
     write_dict[write_node.name()] = [write_node.firstFrame(), write_node.lastFrame()]
     # write_dict[write_node.name()] = [first_frame, last_frame]
     nuke.scriptSaveAs(filename='D:/temp/demo_tool/PY/demo.nk', overwrite=True)
