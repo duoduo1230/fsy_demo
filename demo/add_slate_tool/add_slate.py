@@ -21,7 +21,7 @@ cache_dir = tempfile.gettempdir()
 
 file_type = ['mov']
 trans_code_list = ['prores 4444', 'prores 422 proxy', 'prores 422', 'prores 422 hq']
-slate_list = ['slate_1920', 'slate_2048']
+slate_list = ['slate1', 'slate2']
 fps_list = ['24', '25']
 
 
@@ -51,11 +51,11 @@ META_CODEC_DICT = {
     'jpg': 'jpeg',
 }
 
-REFORMAT_DICT = {
-    '1920*1080': 'HD_1080',
-    '2048*1152': '2K_2048',
-}
-reformat_list = list(REFORMAT_DICT.keys())
+# REFORMAT_DICT = {
+#     '1920*1080': 'HD_1080',
+#     '2048*1152': '2K_2048',
+# }
+# reformat_list = list(REFORMAT_DICT.keys())
 
 class AddSlateTool(QtWidgets.QWidget):
     def __init__(self, parent=None):
@@ -96,12 +96,12 @@ class AddSlateTool(QtWidgets.QWidget):
         self.slate_combobox._root_menu = self.slate_button
         self.slate_label = MLabel('Slate')
 
-        self.reformat_button = MMenu(exclusive=False, parent=self)
-        self.reformat_button.set_data(reformat_list)
-        self.reformat_combobox = MComboBox().small()
-        self.reformat_combobox.setMinimumWidth(130)
-        self.reformat_combobox._root_menu = self.reformat_button
-        self.reformat_label = MLabel('Reformat')
+        # self.reformat_button = MMenu(exclusive=False, parent=self)
+        # self.reformat_button.set_data(reformat_list)
+        # self.reformat_combobox = MComboBox().small()
+        # self.reformat_combobox.setMinimumWidth(130)
+        # self.reformat_combobox._root_menu = self.reformat_button
+        # self.reformat_label = MLabel('Reformat')
 
         tips_lay = QtWidgets.QHBoxLayout()
         tips_lay.addWidget(MLabel("Tips: 以上功能不选择，将保持原素材设置导出").warning())
@@ -116,9 +116,9 @@ class AddSlateTool(QtWidgets.QWidget):
         choose_lay.addWidget(self.slate_label)
         choose_lay.addWidget(self.slate_combobox)
         choose_lay.addStretch()
-        choose_lay.addWidget(self.reformat_label)
-        choose_lay.addWidget(self.reformat_combobox)
-        choose_lay.addStretch()
+        # choose_lay.addWidget(self.reformat_label)
+        # choose_lay.addWidget(self.reformat_combobox)
+        # choose_lay.addStretch()
 
         # 功能区的样式
         self.choose_grp = QtWidgets.QGroupBox('')
@@ -191,8 +191,8 @@ class AddSlateTool(QtWidgets.QWidget):
             lambda action: self.select_config(action, self.trans_code_combobox))
         self.slate_button._action_group.triggered.connect(
             lambda action: self.select_config(action, self.slate_combobox))
-        self.reformat_button._action_group.triggered.connect(
-            lambda action: self.select_config(action, self.reformat_combobox))
+        # self.reformat_button._action_group.triggered.connect(
+        #     lambda action: self.select_config(action, self.reformat_combobox))
 
         self.run_button.clicked.connect(self.slot_download)
 
@@ -240,9 +240,9 @@ class AddSlateTool(QtWidgets.QWidget):
         # 若没有选择就默认
         fps = self.fps_type_combobox.currentText() if self.fps_type_combobox.currentText() else 24
         meta_codec_type = META_CODEC_DICT.get(self.trans_code_combobox.currentText()) if self.trans_code_combobox.currentText() else 'apcn'
-        slate = self.slate_combobox.currentText() if self.slate_combobox.currentText() else 'slate_1920'
-        format_ = self.reformat_combobox.currentText() if self.reformat_combobox.currentText() else '1920*1080'
-        reformat = REFORMAT_DICT.get(format_)
+        slate = self.slate_combobox.currentText() if self.slate_combobox.currentText() else 'slate1'
+        # format_ = self.reformat_combobox.currentText() if self.reformat_combobox.currentText() else '1920*1080'
+        # reformat = REFORMAT_DICT.get(format_)
 
         data_list = self.file_model.get_data_list()
         # 首先判断勾选了没
@@ -259,7 +259,7 @@ class AddSlateTool(QtWidgets.QWidget):
                     'fps': fps,
                     'meta_codec_type': meta_codec_type,
                     'slate': slate,
-                    'reformat': reformat,
+                    # 'reformat': reformat,
                 })
         print('++++++++++++++++++++++++++++')
         print(version_dict)
