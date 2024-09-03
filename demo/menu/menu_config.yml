@@ -1,0 +1,54 @@
+MenuName: Tools
+
+
+Steps:
+  # 拍屏
+  - name: Playblast
+    type: menu
+    command: |
+      import sys
+      import maya.cmds as cmds
+      if r"G:\python\maya\cam360" not in sys.path:
+          sys.path.append(r"G:\python\maya\cam360")
+      import cam360
+      reload(cam360)
+      cam360.main()
+
+  - type: divider
+
+
+  # 检查菜单
+  - name: Check
+    type: menu
+    command: |
+      sys.path.append(r"G:\python\check_items")
+      import check_window
+      reload(check_window)
+      check_window.main()
+
+
+  - type: divider
+
+
+  # 发布菜单
+  - name: Publish
+    type: submenu
+    items:
+      - name: Import Material
+        type: menu
+        command: |
+          import sys
+          if r"G:\python\maya\out_materials" not in sys.path:
+              sys.path.append(r"G:\python\maya\out_materials")
+          import import_materials
+          reload(import_materials)
+          import_materials.main()
+      - name: Export Material
+        type: menu
+        command: |
+          import sys
+          if r"G:\python\maya\out_materials" not in sys.path:
+              sys.path.append(r"G:\python\maya\out_materials")
+          import export_materials
+          reload(export_materials)
+          export_materials.main()
