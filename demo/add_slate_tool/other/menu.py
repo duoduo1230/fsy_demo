@@ -1,4 +1,5 @@
 toolbar=nuke.toolbar("Nodes")
-toolbar.addMenu("my_gizmo", icon="")
-toolbar.addCommand("my_gizmo/Glow_Exponential","nuke.createNode('Glow_Exponential.gizmo')")
-
+toolbar.addMenu("Slate", icon="VideoCopilot.png")
+toolbar.addCommand("Slate/slate_2048","nuke.createNode('slate_2048.gizmo')")
+toolbar.addCommand("Slate/slate_1920","nuke.createNode('slate_1920.gizmo')")
+toolbar.addCommand("Slate/slate1","nuke.createNode('slate1.gizmo')")
