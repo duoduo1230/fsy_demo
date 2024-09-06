@@ -21,6 +21,7 @@ import maya.cmds as cmds
 from maya import mel
 import pymel.core as pm
 
+
 class HumanIKWidget(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(HumanIKWidget, self).__init__(parent)
@@ -39,7 +40,7 @@ class HumanIKWidget(QtWidgets.QWidget):
         # 目标ma
         self.retarget_button = MClickBrowserFileToolButton().huge()
         self.retarget_button.set_dayu_filters(['.ma'])
-        path_ = r'D:\My_code\pro\rig_pro'
+        path_ = r'D:\My_code\tool\output'
         self.retarget_button.set_dayu_path(path_)
         self.retarget_lineedit = MLineEdit().small()
         self.retarget_layout = QtWidgets.QHBoxLayout()
@@ -270,7 +271,6 @@ class HumanIKWidget(QtWidgets.QWidget):
         mel.eval('FBXExport -f "{0}" -s'.format(str(in_path).replace("\\", "/")))
 
     def create(self):
-
         fps = self.fps_comb.currentText()
         animation_fbx_folder = self.fbx_folder_lineedit.text()
         if not animation_fbx_folder:
@@ -294,71 +294,74 @@ class HumanIKWidget(QtWidgets.QWidget):
             return
 
         animation_file_list = glob.glob(r"{}\*.fbx".format(animation_fbx_folder))
-        anim_fbx = animation_file_list[0].replace("\\", "/")
-        anim_path = pathlib.Path(anim_fbx)
+        print(animation_file_list)
+        for index, anim in enumerate(animation_file_list):
+            anim_fbx = anim.replace("\\", "/")
+            anim_path = pathlib.Path(anim_fbx)
+            print(anim_path)
 
-        character_path = pathlib.Path(character1)
-        name_space = character_path.stem
+            character_path = pathlib.Path(character1)
+            name_space = character_path.stem
 
-        fbx_path = '{}/{}_retarget.fbx'.format(output_folder, anim_path.stem)
-        ma_path = '{}/{}_retarget.ma'.format(output_folder, anim_path.stem)
+            fbx_path = '{}/{}_retarget.fbx'.format(output_folder, anim_path.stem)
+            ma_path = '{}/{}_retarget.ma'.format(output_folder, anim_path.stem)
 
-        # 从fbx文件中得到骨骼动画的首尾帧
-        fbx_file = FBX_Scene.FBX_Class(anim_path.as_posix())
-        start, end = fbx_file.get_time_range()
-        if not start and not end:
-            start, end = self.get_frame_range()
-        fbx_file.close()
+            # 从fbx文件中得到骨骼动画的首尾帧
+            fbx_file = FBX_Scene.FBX_Class(anim_path.as_posix())
+            start, end = fbx_file.get_time_range()
+            if not start and not end:
+                start, end = self.get_frame_range()
+            fbx_file.close()
 
-        # 新建场景
-        cmds.file(force=True, new=True)
-        # reference 驱动者 不加命名空间
-        cmds.file(source, r=True, options="v=0;", namespace=":")
-        current_source = self.get_current_hik_character()
+            # 新建场景
+            cmds.file(force=True, new=True)
+            # reference 驱动者 不加命名空间
+            cmds.file(source, r=True, options="v=0;", namespace=":")
+            current_source = self.get_current_hik_character()
 
-        # 导入带动画骨骼的fbx文件，给驱动者加动画
-        cmds.file(anim_path, i=True)
-        # 设置动画播放范围
-        cmds.playbackOptions(animationStartTime=start, minTime=start, maxTime=end, animationEndTime=end)
-        default_character_list = self.get_hik_character_list()
-        # reference 被驱动者 加命名空间
-        cmds.file(character1, r=True, namespace=name_space)
-        source_list = self.get_hik_character_list()
-        current_character = list(set(source_list) ^ set(default_character_list))
+            # 导入带动画骨骼的fbx文件，给驱动者加动画
+            cmds.file(anim_path, i=True)
+            # 设置动画播放范围
+            cmds.playbackOptions(animationStartTime=start, minTime=start, maxTime=end, animationEndTime=end)
+            default_character_list = self.get_hik_character_list()
+            # reference 被驱动者 加命名空间
+            cmds.file(character1, r=True, namespace=name_space)
+            source_list = self.get_hik_character_list()
+            current_character = list(set(source_list) ^ set(default_character_list))
 
-        # 打开HumanIK角色控制工具界面
-        # 页面中设置被驱动者
-        self.set_hik_char(current_character[0])
-        # 页面中设置驱动者
-        self.set_hik_source_char(current_source)
-        # bake骨骼动画
-        self.bake_skeleton()
-        # 设置fps
-        self.set_fps(fps)
-        # 移除引用并另存文件
-        self.remove_import_nodes()  # 清理import节点
+            # 打开HumanIK角色控制工具界面
+            # 页面中设置被驱动者
+            self.set_hik_char(current_character[0])
+            # 页面中设置驱动者
+            self.set_hik_source_char(current_source)
+            # bake骨骼动画
+            self.bake_skeleton()
+            # 设置fps
+            self.set_fps(fps)
+            # 移除引用并另存文件
+            self.remove_import_nodes()  # 清理import节点
 
-        # 清理命名空间
-        for rf_node in cmds.ls(rf=1):
-            if rf_node == name_space + "RN":
-                continue
-            cmds.file(removeReference=True, referenceNode=rf_node)
+            # 清理命名空间
+            for rf_node in cmds.ls(rf=1):
+                if rf_node == name_space + "RN":
+                    continue
+                cmds.file(removeReference=True, referenceNode=rf_node)
 
-        cmds.file(rename=ma_path)
-        cmds.file(force=True, type='mayaAscii', save=True)
-        # 设置另存得文件名
+            cmds.file(rename=ma_path)
+            cmds.file(force=True, type='mayaAscii', save=True)
+            # 设置另存得文件名
 
-        # 选中骨骼
-        joints = cmds.ls(type="joint")
-        # bake骨骼
-        self.bake(joints, start, end)
-        # 导出fbx
-        self.export_fbx(joints, fbx_path)
+            # 选中骨骼
+            joints = cmds.ls(type="joint")
+            # bake骨骼
+            self.bake(joints, start, end)
+            # 导出fbx
+            self.export_fbx(joints, fbx_path)
 
-        # 去除FBX的命名空间
-        fbx_file = FBX_Scene.FBX_Class(fbx_path)
-        fbx_file.remove_namespace()
-        fbx_file.save(fbx_path)
+            # 去除FBX的命名空间
+            fbx_file = FBX_Scene.FBX_Class(fbx_path)
+            fbx_file.remove_namespace()
+            fbx_file.save(fbx_path)
 
         msg = MSuccessMessageBox(parent=self, msg=self.tr('输出完成'))
         msg.exec_()

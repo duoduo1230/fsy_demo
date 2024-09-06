@@ -167,7 +167,6 @@ def imgs_to_videos(images, output, start_number=0, fps=30):
         pprint(err)
 
 
-
 class MaskWindow(QtWidgets.QDialog):
     def __init__(self, zshotmask, parent=None):
         super(MaskWindow, self).__init__(parent)
