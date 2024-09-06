@@ -8,7 +8,7 @@ import csv
 import time
 from datetime import datetime, timedelta
 import db.util
-from app import DAYU
+from app_DAYU import DAYU
 import datetime as dt
 import wrap_shotgun as ws
 from ui_center.qt import *
@@ -19,7 +19,7 @@ from config.const import OUTPUT_FORMAT_DICT
 from ui_center.widgets.MFolderWidget import MFolderWidget
 from ui_center.widgets.MItemViewFilterSetWidget import MItemViewFilterSetWidget
 from ui_center.widgets.message_box import MErrorMessageBox, MSuccessMessageBox
-from app._public.context_menu.folder_file.download_dailies.attr_config import COLOR_SPACE_CONFIG, META_CODEC_DICT
+from app_DAYU._public.context_menu.folder_file.download_dailies.attr_config import COLOR_SPACE_CONFIG, META_CODEC_DICT
 
 
 class DownloadDailiesDialog(QDialog):
