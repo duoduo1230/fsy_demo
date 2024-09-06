@@ -11,7 +11,7 @@ import csv
 import db.util
 import job_center
 import db.disk_path
-from app import DAYU
+from app_DAYU import DAYU
 import datetime as dt
 import wrap_shotgun as ws
 from ui_center.qt import *
