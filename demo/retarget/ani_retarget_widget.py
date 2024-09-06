@@ -334,22 +334,23 @@ class HumanIKWidget(QtWidgets.QWidget):
             self.set_hik_char(current_character[0])
             # 页面中设置驱动者
             self.set_hik_source_char(current_source)
+
             # bake骨骼动画
             self.bake_skeleton()
             # 设置fps
             self.set_fps(fps)
-            # 移除引用并另存文件
-            self.remove_import_nodes()  # 清理import节点
+            # 清理import节点
+            self.remove_import_nodes()
 
-            # 清理命名空间
+            # 移除不带命名空间的引用
             for rf_node in cmds.ls(rf=1):
                 if rf_node == name_space + "RN":
                     continue
                 cmds.file(removeReference=True, referenceNode=rf_node)
 
+            # 保存文件
             cmds.file(rename=ma_path)
             cmds.file(force=True, type='mayaAscii', save=True)
-            # 设置另存得文件名
 
             # 选中骨骼
             joints = cmds.ls(type="joint")
