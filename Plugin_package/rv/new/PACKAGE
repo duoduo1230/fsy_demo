@@ -1,0 +1,22 @@
+package: OCIO_Change
+author: Dr Benway
+organization: Tweak Software
+contact: support@tweaksoftware.com
+version: 1.0
+requires: ''
+rv: 3.12.9
+url: http://www.tweaksoftware.com
+optional: true
+
+modes: 
+  - file: setOCIO.py
+    menu: ''
+    shortcut: ''
+    event: ''
+    load: immediate
+
+description: |
+    <p>
+    This is a simple python package example
+    </p>
+
