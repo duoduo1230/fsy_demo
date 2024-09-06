@@ -136,8 +136,10 @@ class MWizard(QDialog, FieldMixin):
         self.stacked_lay = QStackedLayout()
 
         self.next_button = QPushButton('Next')
+        self.next_button.setMinimumWidth(60)
         self.previous_button = QPushButton('Previous')
         self.previous_button.setVisible(False)
+        self.previous_button.setMinimumWidth(60)
 
         self.previous_button.clicked.connect(self.slot_back)
         self.next_button.clicked.connect(self.slot_next)

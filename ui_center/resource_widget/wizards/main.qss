@@ -256,7 +256,13 @@ QLineEdit,QTextEdit, QDateEdit{
     selection-background-color: #5bc0de;
     selection-color: #1e1e1e;
 }
-QLineEdit:focus,QTextEdit:focus, QDateEdit:focus{
+/*QLineEdit:focus{*/
+/*    border: 1px solid #F09013;*/
+/*}*/
+QTextEdit:focus{
+    border: 1px solid #F09013;
+}
+QDateEdit:focus{
     border: 1px solid #F09013;
 }
 
@@ -344,10 +350,9 @@ QPushButton {
     border: 1px solid black ;
     border-radius: 2px;
     color: #E1E1E1;
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                   stop: 0 #525252, stop: 1 #474747);
-    min-width: 80px;
-    min-height: 24px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #525252, stop: 1 #474747);
+    /*min-width: 80px;*/
+    /*min-height: 24px;*/
 }
 QPushButton:disabled{
     border: 1px solid gray ;
@@ -475,6 +480,11 @@ QCheckBox:disabled{
     spacing: 5px;
     color: gray;
 }
+QCheckBox::indicator:unchecked {
+    background: transparent;
+    background-color: transparent;
+    border: 1px solid #E1E1E1;
+}
 /* =======================< QSpinBox >=========================*/
 
 QAbstractSpinBox {
@@ -496,32 +506,32 @@ QAbstractSpinBox:!enabled {
     color: rgb(65, 65, 65);
     background: transparent;
 }
-QAbstractSpinBox::up-button {
-    width: 18px;
-    height: 10px;
-    border-top-right-radius: 4px;
-    border-left: 1px solid black;
-    image: url(icon-up.png);
-    background: rgb(50, 50, 50);
-}
+/*QAbstractSpinBox::up-button {*/
+/*    width: 18px;*/
+/*    height: 10px;*/
+/*    border-top-right-radius: 4px;*/
+/*    border-left: 1px solid black;*/
+/*    image: url(icon-up.png);*/
+/*    background: rgb(50, 50, 50);*/
+/*}*/
 QAbstractSpinBox::up-button:!enabled {
     border-left: 1px solid gray;
-    background: transparent;
+    background: #343434;
 }
 QAbstractSpinBox::up-button:enabled:hover {
     background: rgb(255, 255, 255, 30);
 }
-QAbstractSpinBox::down-button {
-    width: 18px;
-    height: 10px;
-    border-bottom-right-radius: 4px;
-    border-left: 1px solid black;
-    image: url(icon-down.png);
-    background: rgb(50, 50, 50);
-}
+/*QAbstractSpinBox::down-button {*/
+/*    width: 18px;*/
+/*    height: 10px;*/
+/*    border-bottom-right-radius: 4px;*/
+/*    border-left: 1px solid black;*/
+/*    image: url(icon-down.png);*/
+/*    background: rgb(50, 50, 50);*/
+/*}*/
 QAbstractSpinBox::down-button:!enabled {
     border-left: 1px solid gray;
-    background: transparent;
+    background: #343434;
 }
 QAbstractSpinBox::down-button:enabled:hover {
     background: rgb(255, 255, 255, 30);
@@ -532,11 +542,11 @@ QAbstractSpinBox::drop-down{
     width: 15px;
     border-left: 0 solid;
 }
-QAbstractSpinBox::down-arrow{
-    width: 14px;
-    height: 14px;
-    image: url(icon-down.png);
-}
+/*QAbstractSpinBox::down-arrow{*/
+/*    width: 14px;*/
+/*    height: 14px;*/
+/*    image: url(icon-down.png);*/
+/*}*/
 
 QSpinBox, QDoubleSpinBox {
     padding-right: 15px; /* make room for the arrows */
@@ -553,7 +563,7 @@ QTableView, QListView, QTreeView{
     color: #c8c8c8;
     background-color: #3a3a3a;
     alternate-background-color: #353535;
-    selection-background-color: #5bc0de;
+    selection-background-color: #F09013;
     selection-color:#1e1e1e;
     border: 1px solid #000;
 }
@@ -563,12 +573,12 @@ QTreeView::item, QTableView::item, QListView::item{
 }
 QListView::item:hover, QTreeView::item:hover, QTableView::item:hover{
     color: black;
-    background-color: #8bdaff;
+    background-color: #F09013;
 }
 
 QListView::item:selected, QTreeView::item:selected, QTableView::item:selected{
     color: black;
-    background-color: #5bc0de;
+    background-color: #F09013;
 }
 
 QTreeView::branch:has-siblings:!adjoins-item {
