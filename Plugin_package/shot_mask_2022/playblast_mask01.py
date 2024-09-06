@@ -37,29 +37,37 @@ FFMPEG = os.path.join(os.path.dirname(__file__), "ffmpeg.exe")
 
 
 def maya_main_window(typ=QtWidgets.QWidget):
+    # 这两行代码通常用于在Maya中创建自定义的UI窗口，使其能够正确嵌入到Maya的主窗口中
     main_window_ptr = omui.MQtUtil.mainWindow()
-    return wrapInstance(int(main_window_ptr), typ)
+    return wrapInstance(long(main_window_ptr), typ)
+    # return wrapInstance(int(main_window_ptr), typ)
 
 
 def window_to_qt(window):
+    # 在Maya中操作和自定义现有的UI控件，使其能够与自定义的Qt界面无缝集成
     ptr = omui.MQtUtil.findControl(window)
     return wrapInstance(int(ptr), QtWidgets.QWidget)
 
 
 def get_cameras():
+    # 得到所有的相机
     return cmds.ls(cameras=True)
 
 
 def create_shot_mask():
+    # 删除所有的 zshotmask 节点
+    # 确保插件加载
     delete_shotmask()
     plugin = "zshotmask.py"
     if not cmds.pluginInfo(plugin, q=True, loaded=True):
         cmds.loadPlugin(plugin)
-
+    # 创建节点
     return cmds.createNode("zshotmask")
 
 
 def change_time(value):
+    # 设置或查询 Maya 场景的当前帧
+    # cmds.currentTime( query=True )
     """
     Change time slider.
     :param value: [int]
@@ -68,6 +76,7 @@ def change_time(value):
 
 
 def change_fps(node):
+    # 这个没用到  pass
     t = int(cmds.currentTime(q=True))
     cmds.setAttr("{}.bottomRightText".format(node), "{0}".format(t).zfill(4), typ="string")
 
@@ -81,6 +90,7 @@ def init_shot_mask(node):
 
 
 def get_resolution(half=False):
+    # 获取 Maya 场景中默认渲染分辨率的宽度和高度
     res_x = pm.general.getAttr('defaultResolution.width')
     res_y = pm.general.getAttr('defaultResolution.height')
     if half:
@@ -90,17 +100,22 @@ def get_resolution(half=False):
 
 
 def get_dar():
+    # 于获取 Maya 场景中默认渲染分辨率的设备纵横比，也就是设置的渲染宽除以渲染高
     dar = pm.general.getAttr('defaultResolution.deviceAspectRatio')
     return float("%.4f" % dar)
 
 
 def get_active_camera():
+    # 创建了一个 MDagPath 对象 用于存储相机的路径
     activeCamera = om.MDagPath()
+    # 当前活动的3D视图 并将其相机路径存储在 activeCamera 对象中
     omui.M3dView().active3dView().getCamera(activeCamera)
+    # 返回当前用到相机的 完整路径
     return activeCamera.fullPathName()
 
 
 def make_dirs(directory):
+    # 创建文件夹
     result = True
 
     os.makedirs(directory)
@@ -109,6 +124,7 @@ def make_dirs(directory):
 
 
 def add_script_job(func, event="timeChanged"):
+    # 这个没用到  pass
     _id = cmds.scriptJob(event=[event, func])
     return _id
 
@@ -144,21 +160,27 @@ def delete_shotmask():
     """
     shot_mask_nodes = cmds.ls("zshotmask*")
     for i in shot_mask_nodes:
+        # 列出指定对象的父节点 cmds.listRelatives(i, p=1)
         trf = cmds.listRelatives(i, p=1)
         cmds.delete(trf)
 
 
 def get_desk_resolution(typ=QtWidgets.QApplication):
     app = maya_main_window(typ)
+    # 获取屏幕分辨率
     screen_resolution = app.desktop().screenGeometry()
     width, height = screen_resolution.width(), screen_resolution.height()
     return width, height
 
 
 def check_exists(object_name="MyMaskWindow"):
+    # 获取Maya主窗口的所有子对象。这些子对象可以是窗口、小部件等。maya_main_window().children()
     for obj in maya_main_window().children():
+        # 检查每个子对象的名称是否与指定的名称（object_name）匹配
         if obj.objectName() == object_name:
+            # 将匹配的对象从其父对象中移除
             obj.setParent(None)
+            # 标记对象以便稍后删除，安全的删除方法，确保对象在当前事件循环完成后才会被删除，避免潜在的崩溃或不稳定。
             obj.deleteLater()
 
 
@@ -178,7 +200,7 @@ class MaskWindow(QtWidgets.QDialog):
         self.settings = os.path.join(cmds.internalVar(usd=True), "mf_playblast.ini")
 
         # Set widget attributes.
-        self.setWindowTitle(u"魔术师拍屏霸王")
+        self.setWindowTitle(u"拍屏工具")
         self.setObjectName("MyMaskWindow")
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 
@@ -211,9 +233,9 @@ class MaskWindow(QtWidgets.QDialog):
         h_lay1.addWidget(self.proj_line)
 
         seq_size_lab = MLabel(u"场次名：")
-        self.seq_line = MLineEdit(u"第一场")
+        self.seq_line = MLineEdit(u"ep01")
         shot_size_lab = MLabel(u"镜头名：")
-        self.shot_line = MLineEdit(u"第一镜")
+        self.shot_line = MLineEdit(u"0010")
         h_lay2 = QtWidgets.QHBoxLayout()
         h_lay2.addWidget(seq_size_lab)
         h_lay2.addWidget(self.seq_line)
@@ -301,19 +323,24 @@ class MaskWindow(QtWidgets.QDialog):
         self.load_state()
 
     def fix_size(self, widget):
+        print(widget)
         w, h = get_desk_resolution()
+        print(w, h)
         if 2560 < w < 3840:
             weight = 1022
+            height = 1080
 
         elif w >= 3840:
             weight = 1534
+            height = 1080
 
         else:
-            weight = 766
+            weight = 960
+            height = 540
 
-        height = int(weight / float("%.4f" % get_dar()))
         widget.setFixedWidth(weight)
         widget.setFixedHeight(height)
+
 
     def _init_ui_data(self):
         """
@@ -323,7 +350,7 @@ class MaskWindow(QtWidgets.QDialog):
         end = int(cmds.playbackOptions(maxTime=1, q=1))
 
         # Set mask font size.
-        self.font_size_spinbox.setValue(0.5)
+        self.font_size_spinbox.setValue(1)
 
         # Set slider value.
         self.slider.setRange(start, end)
@@ -391,7 +418,7 @@ class MaskWindow(QtWidgets.QDialog):
     def set_mask_text(self):
         """ Set shot mask text one by one, and update line edit. """
 
-        cmds.setAttr("{}.topLeftText".format(self._zshotmask), u"魔方工作室", typ="string")
+        cmds.setAttr("{}.topLeftText".format(self._zshotmask), u"范世缘", typ="string")
 
         tct_text = u"{}-{}x{}".format(self.proj_line.text(), get_resolution()[0], get_resolution()[1])
         cmds.setAttr("{}.topCenterText".format(self._zshotmask), tct_text, typ="string")
@@ -417,7 +444,6 @@ class MaskWindow(QtWidgets.QDialog):
             for index, font_edit in enumerate(row_ls):
                 text = cmds.getAttr("{}.{}".format(self._zshotmask, font_edit))
                 edit = getattr(self, font_edit)
-                print(type(text), text.encode('ascii', 'ignore').decode('ascii'))
                 edit.setText(text.encode('ascii', 'ignore').decode('ascii'))
 
     def create_collapse(self, expand=False):
@@ -580,6 +606,7 @@ class MaskWindow(QtWidgets.QDialog):
         # Get play blast tags from ui.
         start_time = self.frame_start_line.text()
         end_time = self.frame_end_line.text()
+
         if self.size_comb.currentText() == u"完整尺寸":
             resolution = get_resolution()
         else:
@@ -589,6 +616,7 @@ class MaskWindow(QtWidgets.QDialog):
         # Playblast by frames.
         compression = "jpg"
         fmt = "image"
+
         temp_img_dir = os.path.join(tempfile.gettempdir(), "m_pb_images")
         if os.path.exists(temp_img_dir):
             shutil.rmtree(temp_img_dir)
