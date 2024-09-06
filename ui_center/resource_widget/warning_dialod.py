@@ -15,7 +15,6 @@ class MErrorMessageBox(QMessageBox):
     def __init__(self, msg, detail=None, parent=None):
         super(MErrorMessageBox, self).__init__(parent)
         self.setWindowTitle(self.tr('Error'))
-
         pix = QPixmap(os.path.join(icon_folder, "tip_error.jpg"))
         self.setIconPixmap(pix.scaledToWidth(160, QtCore.Qt.SmoothTransformation))
         self.setText('<span style="font-size:18px;color:#ddd">' + self.tr('Something is wrong') + '</span>')
