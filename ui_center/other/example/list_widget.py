@@ -1,0 +1,57 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+###################################################################
+# Author: Mu yanru
+# Date  : 2019.2
+# Email : muyanru345@163.com
+###################################################################
+# Import future modules
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+# Import third-party modules
+from Qt import QtWidgets
+
+# Import local modules
+from dayu_widgets import dayu_theme
+from dayu_widgets.divider import MDivider
+from dayu_widgets.field_mixin import MFieldMixin
+from dayu_widgets.item_model import MSortFilterModel
+from dayu_widgets.item_model import MTableModel
+from dayu_widgets.item_view import MListView
+from dayu_widgets.line_edit import MLineEdit
+import _mock_data as mock
+
+
+class ListViewExample(QtWidgets.QWidget, MFieldMixin):
+    def __init__(self, parent=None):
+        super(ListViewExample, self).__init__(parent)
+        self._init_ui()
+
+    def _init_ui(self):
+        table_small = MListView(size=dayu_theme.small)
+        model_1 = MTableModel()
+        model_1.set_header_list(mock.header_list)
+        model_sort = MSortFilterModel()
+        model_sort.setSourceModel(model_1)
+        table_small.setModel(model_sort)
+        model_sort.set_header_list(mock.header_list)
+        table_small.set_header_list(mock.header_list)
+        model_1.set_data_list(mock.data_list)
+
+        main_lay = QtWidgets.QVBoxLayout()
+        main_lay.addWidget(table_small)
+
+        self.setLayout(main_lay)
+
+
+if __name__ == "__main__":
+    # Import local modules
+    from dayu_widgets import dayu_theme
+    from dayu_widgets.qt import application
+
+    with application() as app:
+        test = ListViewExample()
+        dayu_theme.apply(test)
+        test.show()
