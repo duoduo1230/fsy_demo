@@ -3,7 +3,6 @@
 import os
 from pathlib import Path
 from importlib.machinery import SourceFileLoader
-
 from traceback import format_exc
 
 class MyQC():

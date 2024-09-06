@@ -32,9 +32,6 @@ from dayu_widgets.message import MMessage
 from dayu_widgets.qt import MIcon
 from dayu_widgets import dayu_theme
 import pymysql
-from magician_sql import tools_collection
-
-reload(tools_collection)
 
 # Import local modules
 from Magician_Toolbox.widgets import tool_widgets
@@ -111,16 +108,6 @@ def row_data(data):
         "user": os.environ["PIPELINE_USER"] if os.environ.get("PIPELINE_USER") else getpass.getuser(),
         "last_used_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
-
-
-def update_sql(item_data):
-    """
-     更新数据库
-    :return:
-    """
-    data = row_data(item_data)
-    tools_collection.update_sql(data.get("project"), data.get("tool"), "maya")
-
 
 class ToolsWindow(QtWidgets.QWidget):
 
@@ -331,12 +318,6 @@ class ToolsWindow(QtWidgets.QWidget):
         command = item_data.get("command")
         if not command:
             return
-
-        # 更新数据库
-        try:
-            update_sql(data)
-        except Exception as e:
-            print("Update sql failed: {0}".format(e))
 
         # 执行script
         command_type = item_data.get("command_type", "script")

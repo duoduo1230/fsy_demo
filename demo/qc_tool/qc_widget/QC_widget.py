@@ -13,7 +13,7 @@ from dayu_widgets.push_button import MPushButton
 # from resource_widget.warning_dialod import MErrorMessageBox
 
 import os
-from  manager_qc import MyQC
+from manager_qc import MyQC
 
 QC_CONFIG_PATH = r"D:\My_code\fsy_demo\demo\qc_tool\qc_function"
 
@@ -28,7 +28,6 @@ header_list = [
     {
         "label": "Result",
         "key": "result",
-        "width": 100,
         'bg_color': {
             "EXCEPTION": "#119",
             "FAILED": "#911",
