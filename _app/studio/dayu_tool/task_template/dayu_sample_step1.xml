@@ -1,0 +1,70 @@
+<root presetname="dayu_sample_step1" tasktype="hiero.exporters.FnShotProcessor.ShotProcessor">
+    <startFrameIndex valuetype="int">995</startFrameIndex>
+    <exportRoot valuetype="str">/Volumes/pipeline/tech/publish/</exportRoot>
+    <versionIndex valuetype="int">1</versionIndex>
+    <cutUseHandles valuetype="bool">False</cutUseHandles>
+    <versionPadding valuetype="int">2</versionPadding>
+    <exportTemplate valuetype="list">
+        <SequenceItem valuetype="tuple">
+            <SequenceItem valuetype="str">{dayu_publish_path}/fullres/exr/{dayu_version_name}.####.exr</SequenceItem>
+            <SequenceItem valuetype="app._hiero.exporter.oiio_exporter.OiioExportPreset">
+                <root presetname="app._hiero.exporter.oiio_exporter.OiioExportTask" tasktype="app._hiero.exporter.oiio_exporter.OiioExportTask">
+                    <dayu_version_name valuetype="str">sd_0010_plt_bga_v0005</dayu_version_name>
+                    <dayu_publish_path valuetype="str">dayu-demo/sequence/sd/sd_0010/element/plt/sd_0010_plt_bga/sd_0010_plt_bga_v0005</dayu_publish_path>
+                    <width valuetype="int">1024</width>
+                    <dayu_di_filename valuetype="str">di_filename</dayu_di_filename>
+                    <output_colorspace valuetype="unicode">ACES - ACEScc</output_colorspace>
+                    <connect_db valuetype="bool">True</connect_db>
+                    <ocio_config_path valuetype="unicode">/Users/andyguo/Documents/GitHub/OpenColorIO-Configs/aces_1.0.3/config.ocio</ocio_config_path>
+                </root>
+            </SequenceItem>
+        </SequenceItem>
+        <SequenceItem valuetype="tuple">
+            <SequenceItem valuetype="str">{dayu_publish_path}/proxy/jpg/{dayu_version_name}.####.jpg</SequenceItem>
+            <SequenceItem valuetype="app._hiero.exporter.oiio_exporter.OiioExportPreset">
+                <root presetname="app._hiero.exporter.oiio_exporter.OiioExportTask" tasktype="app._hiero.exporter.oiio_exporter.OiioExportTask">
+                    <dayu_version_name valuetype="str">sd_0010_plt_bga_v0005</dayu_version_name>
+                    <dayu_publish_path valuetype="str">dayu-demo/sequence/sd/sd_0010/element/plt/sd_0010_plt_bga/sd_0010_plt_bga_v0005</dayu_publish_path>
+                    <width valuetype="int">2048</width>
+                    <output_format valuetype="unicode">jpg</output_format>
+                    <dayu_di_filename valuetype="str">di_filename</dayu_di_filename>
+                    <output_colorspace valuetype="unicode">Output - Rec.709</output_colorspace>
+                    <connect_db valuetype="bool">True</connect_db>
+                    <ocio_config_path valuetype="unicode">/Users/andyguo/Documents/GitHub/OpenColorIO-Configs/aces_1.0.3/config.ocio</ocio_config_path>
+                    <sync_cloud valuetype="bool">False</sync_cloud>
+                </root>
+            </SequenceItem>
+        </SequenceItem>
+        <SequenceItem valuetype="tuple">
+            <SequenceItem valuetype="str">{dayu_publish_path}/cloud/mov/{dayu_version_name}.mov</SequenceItem>
+            <SequenceItem valuetype="app._hiero.exporter.ffmpeg_exporter.FFmpegExportPreset">
+                <root presetname="app._hiero.exporter.ffmpeg_exporter.FFmpegExportTask" tasktype="app._hiero.exporter.ffmpeg_exporter.FFmpegExportTask">
+                    <dayu_version_name valuetype="str">sd_0010_plt_bga_v0005</dayu_version_name>
+                    <dayu_publish_path valuetype="str">dayu-demo/sequence/sd/sd_0010/element/plt/sd_0010_plt_bga/sd_0010_plt_bga_v0005</dayu_publish_path>
+                    <output_format valuetype="unicode">h264</output_format>
+                    <dayu_di_filename valuetype="str">di_filename</dayu_di_filename>
+                    <output_colorspace valuetype="unicode">Output - Rec.709</output_colorspace>
+                    <connect_db valuetype="bool">True</connect_db>
+                    <ocio_config_path valuetype="unicode">/Users/andyguo/Documents/GitHub/OpenColorIO-Configs/aces_1.0.3/config.ocio</ocio_config_path>
+                    <sync_cloud valuetype="bool">True</sync_cloud>
+                </root>
+            </SequenceItem>
+        </SequenceItem>
+        <SequenceItem valuetype="tuple">
+            <SequenceItem valuetype="str">{dayu_publish_path}/sync/sync</SequenceItem>
+            <SequenceItem valuetype="app._hiero.exporter.cloud_sync_exporter.CloudSyncExportPreset">
+                <root presetname="app._hiero.exporter.cloud_sync_exporter.CloudSyncExportTask" tasktype="app._hiero.exporter.cloud_sync_exporter.CloudSyncExportTask">
+                    <dayu_di_filename valuetype="str">di_filename</dayu_di_filename>
+                    <dayu_version_name valuetype="str">sd_0010_plt_bga_v0005</dayu_version_name>
+                    <dayu_publish_path valuetype="str">dayu-demo/sequence/sd/sd_0010/element/plt/sd_0010_plt_bga/sd_0010_plt_bga_v0005</dayu_publish_path>
+                </root>
+            </SequenceItem>
+        </SequenceItem>
+    </exportTemplate>
+    <excludeTags valuetype="list" />
+    <includeTags valuetype="list" />
+    <includeRetimes valuetype="bool">False</includeRetimes>
+    <startFrameSource valuetype="str">Custom</startFrameSource>
+    <cutLength valuetype="bool">True</cutLength>
+    <cutHandles valuetype="int">12</cutHandles>
+</root>
