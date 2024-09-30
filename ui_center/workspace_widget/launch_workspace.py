@@ -119,17 +119,18 @@ class WorkspaceManager(QtWidgets.QWidget):
 
     def restoreState(self):
         filter_cache = self.settings.value("filter_cache")
-        filtered_keys = [key for key in filter_cache]
-        key_count = len(filtered_keys)
-        for key in filter_cache:
-            if key not in ["project", "sequence type"]:
-                add_filter = self.task_widget.filter_widget.set_checkbox_check(key)
-                self.task_widget.filter_widget._filter_widget.addWidget(add_filter)
-        for index in range(key_count):
-            widget_item = self.task_widget.filter_widget._filter_widget.itemAt(index).widget()
-            widget_name = widget_item.objectName()
-            for item in filter_cache.get(widget_name):
-                widget_item.change_item_status(item[0], 2)
+        if filter_cache:
+            filtered_keys = [key for key in filter_cache]
+            key_count = len(filtered_keys)
+            for key in filter_cache:
+                if key not in ["project", "sequence type"]:
+                    add_filter = self.task_widget.filter_widget.set_checkbox_check(key)
+                    self.task_widget.filter_widget._filter_widget.addWidget(add_filter)
+            for index in range(key_count):
+                widget_item = self.task_widget.filter_widget._filter_widget.itemAt(index).widget()
+                widget_name = widget_item.objectName()
+                for item in filter_cache.get(widget_name):
+                    widget_item.change_item_status(item[0], 2)
 
     def closeEvent(self, event):
         """
