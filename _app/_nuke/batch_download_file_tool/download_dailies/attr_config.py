@@ -290,6 +290,25 @@ COLOR_SPACE_CONFIG = {
                         'monitorLut', 'int8Lut', 'int16Lut', 'logLut', 'floatLut'],
         'slate': 'fc_slate'
     },
+    'dct1900': {
+        'color_space_input': '',
+        'color_space_output': '',
+        'working_space': '',
+        'root': {
+            'colorManagement': 'OCIO',
+            'OCIO_config': 'aces_1.0.3',
+            'customOCIOConfigPath': 'y:/td/aces_1.0.3/config.ocio',
+            'workingSpaceLUT': 'ACES - ACEScg',
+            'monitorLut': 'ACES/Rec.709',
+            'int8Lut': 'Utility - sRGB - Texture',
+            'int16Lut': 'ACES - ACEScc',
+            'logLut': 'Input - ADX - ADX10',
+            'floatLut': 'ACES - ACEScg'
+        },
+        'root_sorted': ['colorManagement', 'OCIO_config', 'customOCIOConfigPath', 'workingSpaceLUT',
+                        'monitorLut', 'int8Lut', 'int16Lut', 'logLut', 'floatLut'],
+        'slate': 'dct_slate'
+    },
 }
 
 META_CODEC_DICT = {
